@@ -1,11 +1,12 @@
-import { useState } from 'react'
+import AuthGate from './components/authgate/DummyAuth'
+
 import './App.css'
 
 function App() {
   
 
   return (
-    
+    <AuthGate/>
   )
 }
 

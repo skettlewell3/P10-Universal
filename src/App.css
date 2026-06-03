@@ -1,0 +1,18 @@
+#loginContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 1em;
+  border: 1px solid white;
+  width: 80%;
+  padding: 1em;
+  margin: 7.5em auto;
+  border-radius: 10px;
+  background-color: var(--green);
+  box-shadow: 0 4px 6px var(--green);
+  max-height: 800px;
+  max-width: 426px;
+}
+
+#loginContainer input {
+  text-align: center;
+}

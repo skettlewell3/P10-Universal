@@ -1,8 +1,18 @@
 :root {
-  --text: #6b6375;
+
+  --blue: rgb(28, 44, 91);
+  --green: rgb(32, 100, 60);
+  --bkgrey: #555;
+  --gtable: rgba(50, 153, 91, .3);
+  --gold: #ccaa39;
+  --silver: #B0B8C0;
+  --bronze: #8C5A2C;
+  --tpblue: rgb(28, 44, 91, 0.9);
+
+  --text: #fff;
   --text-h: #08060d;
-  --bg: #fff;
-  --border: #e5e4e7;
+  --bg: rgb(32, 100, 60, 0.9);
+  --border: #000;
   --code-bg: #f4f3ec;
   --accent: #aa3bff;
   --accent-bg: rgba(170, 59, 255, 0.1);
@@ -30,25 +40,6 @@
   }
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --text: #9ca3af;
-    --text-h: #f3f4f6;
-    --bg: #16171d;
-    --border: #2e303a;
-    --code-bg: #1f2028;
-    --accent: #c084fc;
-    --accent-bg: rgba(192, 132, 252, 0.15);
-    --accent-border: rgba(192, 132, 252, 0.5);
-    --social-bg: rgba(47, 48, 58, 0.5);
-    --shadow:
-      rgba(0, 0, 0, 0.4) 0 10px 15px -3px, rgba(0, 0, 0, 0.25) 0 4px 6px -2px;
-  }
-
-  #social .button-icon {
-    filter: invert(1) brightness(2);
-  }
-}
 
 body {
   margin: 0;
