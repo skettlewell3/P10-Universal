@@ -1,5 +1,13 @@
-export default function AppWithUser() {
+import AppContainer from "./components/app/AppContainer";
+import HeaderProfile from "./components/Header/HeaderProfile";
+
+export default function AppWithUser({ user, onLogOut }) {
     return (
-        <h1>hi</h1>
+        <AppContainer>
+            <HeaderProfile 
+                user={user} 
+                onLogOut={onLogOut}
+            />
+        </AppContainer>
     )
 }

@@ -1,18 +1,241 @@
-#loginContainer {
-  display: flex;
-  flex-direction: column;
-  gap: 1em;
-  border: 1px solid white;
-  width: 80%;
-  padding: 1em;
-  margin: 7.5em auto;
-  border-radius: 10px;
-  background-color: var(--green);
-  box-shadow: 0 4px 6px var(--green);
-  max-height: 800px;
-  max-width: 426px;
+:root {
+  --blue: rgb(28, 44, 91);
+  --green: rgb(32, 100, 60);
+  --bkgrey: #555;
+  --gtable: rgba(50, 153, 91, .3);
+  --gold: #ccaa39;
+  --silver: #B0B8C0;
+  --bronze: #8C5A2C;
+  --tpblue: rgb(28, 44, 91, 0.9);
 }
 
-#loginContainer input {
-  text-align: center;
+/* APP CONTAINER */
+
+#appContainer {
+  position: relative;
+  width: 428px;
+  height: 926px;
+  /* background-color: var(--tpblue); */
+  overflow-x: hidden;
+  overflow-y: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border: 8px solid #000;
+  border-radius: 20px;
+  box-shadow: 0 0 20px (rgba(223, 221, 221, 1));
+}
+
+@media (max-width: 428px) {
+  #appContainer {
+    width: 100%;
+    height: 100vh;
+    border: none;
+    border-radius: 0;
+    box-shadow: none;
+  }
+}
+
+/* PROFILE HEADER */
+
+#headerProfile {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 4rem;
+  background-color: var(--green);
+  box-shadow: 0 1px 3px rgba(0,0,0,1);
+  z-index: 50;
+  display: grid;
+  grid-template-columns: 3fr 2fr;
+  grid-template-rows: 1fr;
+}
+
+/* Profile Card */
+
+#profileCard {
+  display: grid;
+  grid-template-columns: 1fr 3fr;
+  grid-template-rows: 1fr;
+  column-gap: 0.25em;
+  padding: 0.25em;
+}
+
+#profileCardText {
+  border: 4px solid white;
+  line-height: 0.5rem;
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: 1fr 2fr 1fr;
+  max-height: 3.5rem;
+  padding: 0.25em;
+  box-shadow: 0 1px 2px rgba(0,0,0,1);
+  border-radius: 4px;
+  background-color: var(--green);
+}
+
+#profileCardName {
+  text-align: start;
+  font-size: 1.3rem;
+  padding-left: 0.3em;
+  padding-top: 0.2em;
+}
+
+#profileCardRanking, #profileCardScore {
+  font-size: 0.8rem;
+  text-align: end;
+}
+
+/* Profile Dropdown */
+
+#profileDropdown {
+  padding: 0 0.25em;
+  position: relative;
+}
+
+#profileDropdownToggle {
+  display: flex;   
+  align-items: center;
+  justify-content: center;
+  height: 3.5rem;
+  width: 3.5rem;
+  /* width: 100%; */
+  border-radius: 50%;
+  cursor: pointer;
+  background: none;
+}
+
+#profileDropdownToggle img {
+  height: inherit;
+  object-fit: contain;
+  box-shadow: 0 1px 3px rgba(0,0,0,1);
+  border-radius: 50%;
+}
+
+.profileDropdownMenu {
+  position: absolute;
+  top: 100%;
+  left: 0; /*left edge of button anchor*/
+  background: var(--green);
+  color: white;
+  border: 2px solid greenyellow;
+  border-radius: 4px;
+  min-width: 150px;
+  z-index:  1000;
+  padding-bottom: 0.2em;
+  margin-top: 0.5em;
+}
+
+.profileDropdownMenu.left {
+  left: 0;
+  right: auto;
+}
+
+.profileDropdownItem {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-left: 0.5em;
+  cursor: pointer;
+}
+
+.profileDropdownItem.disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+.profileDropdownItem:hover {
+  font-weight: bold;
+}
+
+.profileDropdownItem.logout {
+  font-size: 1.2em;
+}
+
+.tag {
+  font-size: 0.7em;
+  margin-right: 1em;
+  color: rgb(160, 216, 235);
+}
+
+
+
+/* Flavour Dropdown */
+
+#flavourDropdown {
+  padding: 0 0.25em;
+  position: relative;
+}
+
+#flavourDropdownToggle {
+  display: flex;   
+  align-items: center;
+  justify-content: center;
+  height: 3.5rem;
+  /* width: 3.5rem; */
+  width: 100%;
+  
+  cursor: pointer;
+  background: none;
+
+  margin: 0.3em 0;
+  padding: 0.25em;
+  box-shadow: 0 1px 2px rgba(0,0,0,1);
+  border-radius: 4px;
+  border: 4px solid white;
+}
+
+#flavourLogo {
+  border-radius: 50%;
+  align-self: center;
+  margin: 0;
+}
+
+#flavourDropdownMenu {
+  position: absolute;
+  right: 0.25em;
+  left: 0.25em;
+  top: 100%;
+  background-color: var(--blue);
+  color: white;
+  list-style: none;
+  margin: 4px 0 0;
+  padding: 0.25em;
+  border: 4px solid white;
+  border-radius: 4px;
+}
+
+#flavourDropdown.open #dropdownMenu {
+  display: block;
+}
+
+#flavourDropdownMenu li {
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
+  cursor: pointer;
+  margin: 0.125em 0;
+  font-size: 0.9rem;
+}
+
+#flavourDropdownMenu li:hover {
+  background-color: rgba(255, 255, 255, 0.699);
+  color: var(--blue);
+  padding: 0.125em;
+  font-size: 1rem;
+}
+
+#flavourName {
+  text-wrap: wrap;
+  font-size: 0.9rem;
+}
+
+
+
+.flavourLogo {
+  border-radius: 50%;
+  height: 25px;
+  width: 25px;
 }

@@ -1,10 +1,10 @@
-export default function DummyLogin({ onLogIn }) {
+export default function DummyLogIn({ onLogIn }) {
     const handleLogInClick = () => {
         onLogIn();
     }
 
     return (
-        <div id="loginContainer">
+        <div id="logInContainer">
             <img src="/assets/logos/FullLogo_Transparent_NoBuffer.png" alt="logo" />
             
             <input

@@ -11,7 +11,7 @@
 
   --text: #fff;
   --text-h: #08060d;
-  --bg: rgb(32, 100, 60, 0.9);
+  --bg: rgba(138, 137, 136, 0.5);
   --border: #000;
   --code-bg: #f4f3ec;
   --accent: #aa3bff;
@@ -55,6 +55,39 @@ body {
   display: flex;
   flex-direction: column;
   box-sizing: border-box;
+}
+
+#appWindow {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  /* background: #111; */
+  min-height: 100vh;
+  width: 100%;
+  overflow: hidden;
+}
+
+
+
+/* login */
+
+#logInContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 1em;
+  border: 1px solid white;
+  width: 80%;
+  padding: 1em;
+  margin: 7.5em auto;
+  border-radius: 10px;
+  background-color: var(--green);
+  box-shadow: 0 4px 6px var(--green);
+  max-height: 800px;
+  max-width: 426px;
+}
+
+#loginContainer input {
+  text-align: center;
 }
 
 
