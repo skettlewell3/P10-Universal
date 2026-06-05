@@ -9,6 +9,10 @@
   --tpblue: rgb(28, 44, 91, 0.9);
 }
 
+#authDebug {
+  margin: auto auto;
+}
+
 /* APP CONTAINER */
 
 #appContainer {

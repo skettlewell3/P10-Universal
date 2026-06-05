@@ -1,13 +1,19 @@
-import LoginForm from './LoginForm';
+import { useAuth } from "../../hooks/useAuth";
+import Login from "./Login";
+import AppWithUser from "../../AppWithUser";
 
-import { useUser } from '../../hooks/useUser';
+export default function AuthGate() {
+  const { user, profile, loading } = useAuth();
 
-export default function AuthGate({ children }) {
-  const { user, handleLogin } = useUser();
+  if (loading) return null;
 
   if (!user) {
-    return <LoginForm onLogIn={handleLogin} />;
+    return <Login />;
   }
 
-  return <>{children}</>;
+  if (!profile) {
+    return null; // or a loader like "loading profile..."
+  }
+
+  return <AppWithUser profile={profile} />;
 }

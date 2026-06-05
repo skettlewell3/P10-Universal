@@ -1,5 +1,5 @@
 import { DatabaseContext } from '../context/DatabaseContext'
-import { supabase } from '../supbaseClient'
+import { supabase } from '../supabaseClient'
 
 export function DatabaseProvider({ children }) {
     return (
