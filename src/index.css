@@ -57,15 +57,15 @@ body {
   box-sizing: border-box;
 }
 
-#appWindow {
+/* #appWindow {
   display: flex;
   justify-content: center;
   align-items: center;
-  /* background: #111; */
+  background: #111; 
   min-height: 100vh;
   width: 100%;
   overflow: hidden;
-}
+} */
 
 
 
