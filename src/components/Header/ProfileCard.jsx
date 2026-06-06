@@ -1,8 +1,6 @@
 import ProfileDropdown from "./ProfileDropdown";
 
 export default function ProfileCard({ overallRanking, profile, overallScore, onLogout }) {
-   
-    console.log("name", profile?.display_name)
 
     return (
         <div id="profileCard">

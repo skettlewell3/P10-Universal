@@ -9,9 +9,11 @@
   --bronze: #8C5A2C;
   --tpblue: rgb(28, 44, 91, 0.9);
 
+  --bg: rgba(138, 137, 136, 0.5);
+
   --text: #fff;
   --text-h: #08060d;
-  --bg: rgba(138, 137, 136, 0.5);
+  
   --border: #000;
   --code-bg: #f4f3ec;
   --accent: #aa3bff;
