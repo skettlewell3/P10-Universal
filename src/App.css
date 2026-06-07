@@ -1,0 +1,782 @@
+:root {
+  --blue: rgb(28, 44, 91);
+  --green: rgb(32, 100, 60);
+  --bkgrey: #555;
+  --gtable: rgba(50, 153, 91, .3);
+  --gold: #ccaa39;
+  --silver: #B0B8C0;
+  --bronze: #8C5A2C;
+  --tpblue: rgb(28, 44, 91, 0.9);
+
+  --surface: rgba(114, 133, 151);
+  --surface-2: rgba(62, 77, 92);
+  --appbg: linear-gradient(
+    180deg,
+    rgb(70, 75, 80),
+    rgb(45, 50, 55)
+    )
+  ;
+  --bluebg: linear-gradient(
+    180deg,
+    rgba(114, 133, 151),
+    rgba(62, 77, 92)
+    )
+  ;
+}
+
+/* Chrome, Safari, Edge, Opera- no spinner*/
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox - no spinner*/ 
+input[type=number] {
+  -moz-appearance: textfield;
+}
+
+#authDebug {
+  margin: auto auto;
+}
+
+/* APP STRUCTURE */
+
+#appContainer {
+  position: relative;
+  width: 428px;
+  height: 926px;
+  /* background-color: var(--tpblue); */
+  display: flex;
+  flex-direction: column;
+  /* align-items: center; */
+  outline: 8px solid #000;
+  border-radius: 20px;
+  box-shadow: 0 0 20px (rgba(223, 221, 221, 1));
+  margin: auto auto;
+  overflow: hidden;
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+  /* padding-bottom: 1rem; */
+
+  /* background: var(--appbg); */
+
+  /* background:
+    radial-gradient(
+      circle at top,
+      rgba(255, 255, 255, 0.08),
+      transparent 60%
+    ),
+    linear-gradient(
+      180deg,
+      rgb(70, 75, 80),
+      rgb(40, 45, 50)
+    )
+  ; */
+
+  background:
+  radial-gradient(
+    circle at top,
+    rgba(255, 255, 255, 0.10),
+    transparent 55%
+  ),
+  radial-gradient(
+    circle at bottom,
+    rgba(28, 44, 91, 0.35),
+    transparent 60%
+  ),
+  linear-gradient(
+    180deg,
+    rgb(72, 88, 105),
+    rgb(38, 50, 65)
+  );
+}
+
+@media (max-width: 428px) {
+  #appContainer {
+    width: 100%;
+    height: 100vh;
+    border: none;
+    outline: none;
+    border-radius: 0;
+    box-shadow: none;
+    margin: 0;
+  }
+}
+
+/* CONTENT STRUCTURE */
+
+.appContent {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+
+  padding-top: 4.5rem;
+  padding-bottom: 2rem;
+}
+
+.pageShell {
+  flex: 1;
+  width: 100%;
+
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  overflow: hidden;
+}
+
+
+.scrollArea {
+  flex: 1;
+  min-height: 0;
+  width: 100%;
+  overflow-y: auto;
+  overflow-x: hidden;
+
+  padding: 0.3rem;
+
+  /* border: 1px solid white; */
+}
+
+/* Content Banner */
+
+.contentBanner {
+  position: relative;
+  height: 3rem;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  /* flex-shrink: 0; */
+  /* gap: 2em; */
+  margin-bottom: 0.5rem;
+
+
+  border: 1px solid white;
+}
+
+.backButton {
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  
+  width: 2.5rem;
+  height: 2.5rem;
+
+  border: none;
+  background: transparent;
+  color: white;
+  cursor: pointer;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 0;
+
+  transition:
+    transform 0.15s ease,
+    opacity 0.15s ease
+  ;
+}
+
+.backButton img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.backButton:hover {
+  transform: translate(-3px, -50%);
+  opacity: 0.85;
+}
+
+/* Page Title */
+
+.pageTitle {
+  width: 100%;
+  text-align: center;
+
+  font-size: 2rem;
+  font-weight: 600;
+  letter-spacing: 0.15rem;
+}
+
+/* end of Content Banner */
+/* -- END OF APP STRUCTURE */
+
+/* SPLASH SCREEN */
+
+#splashScreen {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: var(--bg);
+  z-index: 9999;
+}
+
+#splashScreenContent {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+
+#splashScreenAnimation {
+  width: 120px;
+  height: 120px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* simple placeholder animation */
+.spinner {
+  width: 60px;
+  height: 60px;
+  border: 4px solid rgba(255,255,255,0.2);
+  border-top: 4px solid var(--green);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+#splashScreenMessage {
+  color: white;
+  font-size: 1rem;
+  opacity: 0.85;
+}
+
+/* -- END OF SPLASH SCREEN  */
+
+
+
+/* PROFILE HEADER */
+
+#headerProfile {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 4rem;
+  background-color: var(--green);
+  box-shadow: 0 1px 3px rgba(0,0,0,1);
+  z-index: 50;
+  display: grid;
+  grid-template-columns: 3fr 2fr;
+  grid-template-rows: 1fr;
+  border-bottom: 2px solid black;
+}
+
+/* Profile Card */
+
+#profileCard {
+  display: grid;
+  grid-template-columns: 1fr 3fr;
+  grid-template-rows: 1fr;
+  column-gap: 0.25em;
+  padding: 0.25em;
+}
+
+#profileCardText {
+  border: 4px solid white;
+  line-height: 0.5rem;
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: 1fr 2fr 1fr;
+  max-height: 3.5rem;
+  padding: 0.25em;
+  box-shadow: 0 1px 2px rgba(0,0,0,1);
+  border-radius: 4px;
+  background-color: var(--green);
+}
+
+#profileCardName {
+  text-align: start;
+  font-size: 1.3rem;
+  padding-left: 0.3em;
+  padding-top: 0.2em;
+}
+
+#profileCardRanking, #profileCardScore {
+  font-size: 0.8rem;
+  text-align: end;
+}
+
+/* Profile Dropdown */
+
+#profileDropdown {
+  padding: 0 0.25em;
+  position: relative;
+}
+
+#profileDropdownToggle {
+  display: flex;   
+  align-items: center;
+  justify-content: center;
+  height: 3.5rem;
+  width: 3.5rem;
+  /* width: 100%; */
+  border-radius: 50%;
+  cursor: pointer;
+  background: none;
+}
+
+#profileDropdownToggle img {
+  height: inherit;
+  object-fit: contain;
+  box-shadow: 0 1px 3px rgba(0,0,0,1);
+  border-radius: 50%;
+}
+
+.profileDropdownMenu {
+  position: absolute;
+  top: 100%;
+  left: 0; /*left edge of button anchor*/
+  background: var(--green);
+  color: white;
+  border: 2px solid greenyellow;
+  border-radius: 4px;
+  min-width: 150px;
+  z-index:  1000;
+  padding-bottom: 0.2em;
+  margin-top: 0.5em;
+}
+
+.profileDropdownMenu.left {
+  left: 0;
+  right: auto;
+}
+
+.profileDropdownItem {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-left: 0.5em;
+  cursor: pointer;
+}
+
+.profileDropdownItem.disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+.profileDropdownItem:hover {
+  font-weight: bold;
+}
+
+.profileDropdownItem.logout {
+  font-size: 1.2em;
+}
+
+.tag {
+  font-size: 0.7em;
+  margin-right: 1em;
+  color: rgb(160, 216, 235);
+}
+
+
+
+/* Flavour Dropdown */
+
+#flavourDropdown {
+  padding: 0 0.25em;
+  position: relative;
+}
+
+#flavourDropdownToggle {
+  display: flex;   
+  align-items: center;
+  justify-content: center;
+  height: 3.5rem;
+  /* width: 3.5rem; */
+  width: 100%;
+  
+  cursor: pointer;
+  background: none;
+
+  margin: 0.3em 0;
+  padding: 0.25em;
+  box-shadow: 0 1px 2px rgba(0,0,0,1);
+  border-radius: 4px;
+  border: 4px solid white;
+}
+
+#flavourLogo {
+  border-radius: 50%;
+  align-self: center;
+  margin: 0;
+}
+
+#flavourDropdownMenu {
+  position: absolute;
+  right: 0.25em;
+  left: 0.25em;
+  top: 100%;
+  background-color: var(--blue);
+  color: white;
+  list-style: none;
+  margin: 4px 0 0;
+  padding: 0.25em;
+  border: 4px solid white;
+  border-radius: 4px;
+}
+
+#flavourDropdown.open #dropdownMenu {
+  display: block;
+}
+
+#flavourDropdownMenu li {
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
+  cursor: pointer;
+  margin: 0.125em 0;
+  font-size: 0.9rem;
+}
+
+#flavourDropdownMenu li:hover {
+  background-color: rgba(255, 255, 255, 0.699);
+  color: var(--blue);
+  padding: 0.125em;
+  font-size: 1rem;
+}
+
+#flavourName {
+  text-wrap: wrap;
+  font-size: 0.9rem;
+}
+
+
+
+.flavourLogo {
+  border-radius: 50%;
+  height: 25px;
+  width: 25px;
+}
+
+/* -- END OF HEADER */
+
+/* DASHBOARD */
+
+#dashboardContainer {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.5rem;
+}
+
+/* #dashboardContainer {
+  background: linear-gradient(
+    180deg,
+    var(--surface),
+    var(--surface-2)
+  );
+
+  border-radius: 20px;
+
+  box-shadow:
+    0 20px 50px rgba(0,0,0,0.45),
+    inset 0 1px 0 rgba(255,255,255,0.05);
+
+  padding: 20px; 
+} */
+
+/* Dashboard Buttons */
+
+.dashboardButton {
+  position: relative;
+
+  min-height: 10rem;
+  aspect-ratio: 1;
+  margin-bottom: 0.5rem;
+  cursor: pointer;
+
+  border-radius: 18px;
+  border: 1px solid rgba(255,255,255,0.2);
+  background: linear-gradient(
+      to bottom,
+      rgb(42, 120, 75),
+      rgb(32, 100, 60)
+  );
+  box-shadow:
+    /* bottom depth */
+    0 10px 0 rgb(18, 60, 35),
+
+    /* right-side shadow (volume) */
+    6px 10px 18px rgba(0, 0, 0, 0.35),
+
+    /* slight left lift shadow */
+    -2px 4px 10px rgba(0, 0, 0, 0.15)
+  ;
+  transition:
+      transform 0.1s,
+      box-shadow 0.1s
+  ;
+}
+
+.dashboardButton:active {
+  transform: translate(2px, 6px);
+
+  box-shadow:
+    0 4px 0 rgb(18, 60, 35),
+    3px 6px 10px rgba(0,0,0,0.25)
+  ;
+}
+
+.dashboardButton::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+
+  background: linear-gradient(
+    to bottom right,
+    rgba(255,255,255,0.18),
+    transparent 40%
+  );
+
+  pointer-events: none;
+}
+
+.dashboardButton:hover {
+    filter: brightness(1.08);
+}
+
+/* end of Dashboard Buttons */
+
+/* -- END OF DASHBOARD */
+
+/* FIXTURES */
+
+/* Filters */
+
+.fixtureFilters {
+  margin-bottom: 0.5rem;
+  padding: 0.25rem;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  border-radius: 10px;
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+.fixStatusFilter {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1rem;
+}
+
+.fixStatusFilter button {
+  background-color: white;
+  border-radius: 5px;
+}
+
+
+.fixStatusFilter button.active {
+  background-color: var(--green);
+  color: white;
+}
+
+/* Fixtures List */
+
+.fixturesList {
+  background-color: rgba(255, 255, 255, 0.2);
+  border-radius: 10px;
+}
+
+.fixtureCard {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  border: 2px solid white;
+  border-radius: 5px;
+  margin-bottom: 1rem;
+  padding: 0;
+
+}
+
+.perFixtureCard {
+  background-image: linear-gradient(to top, #1c2c5b, #203c6a, #264c78, #2f5d86, #3a6e93, #3a6e93, #3a6e93, #3a6e93, #2f5d86, #264c78, #203c6a, #1c2c5b);
+  min-height: 7rem;
+}
+
+/* -- End of Fixtures List */
+
+/* Fixture Card Header */
+
+.fixtureCardHeader {
+  position: relative;
+  width: 100%;
+}
+
+.perFixtureCardHeader {
+  background-color: white;
+  width: 100%;
+}
+
+.fcHeaderCenter {
+  display: flex;
+  justify-content: center;
+  gap: 0.5em; 
+}
+
+.day, .ko {
+  color: var(--blue);
+  font-size: 0.8rem;
+  font-weight: bold;
+  background-color: white;
+  line-height: 0.8rem;
+  padding-bottom: 0.15em;
+}
+
+.fixtureStatus {
+  position: absolute;
+  /* right: 0.75rem; */
+  left: 0.5rem;
+  top: 40%;
+  transform: translateY(-50%);
+  display: flex;
+  align-items: center;
+  gap: 0.4em;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.fixtureStatus .dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+}
+
+.fixtureStatus.green { color: green;}
+.fixtureStatus.amber { color: orange;}
+.fixtureStatus.red { color: blue;}
+
+.fixtureStatus.green .dot { background: green;}
+.fixtureStatus.amber .dot { background: orange;}
+.fixtureStatus.red .dot { background: blue;}
+
+/* -- End of FixtureCard Header */
+
+/* Fixture Body */
+
+.fixtureBody {
+  display: grid;
+  grid-template-columns: 1.5fr 2fr 1.5fr;
+  width: 100%;
+  align-items: center;
+  margin-top: 0.2rem;
+}
+
+.teamCol {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.homeCol .stageLabel {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.awayCol .groupLabel {
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+
+/* Fixture Details */
+
+.fixtureDetails {
+  margin: 0.25rem;
+}
+
+.fixtureDetails p {
+  margin: 0;
+  font-size: 0.8rem;
+  line-height: 0.8rem;
+}
+
+/* -- End of Fixture Details  */
+
+/* Fixture Fieldset */
+
+.fixtureFieldset {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-top: 0.2rem;
+  margin-bottom: 0.2rem;
+}
+
+.scoreRow, .actionRow {
+  max-width: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.scoreRow div {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.predInput {
+  border-radius: 5px;
+  font-size: 1.2rem;
+  text-align: center;
+  font-weight: bold;
+}
+
+
+.homePred, .homeScore {
+  height: 2rem;
+  width: 2rem;
+  margin-right: 1rem;
+  flex-shrink: 0;
+
+}
+
+.awayPred, .awayScore {
+  height: 2rem;
+  width: 2rem;
+  margin-right: 0;
+  flex-shrink: 0;
+}
+
+.homeScore, .awayScore {
+  background: white;
+  color: black;
+  margin: auto auto;
+  border-radius: 5px;
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+
+
+/* -- End of Fixture Fieldset */
+
+/* -- END OF FIXTURES */
+
+
+
+
