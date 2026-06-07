@@ -1,11 +1,16 @@
 import ContentBanner from "../components/app/ContentBanner";
 import FixturesFilters from "../components/fixtures/FixturesFilters";
+import PerFixtureCard from "../components/fixtures/perFixtureCards/PerFixtureCard";
 import { useFixtures } from "../hooks/useFixtures";
+import { useFixturesFilters } from "../hooks/useFixturesFilters";
 
 export default function FixturesPage() {
-    const [fixtures] = useFixtures();
+    const { fixtures } = useFixtures();
+    const { statusFilter } = useFixturesFilters();
 
-    const filteredFixtures = fixtures;
+    const filteredFixtures = fixtures.filter(f => 
+            statusFilter === "all" ? true : f.fixture_status === statusFilter
+        );
 
     return (
         <div className="pageShell">
@@ -14,8 +19,13 @@ export default function FixturesPage() {
             
             <FixturesFilters/>
 
-            <div className="scrollArea">
-                {/* fixturesList */}    
+            <div className="scrollArea fixturesList">
+              {filteredFixtures.map(f => (
+                    <PerFixtureCard
+                        key={f.fixture_id}
+                        fixture={f}
+                    />
+                ))}
 
             </div>
             

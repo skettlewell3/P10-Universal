@@ -95,6 +95,7 @@ export function FixturesProvider({ children }) {
         };
     }, [supabase, refreshFixtures]);
 
+    // console.log(fixtures)
     return (
         <FixturesContext.Provider
             value={{

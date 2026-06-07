@@ -1,16 +1,11 @@
-import { useFixturesFilters } from "../../hooks/useFixturesFilters"
-
-export default function perFixturesList({ fixtures }) {
-    const { statusFilter } = useFixturesFilters();
-
-    const VisibleFixtures = useMemo(() => {
-        if (statusFilter === "all") return fixtures;
-
-        return fixtures.filter(f => 
-            f.fixture_status === statusFilter
-        );
-    }, [fixtures, statusFilter])
+export default function PerFixturesList({ fixtures }) {
     return (
-        
+        <div>
+            {fixtures.map(f => (
+                <div key={f.fixture_id}>
+                    {f.fixture_id}
+                </div>
+            ))}
+        </div>
     )
-}
+};
