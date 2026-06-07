@@ -1,19 +1,22 @@
 import AppContainer from "./components/app/AppContainer";
-import DashboardContainer from "./components/Dashboard/DashboardContainer";
 import HeaderProfile from "./components/Header/HeaderProfile";
 import AppRouter from "./components/app/AppRouter";
+import GameDataProvider from "./providers/GameDataProvider";
 
-export default function AppWithUser({ profile, onLogOut }) {
+export default function AppWithUser({ profile }) {
     return (
-        <AppContainer>
-            <HeaderProfile 
-                profile={profile} 
-                onLogOut={onLogOut}
-            />
-            {/* <DashboardContainer /> */}
+        <GameDataProvider>
+            <AppContainer>
+                <HeaderProfile 
+                    profile={profile} 
+                />
 
-            <AppRouter />
-            
-        </AppContainer>
+                <div className="appContent">                    
+                    <AppRouter />
+                </div>
+
+                
+            </AppContainer>
+        </GameDataProvider>
     )
 }

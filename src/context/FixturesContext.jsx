@@ -1,3 +1,3 @@
 import { createContext } from "react";
 
-export const FixtureContext = createContext(null);
+export const FixturesContext = createContext(null);

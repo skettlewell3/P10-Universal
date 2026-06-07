@@ -1,16 +1,26 @@
 import { useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../../hooks/useAuth";
 
-export default function ProfileDropdown({ user, onLogout }) {
+export default function ProfileDropdown({ profile }) {
   const [open, setOpen] = useState(false);
   const ref = useRef();
   const navigate = useNavigate();
 
+  const { signOut } = useAuth();
+
   const toggleMenu = () => setOpen(prev => !prev);
 
-  const handleLogout = () => {
-    const confirmLogout = window.confirm(`Logout ${user?.display_name}`);
-    if (confirmLogout) onLogout(user);
+  const handleSignOut = async () => {
+    const confirmSignOut = window.confirm(
+      `Sign Out ${profile?.display_name}`
+    );
+
+    if (!confirmSignOut) return;
+    
+    await signOut();
+    navigate("/", { replace: true})
+    
   };
 
   // close on outside click
@@ -62,9 +72,9 @@ export default function ProfileDropdown({ user, onLogout }) {
           </div>
           <div 
             className="profileDropdownItem logout"
-            onClick={handleLogout}
+            onClick={handleSignOut}
           >
-            Log Out
+            Sign Out
           </div>
         </div>
       )}

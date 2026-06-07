@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react";
 import { useDatabase } from "../../hooks/useDatabase";
 
+const LOGO_SRC = "/assets/logos/FullLogo_Transparent_NoBuffer.png";
+
 export default function Login() {
   const { supabase } = useDatabase();
 
@@ -33,20 +35,21 @@ export default function Login() {
         setError(result.error.message);
       }
     } catch (err) {
-      setError("Unexpected error occurred", err);
+      setError(`Unexpected error: ${err.message}`);
     } finally {
       setLoading(false);
     }
   };
 
   useEffect(() => {
-  console.log("SUPABASE URL:", import.meta.env.VITE_SUPABASE_URL);
-}, []);
+    const img = new Image();
+    img.src = LOGO_SRC;
+  })
 
   return (
     <div id="logInContainer">
       <img
-        src="/assets/logos/FullLogo_Transparent_NoBuffer.png"
+        src={LOGO_SRC}
         alt="logo"
       />
 

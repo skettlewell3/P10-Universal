@@ -3,7 +3,7 @@ import ProfileCard from "./ProfileCard";
 // import { useLeaderboardsUser } from "../../hooks/useLeaderboardsUser";
 
 
-export default function HeaderProfile({ profile, onLogout, }) {
+export default function HeaderProfile({ profile }) {
     // const { overallUserLeaderboard, loading } = useLeaderboardsUser();
 
     // const userStats = overallUserLeaderboard.find((row) => row.user_id === user?.user_id);
@@ -21,7 +21,6 @@ export default function HeaderProfile({ profile, onLogout, }) {
                 profile={profile}
                 overallRanking={overallRanking}
                 overallScore={overallScore} 
-                onLogout={onLogout}
             />
             <FlavourDropdown  />
         </header>

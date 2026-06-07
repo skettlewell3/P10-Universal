@@ -1,10 +1,10 @@
 import ProfileDropdown from "./ProfileDropdown";
 
-export default function ProfileCard({ overallRanking, profile, overallScore, onLogout }) {
+export default function ProfileCard({ overallRanking, profile, overallScore }) {
 
     return (
         <div id="profileCard">
-            <ProfileDropdown profile={profile} onLogout={onLogout} />
+            <ProfileDropdown profile={profile} />
             
             <div id="profileCardText">
                 <div id="profileCardScore">⭐:{overallScore}</div>
