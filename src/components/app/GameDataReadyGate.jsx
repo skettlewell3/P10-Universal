@@ -1,5 +1,5 @@
 import SplashScreen from "./SplashScreen";
-import useFixtures from "../../hooks/useFixtures";
+import { useFixtures } from "../../hooks/useFixtures";
 import { usePredictions } from "../../hooks/usePredictions";
 // import useLeaderboards from "../../hooks/useLeaderboards";
 // import usePredictions from "../../hooks/usePredictions";
