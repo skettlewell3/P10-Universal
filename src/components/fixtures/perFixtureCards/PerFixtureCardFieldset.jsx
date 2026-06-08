@@ -1,6 +1,23 @@
-export default function PerFixtureCardFieldset({ fixture }) {
+export default function PerFixtureCardFieldset({ 
+    fixture,
+    prediction,
+    predictionDrafts,
+    setPredictionDrafts
+}) {
     const isFinished = fixture.fixture_status === "finished";
     const isOpen = fixture.predictions_open && fixture.fixture_status === "upcoming";
+
+    const draft = predictionDrafts[fixture.fixture_id];
+
+    const homeValue =
+      draft?.home ??
+      prediction?.pred_home_goals ?? ""
+    ;
+
+    const awayValue =
+      draft?.away ??
+      prediction?.pred_away_goals ?? ""
+    ;
 
     return (
         <div className="fixtureFieldset">
@@ -12,12 +29,22 @@ export default function PerFixtureCardFieldset({ fixture }) {
                     <input
                         type="number"
                         className="predInput homePred"
+                        name={fixture.home_team_name}
                         min="0"
                         max="10"
                         // disabled={loading}
-                        placeholder={
-                            isFinished ? fixture.ft_home_goals : "-"
-                        }
+                        value={homeValue}
+                        onChange={(e) => {
+                            const val = e.target.value;
+
+                            setPredictionDrafts(prev => ({
+                                ...prev,
+                                [fixture.fixture_id]: {
+                                    ...prev[fixture.fixture_id],
+                                    home: val
+                                }
+                            }))
+                        }}
                     />
                 ) : (
                     <div className="homeScore">{fixture.final_home_goals}</div>
@@ -31,12 +58,22 @@ export default function PerFixtureCardFieldset({ fixture }) {
                     <input
                         type="number"
                         className="predInput awayPred"
+                        name={fixture.away_team_name}
                         min="0"
                         max="10"
                         // disabled={loading}
-                        placeholder={
-                            isFinished ? fixture.ft_home_goals : "-"
-                        }
+                        value={awayValue}
+                        onChange={(e) => {
+                          const val = e.target.value;
+                        
+                          setPredictionDrafts(prev => ({
+                            ...prev,
+                            [fixture.fixture_id]: {
+                              ...prev[fixture.fixture_id],
+                              away: val
+                            }
+                          }));
+                        }}
                     />                    
                 ) : (
                     <div className="awayScore">{fixture.final_away_goals}</div>
@@ -47,7 +84,7 @@ export default function PerFixtureCardFieldset({ fixture }) {
             <div className="actionRow">
 
                 {isOpen && (
-                    <button type="button">
+                    <button type="submit">
                         Submit
                     </button>
                 )}
@@ -58,11 +95,11 @@ export default function PerFixtureCardFieldset({ fixture }) {
                     </div>
                 )}
 
-                {!isOpen && !isFinished && (
+                {/* {!isOpen && !isFinished && (
                     <div className="lockedState">
                         Closed
                     </div>
-                )}
+                )} */}
 
             </div>
 

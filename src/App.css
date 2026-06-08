@@ -342,9 +342,9 @@ input[type=number] {
   left: 0; /*left edge of button anchor*/
   background: var(--green);
   color: white;
-  border: 2px solid greenyellow;
+  border: 2px solid rgb(234, 236, 231);
   border-radius: 4px;
-  min-width: 150px;
+  min-width: 170px;
   z-index:  1000;
   padding-bottom: 0.2em;
   margin-top: 0.5em;
@@ -668,6 +668,33 @@ input[type=number] {
 .fixtureStatus.amber .dot { background: orange;}
 .fixtureStatus.red .dot { background: blue;}
 
+/* Prediction Status */
+
+
+/* -- End of Prediction Status  */
+
+.perPredictionStatus {
+  position: absolute;
+  right: 0.5rem;
+  top: 40%;
+  transform: translateY(-50%);
+  display: flex;
+  align-items: center;
+  gap: 0.4em;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.fixtureStatus .dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+}
+
+.perPredictionStatus.grey { color: rgb(46, 48, 46);}
+.perPredictionStatus.amber { color: orange;}
+.perPredictionStatus.red { color: rgb(201, 17, 33);}
+
 /* -- End of FixtureCard Header */
 
 /* Fixture Body */
@@ -706,6 +733,10 @@ input[type=number] {
   margin: 0.25rem;
 }
 
+.fixtureLocation {
+  margin-bottom: 0.4rem;
+}
+
 .fixtureDetails p {
   margin: 0;
   font-size: 0.8rem;
@@ -727,11 +758,11 @@ input[type=number] {
 }
 
 .scoreRow, .actionRow {
-  max-width: 50%;
+  max-width: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 0.5rem;
+  gap: 1rem;
 }
 
 .scoreRow div {

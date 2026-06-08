@@ -1,0 +1,78 @@
+import PerFixtureCardDetails from "./PerFixtureCardDetails";
+import PerFixtureCardFieldset from "./PerFixtureCardFieldset";
+import PerFixtureCardHeader from "./PerFixtureCardHeader";
+import TeamBlock from "./TeamBlock";
+import { usePredictions } from "../../../hooks/usePredictions";
+
+
+export default function PFCard({ 
+    fixture,
+    predictionDrafts,
+    setPredictionDrafts,
+    submitPredictions
+}) {
+    const { predictionsMap } = usePredictions();
+    const prediction=predictionsMap[fixture.fixture_id]
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+
+        const draft = predictionDrafts[fixture.fixture_id];
+        if (!draft) return;
+
+        const payload = {
+            fixture_id: fixture.fixture_id,
+            pred_home_goals: Number(draft.home),
+            pred_away_goals: Number(draft.away),
+        };
+
+        try {
+            await submitPredictions([payload]);
+
+            setPredictionDrafts(prev => {
+                const next = { ...prev };
+                delete next[fixture.fixture_id];
+                return next;
+            });
+
+        } catch (error) {
+            console.error(error);
+        }
+    };
+
+    return (
+        <form className="fixtureCard perFixtureCard" onSubmit={handleSubmit}>
+            <PerFixtureCardHeader 
+                fixture={fixture}
+            />
+
+            
+
+            <div className="fixtureBody">
+                <div className="teamCol homeCol" >
+                    <TeamBlock team={fixture.home_team_name} />
+                </div>
+
+                <div className="detailsCol">
+                    <PerFixtureCardDetails
+                        fixture={fixture}
+                    />
+                    
+                    <PerFixtureCardFieldset 
+                        fixture={fixture}
+                        predictionDrafts={predictionDrafts}
+                        setPredictionDrafts={setPredictionDrafts}
+                        prediction={predictionsMap[fixture.fixture_id]}
+                    />
+                </div>
+
+                <div className="teamCol awayCol" >
+                    <TeamBlock team={fixture.away_team_name} />
+                </div>
+            </div>            
+        
+            {/* Footer - deadline open/close date. */}
+            
+        </form>
+    )
+}

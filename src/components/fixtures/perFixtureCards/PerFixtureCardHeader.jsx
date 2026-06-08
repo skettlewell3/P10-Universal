@@ -1,90 +1,75 @@
+import { useState, useEffect } from "react";
 import { format } from "date-fns";
+import { usePredictionStatus } from "../../../hooks/usePredictionStatus";
 
 export default function PerFixtureCardHeader({ fixture }) {
 
-    const localKO = format(new Date(fixture.kickoff_at), "dd MMM HH:mm")
+  // rotates label ↔ countdown display
+  const [flip, setFlip] = useState(false);
 
-    const now = Date.now();
+  useEffect(() => {
+    const id = setInterval(() => {
+      setFlip((f) => !f);
+    }, 3000);
 
-    const open = new Date(fixture.prediction_open_at).getTime();
-    const closed = new Date(fixture.prediction_closed_at).getTime();
+    return () => clearInterval(id);
+  }, []);
 
-    let windowCheck = "closedAfter";
+  const localKO = format(
+    new Date(fixture.kickoff_at),
+    "dd MMM HH:mm"
+  );
 
-    if (now < open) windowCheck = "closedBefore";
-    else if (now >= open && now <= closed) windowCheck = "open";
-    else if (now >= closed && fixture.fixture_status === "live") windowCheck = "closedAfter";
-    else windowCheck = "blank";
+  const statusMap = {
+    upcoming: { label: "Upcoming", color: "amber" },
+    live: { label: "Live", color: "green" },
+    finished: { label: "Finished", color: "red" }
+  };
 
+  const statusMeta = statusMap[fixture.fixture_status];
 
-    const windowMap = {
-        closedBefore: {
-            label: "Opens Soon",
-            color: "blue"
-        },
-        open: {
-            label: "Open",
-            color: "blue"
-        },
-        closedAfter: {
-            label: "Closed",
-            color: "grey"
-        },
-        blank: {
-            label: "",
-            color: "white"
-        }
-    };
+  // all prediction window logic now lives in hook
+  const prediction = usePredictionStatus(fixture);
 
-    const getTimeRemaining = (target) => {
-        const total = new Date(target).getTime() - Date.now();
-        if (total <= 0) return null;
+  const showPrediction =
+    prediction.mode !== "blank";
 
-        const minutes = Math.floor((total / 1000 / 60) % 60);
-        const hours = Math.floor((total / 1000 / 60 / 60) % 24);
-        const days = Math.floor(total / 1000 / 60 / 60 / 24);
+  return (
+    <div className="fixtureCardHeader perFixtureCardHeader">
 
-        return { days, hours, minutes };
-    }
-    let windowCountdown = null;
-    if (windowCheck === "closedBefore") {
-      windowCountdown = getTimeRemaining(fixture.prediction_open_at);
-    }
+      {/* FIXTURE STATUS */}
+      {statusMeta && (
+        <div className={`fixtureStatus ${statusMeta.color}`}>
+          <span className="dot" />
+          {statusMeta.label}
+        </div>
+      )}
 
-    if (windowCheck === "open") {
-      windowCountdown = getTimeRemaining(fixture.prediction_close_at);
-    }
+      {/* KICKOFF */}
+      <div className="fcHeaderCenter">
+        <div className="day">{localKO}</div>
+      </div>
 
-    const windowMeta = windowMap[windowCheck];
+      {/* PREDICTION STATUS */}
+      {showPrediction && (
+        <div className={`perPredictionStatus ${prediction.color}`}>
 
-    const statusMap = {
-        upcoming: {label: 'Upcoming', color: 'amber'},
-        live: {label: 'Live', color: 'green'},
-        finished: {label: 'Finished', color: 'red'}
-    };
-
-    const statusMeta = statusMap[fixture.fixture_status];
-
-    return (
-        <div className="fixtureCardHeader perFixtureCardHeader">
-            {statusMeta && (
-                <div className={`fixtureStatus ${statusMeta.color}`}>
-                    <span className="dot" />
-                    {statusMeta.label}
-                </div>
-            )}
-
-            <div className="fcHeaderCenter">
-                <div className="day">{localKO}</div>
-            </div>
-
-            {windowMeta && windowMeta.label && (
-                <div className={`perPredictionStatus ${windowMeta.color}`}>
-                    {windowMeta.label}
-                    <span className="dot" />
-                </div>
-            )}
+          {flip && prediction.countdown ? (
+            <span className="countdown">
+              {prediction.countdown}
+            </span>
+          ) : (
+            <>
+              <span className="dot" />
+              <span className="label">
+                {prediction.label}
+              </span>
+            </>
+          )}
 
         </div>
-    )
+      )}
+
+    </div>
+  );
 }

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { getCountdown } from "../../../utils/helpers";
+import { getCountdown } from "../utils/helpers";
 
 const HOUR = 1000 * 60 * 60;
 
