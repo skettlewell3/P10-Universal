@@ -1,7 +1,8 @@
 import { useState, useEffect } from "react";
 import { useDatabase } from "../../hooks/useDatabase";
-
+const REQUIRED_CODE = import.meta.env.VITE_INVITE_CODE;
 const LOGO_SRC = "/assets/logos/FullLogo_Transparent_NoBuffer.png";
+
 
 export default function Login() {
   const { supabase } = useDatabase();
@@ -12,7 +13,18 @@ export default function Login() {
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
 
+  const [inviteCode, setInviteCode] = useState('');
+  const isInviteValid =
+    mode !== "signup" || inviteCode.trim() === REQUIRED_CODE
+  ;
+
   const handleAuth = async () => {
+
+    if (mode === "signup" && inviteCode !== REQUIRED_CODE) {
+      setError("Invalid invite code");
+      return;
+    }
+
     setLoading(true);
     setError(null);
 
@@ -66,7 +78,20 @@ export default function Login() {
         onChange={(e) => setPassword(e.target.value)}
       />
 
-      <button onClick={handleAuth} disabled={loading}>
+      {mode === "signup" && (
+      <input
+        placeholder="Invite code"
+        value={inviteCode}
+        onChange={(e) => setInviteCode(e.target.value)}
+      />
+    )}
+
+      <button 
+        onClick={handleAuth} 
+        disabled={
+          loading || !isInviteValid
+        }
+      >
         {loading
           ? "Loading..."
           : mode === "login"

@@ -5,14 +5,14 @@ import AppWithUser from "../../AppWithUser";
 export default function AuthGate() {
   const { user, profile, loading } = useAuth();
 
-  if (loading) return null;
+  if (loading) return <div>AUTH LOADING</div>;
 
   if (!user) {
     return <Login />;
   }
 
   if (!profile) {
-    return null; // or a loader like "loading profile..."
+    return <div>PROFILE LOADING</div>; // or a loader like "loading profile..."
   }
 
   return <AppWithUser profile={profile} />;
