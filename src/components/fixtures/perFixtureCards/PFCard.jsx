@@ -12,7 +12,6 @@ export default function PFCard({
     submitPredictions
 }) {
     const { predictionsMap } = usePredictions();
-    const prediction=predictionsMap[fixture.fixture_id]
 
     const handleSubmit = async (e) => {
         e.preventDefault();
