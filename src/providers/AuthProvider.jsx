@@ -30,7 +30,12 @@ export function AuthProvider({ children }) {
 
     const initialiseAuth = async () => {
       try {
+
+        console.log("INIT AUTH START");
+
         const { data, error } = await supabase.auth.getSession();
+
+        console.log("GET SESSION RESULT:", data?.session?.user?.id, error);
 
         if (error) {
           console.error(error);
@@ -57,6 +62,9 @@ export function AuthProvider({ children }) {
       data: { subscription },
     } = supabase.auth.onAuthStateChange(
       async (_event, session) => {
+
+        console.log("AUTH EVENT:", _event, session?.user?.id);
+
         setSession(session);
         setUser(session?.user ?? null);
 
