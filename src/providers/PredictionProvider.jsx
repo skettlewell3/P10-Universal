@@ -13,7 +13,13 @@ export function PredictionProvider({ children, flavourId, profileId }) {
   });
 
   const refreshPredictions = useCallback(async () => {
-    if (!profileId) return;
+    if (!profileId) {
+      setLoadingState({
+        loading: false,
+        message: "No profile loaded",
+      });
+      return;
+    }
 
     setLoadingState({
       loading: true,
@@ -56,9 +62,9 @@ export function PredictionProvider({ children, flavourId, profileId }) {
   }, [supabase, flavourId, profileId]);
 
   useEffect(() => {
+    if (!profileId) return;
     refreshPredictions();
-    console.log("Predictions initial load fired");
-  }, [refreshPredictions]);
+  }, [profileId, refreshPredictions]);
 
   const submitPredictions = useCallback(async (payloads) => {
     if (!payloads?.length) return;

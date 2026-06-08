@@ -50,7 +50,7 @@ export function FixturesProvider({ children }) {
     // initial load (safe, no dependency chain issues)
     useEffect(() => {
         refreshFixtures();
-        console.log("Fixtures initial load fired");
+        // console.log("Fixtures initial load fired");
     }, [refreshFixtures]);
 
     // realtime updates
