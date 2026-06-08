@@ -7,7 +7,7 @@ export function PredictionProvider({ children, flavourId }) {
   const { supabase } = useDatabase();
 
   const { profile } = useAuth();
-  const profileId = profile?.profile_id;
+  const profileId = profile?.p_profile_id;
 
   const [predictions, setPredictions] = useState([]);
   const [predictionsMap, setPredictionsMap] = useState({});

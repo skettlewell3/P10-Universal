@@ -1,64 +1,140 @@
-import { useState } from "react";
-import ContentBanner from "../components/app/ContentBanner";
-import FixturesFilters from "../components/fixtures/FixturesFilters";
-import PFCard from "../components/fixtures/perFixtureCards/PFCard";
-import { useFixtures } from "../hooks/useFixtures";
-import { useFixturesFilters } from "../hooks/useFixturesFilters";
-import { usePredictions } from "../hooks/usePredictions";
+import { useEffect, useState, useCallback } from "react";
+import { PredictionsContext } from "../context/PredictionsContext";
+import { useDatabase } from "../hooks/useDatabase";
+import { useAuth } from "../hooks/useAuth";
 
-export default function FixturesPage() {
-    const { fixtures } = useFixtures();
-    const { statusFilter } = useFixturesFilters();
-    const { submitPredictions } = usePredictions();
+export function PredictionProvider({ children, flavourId }) {
+  const { supabase } = useDatabase();
+  const { profile } = useAuth();
 
-    const [predictionDrafts, setPredictionDrafts] = useState({});
+  const profileId = profile?.profile_id;
 
-    const filteredFixtures = fixtures.filter(f => 
-        statusFilter === "all" ? true : f.fixture_status === statusFilter
-    );
+  const [predictions, setPredictions] = useState([]);
+  const [predictionsMap, setPredictionsMap] = useState({});
 
-    const handleBulkSubmit = async () => {
-        const payloads = Object.entries(predictionDrafts).map(
-            ([fixture_id, draft]) => ({
-                fixture_id: Number(fixture_id),
-                pred_home_goals: Number(draft.home),
-                pred_away_goals: Number(draft.away),
-            })
-        );
+  const [loadingState, setLoadingState] = useState({
+    loading: true,
+    message: "Loading predictions...",
+  });
 
-        if (!payloads.length) return;
+  const refreshPredictions = useCallback(async () => {
+    if (!profileId) {
+      setPredictions([]);
+      setPredictionsMap({});
+      setLoadingState({
+        loading: false,
+        message: "No profile loaded",
+      });
+      return;
+    }
 
-        try {
-            await submitPredictions(payloads);
+    setLoadingState({
+      loading: true,
+      message: "Fetching predictions...",
+    });
 
-            setPredictionDrafts({});
-        } catch (error) {
-            console.error(error);
+    try {
+      const { data, error } = await supabase.rpc(
+        "get_user_flavour_predictions",
+        {
+          p_flavour_id: flavourId ?? 1,
+          p_profile_id: profileId,
         }
+      );
+
+      if (error) throw error;
+
+      const list = data || [];
+
+      setPredictions(list);
+
+      setPredictionsMap(
+        Object.fromEntries(list.map(p => [p.fixture_id, p]))
+      );
+
+      setLoadingState({
+        loading: false,
+        message: "",
+      });
+    } catch (error) {
+      console.error("Failed to load predictions:", error);
+
+      setLoadingState({
+        loading: false,
+        message: "Failed to load predictions",
+      });
+    }
+  }, [supabase, flavourId, profileId]);
+
+  // initial + auth-driven load
+  useEffect(() => {
+    if (!profileId) return;
+    refreshPredictions();
+  }, [profileId, refreshPredictions]);
+
+  // submit function 
+  const submitPredictions = useCallback(
+    async (payloads) => {
+      if (!payloads?.length) return;
+
+      try {
+        const { error } = await supabase.rpc("upsert_predictions", {
+          predictions: payloads,
+        });
+
+        if (error) throw error;
+
+        // keep UI in sync
+        refreshPredictions();
+      } catch (error) {
+        console.error("Failed to submit predictions:", error);
+        throw error;
+      }
+    },
+    [supabase, refreshPredictions]
+  );
+
+  // realtime refresh
+  useEffect(() => {
+    const channel = supabase
+      .channel("predictions-provider")
+      .on(
+        "postgres_changes",
+        {
+          event: "*",
+          schema: "public",
+          table: "predictions",
+        },
+        () => refreshPredictions()
+      )
+      .on(
+        "postgres_changes",
+        {
+          event: "*",
+          schema: "public",
+          table: "prediction_scores",
+        },
+        () => refreshPredictions()
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
     };
+  }, [supabase, refreshPredictions]);
 
-    return (
-        <div className="pageShell">
-            {/* Page Banner (e.g back button + page title) */}
-            <ContentBanner/>
-            
-            <FixturesFilters/>
-
-            <div className="scrollArea fixturesList">
-              {filteredFixtures.map(f => (
-                    <PFCard
-                        key={f.fixture_id}
-                        fixture={f}
-                        predictionDrafts={predictionDrafts}
-                        setPredictionDrafts={setPredictionDrafts}
-                        submitPredictions={submitPredictions}
-                    />
-                ))}
-
-            </div>
-
-            {/* submit all slide up div - handleBulkSubmit  */}
-            
-        </div>
-    )
+  return (
+    <PredictionsContext.Provider
+      value={{
+        predictions,
+        predictionsMap,
+        predictionsLoading: loadingState.loading,
+        predictionsLoadingMessage: loadingState.message,
+        refreshPredictions,
+        submitPredictions, 
+      }}
+    >
+      {children}
+    </PredictionsContext.Provider>
+  );
 }
