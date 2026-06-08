@@ -5,12 +5,13 @@ import { useAuth } from "../hooks/useAuth";
 
 export function PredictionProvider({ children, flavourId }) {
   const { supabase } = useDatabase();
-
   const { profile } = useAuth();
-  const profileId = profile?.p_profile_id;
+
+  const profileId = profile?.profile_id;
 
   const [predictions, setPredictions] = useState([]);
   const [predictionsMap, setPredictionsMap] = useState({});
+
   const [loadingState, setLoadingState] = useState({
     loading: true,
     message: "Loading predictions...",
@@ -18,6 +19,8 @@ export function PredictionProvider({ children, flavourId }) {
 
   const refreshPredictions = useCallback(async () => {
     if (!profileId) {
+      setPredictions([]);
+      setPredictionsMap({});
       setLoadingState({
         loading: false,
         message: "No profile loaded",
@@ -44,11 +47,9 @@ export function PredictionProvider({ children, flavourId }) {
       const list = data || [];
 
       setPredictions(list);
-      
+
       setPredictionsMap(
-        Object.fromEntries(
-          list.map(p => [p.fixture_id, p])
-        )
+        Object.fromEntries(list.map(p => [p.fixture_id, p]))
       );
 
       setLoadingState({
@@ -65,34 +66,38 @@ export function PredictionProvider({ children, flavourId }) {
     }
   }, [supabase, flavourId, profileId]);
 
+  // initial + auth-driven load
   useEffect(() => {
     if (!profileId) return;
     refreshPredictions();
   }, [profileId, refreshPredictions]);
 
-  const submitPredictions = useCallback(async (payloads) => {
-    if (!payloads?.length) return;
-  
-    try {
-      const { error } = await supabase.rpc("upsert_predictions", {
-        predictions: payloads,
-      });
-  
-      if (error) throw error;
-  
-      // IMPORTANT: keep UI consistent
-      refreshPredictions();
-  
-    } catch (error) {
-      console.error("Failed to submit predictions:", error);
-      throw error;
-    }
-  }, [supabase, refreshPredictions]);
+  // submit function 
+  const submitPredictions = useCallback(
+    async (payloads) => {
+      if (!payloads?.length) return;
 
+      try {
+        const { error } = await supabase.rpc("upsert_predictions", {
+          predictions: payloads,
+        });
+
+        if (error) throw error;
+
+        // keep UI in sync
+        refreshPredictions();
+      } catch (error) {
+        console.error("Failed to submit predictions:", error);
+        throw error;
+      }
+    },
+    [supabase, refreshPredictions]
+  );
+
+  // realtime refresh
   useEffect(() => {
     const channel = supabase
       .channel("predictions-provider")
-
       .on(
         "postgres_changes",
         {
@@ -100,11 +105,8 @@ export function PredictionProvider({ children, flavourId }) {
           schema: "public",
           table: "predictions",
         },
-        () => {
-          refreshPredictions();
-        }
+        () => refreshPredictions()
       )
-
       .on(
         "postgres_changes",
         {
@@ -112,11 +114,8 @@ export function PredictionProvider({ children, flavourId }) {
           schema: "public",
           table: "prediction_scores",
         },
-        () => {
-          refreshPredictions();
-        }
+        () => refreshPredictions()
       )
-
       .subscribe();
 
     return () => {
@@ -132,7 +131,7 @@ export function PredictionProvider({ children, flavourId }) {
         predictionsLoading: loadingState.loading,
         predictionsLoadingMessage: loadingState.message,
         refreshPredictions,
-        submitPredictions,
+        submitPredictions, 
       }}
     >
       {children}
