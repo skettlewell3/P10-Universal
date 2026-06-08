@@ -1,8 +1,8 @@
 import AuthGate from './components/authgate/AuthGate'
-
-import './App.css'
+import AppWithUser from './AppWithUser'
 import { DatabaseProvider } from './providers/DatabaseProvider'
 import { AuthProvider } from './providers/AuthProvider'
+import './App.css'
 
 function App() {
   
@@ -10,7 +10,9 @@ function App() {
   return (
     <DatabaseProvider>
       <AuthProvider>
-        <AuthGate/>
+        <AuthGate>
+          <AppWithUser/>
+        </AuthGate>
       </AuthProvider>
     </DatabaseProvider>
   )

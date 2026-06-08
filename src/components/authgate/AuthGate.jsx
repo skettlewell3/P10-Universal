@@ -1,8 +1,7 @@
 import { useAuth } from "../../hooks/useAuth";
 import Login from "./Login";
-import AppWithUser from "../../AppWithUser";
 
-export default function AuthGate() {
+export default function AuthGate({ children }) {
   const { user, profile, loading } = useAuth();
 
   if (loading) return <div>AUTH LOADING</div>;
@@ -12,8 +11,8 @@ export default function AuthGate() {
   }
 
   if (!profile) {
-    return <div>PROFILE LOADING</div>; // or a loader like "loading profile..."
+    return <div>PROFILE LOADING</div>;
   }
 
-  return <AppWithUser profile={profile} />;
+  return children;
 }
