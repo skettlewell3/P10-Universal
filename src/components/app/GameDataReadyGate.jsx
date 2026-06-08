@@ -1,5 +1,6 @@
 import SplashScreen from "./SplashScreen";
 import useFixtures from "../../hooks/useFixtures";
+import { usePredictions } from "../../hooks/usePredictions";
 // import useLeaderboards from "../../hooks/useLeaderboards";
 // import usePredictions from "../../hooks/usePredictions";
 
@@ -14,10 +15,10 @@ export default function GameDataReadyGate({ children }) {
     //     leaderboardsLoadingMessage
     // } = useLeaderboards();
 
-    // const {
-    //     predictionsLoading,
-    //     predictionsLoadingMessage
-    // } = usePredictions();
+    const {
+        predictionsLoading,
+        predictionsLoadingMessage
+    } = usePredictions();
 
     const loadingStates = [
         {
@@ -30,10 +31,10 @@ export default function GameDataReadyGate({ children }) {
         //     message: leaderboardsLoadingMessage
         // },
 
-        // {
-        //     active: predictionsLoading,
-        //     message: predictionsLoadingMessage
-        // }
+        {
+            active: predictionsLoading,
+            message: predictionsLoadingMessage
+        }
     ];
 
     const active = loadingStates.find(s => s.active);

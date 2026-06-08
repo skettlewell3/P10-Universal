@@ -1,3 +1,4 @@
+import GameDataReadyGate from "../components/app/GameDataReadyGate";
 import { FixturesFiltersProvider } from "./FixturesFiltersProvider";
 import { FixturesProvider } from "./FixturesProvider";
 import { PredictionProvider } from "./PredictionProvider";
@@ -7,7 +8,9 @@ export default function GameDataProvider ({children}) {
         <FixturesProvider>
             <FixturesFiltersProvider>
                 <PredictionProvider>
-                    {children}
+                    <GameDataReadyGate>
+                        {children}
+                    </GameDataReadyGate>
                 </PredictionProvider>
             </FixturesFiltersProvider>
         </FixturesProvider>
