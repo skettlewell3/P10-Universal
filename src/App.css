@@ -472,7 +472,7 @@ input[type=number] {
 #dashboardContainer {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 1.5rem;
+  gap: 1rem;
 }
 
 /* #dashboardContainer {
@@ -496,9 +496,11 @@ input[type=number] {
 .dashboardButton {
   position: relative;
 
-  min-height: 10rem;
+  min-height: 8rem;
+  
   aspect-ratio: 1;
   margin-bottom: 0.5rem;
+  padding: 0.5rem;
   cursor: pointer;
 
   border-radius: 18px;
@@ -552,6 +554,49 @@ input[type=number] {
     filter: brightness(1.08);
 }
 
+.dashFixtures {
+  height: 100%;
+  width: 100;
+  display: grid;
+  grid-template-rows: 1.5fr 4.5fr;
+}
+
+.dashButtonLabel {
+  color: white;
+  font-size: 1.5rem;
+  letter-spacing: 0.15rem;
+}
+
+.fixtureSnapshot {
+  width: 100%;
+  border: 1px solid white;
+  border-radius: 9px;
+
+  background-color: white;
+
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.snapshotCol {
+  /* border: 1px solid red; */
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+}
+
+.snapDetail {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 0;
+}
+
+.snapDetail p {
+  margin: 0;
+}
+
 /* end of Dashboard Buttons */
 
 /* -- END OF DASHBOARD */
@@ -596,6 +641,10 @@ input[type=number] {
   border-radius: 10px;
 }
 
+/* -- End of Fixtures List */
+
+/* FIXTURE CARD */
+
 .fixtureCard {
   width: 100%;
   display: flex;
@@ -613,8 +662,6 @@ input[type=number] {
   background-image: linear-gradient(to top, #1c2c5b, #203c6a, #264c78, #2f5d86, #3a6e93, #3a6e93, #3a6e93, #3a6e93, #2f5d86, #264c78, #203c6a, #1c2c5b);
   min-height: 7rem;
 }
-
-/* -- End of Fixtures List */
 
 /* Fixture Card Header */
 
@@ -721,10 +768,38 @@ input[type=number] {
 .fixtureBody {
   display: grid;
   grid-template-columns: 1.5fr 2fr 1.5fr;
+  grid-template-rows: 1fr;
   width: 100%;
   height: 100%;
   align-items: center;
-  margin-top: 0.2rem;
+}
+
+.fCardCol {
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: 1rem 3fr 1fr;
+  height: 100%;
+  padding: 0.2rem;
+}
+
+.fCardDetailsCol {
+  display: grid;
+  grid-template-rows: repeat(2, 1fr);
+  height: 100%;
+  padding: 0.2rem;
+}
+
+/* .stageCell, .groupCell, 
+.scoreRow, .submitCell, 
+.deadlineCell, .fixtureDetails, 
+.fCardDetailsCol, .fCardCol, .teamBlock  {
+  border: 1px solid white;
+} */
+
+.stageCell {
+  font-size: 0.7rem;
+  line-height: 0.7rem;
+  text-align: left;
 }
 
 .teamCol {
@@ -750,7 +825,13 @@ input[type=number] {
 /* Fixture Details */
 
 .fixtureDetails {
-  margin: 0.25rem;
+  margin: 0.25rem 0.1rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 8px;
+  background-color: rgba(255, 255, 255, 0.2);
+
 }
 
 .fixtureLocation {
@@ -771,9 +852,28 @@ input[type=number] {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 0.5rem;
-  padding: 0.5rem 0;
+  justify-content: space-evenly;
+  gap: clamp(0.1rem, 0.5vh , 0.5rem);
+  padding: 0.2rem 0rem;
+  border-radius: 8px;
+  margin: 0.15rem 0;
+  background-color: rgba(255, 255, 255, 0.2);
+  /* margin: 0.15em; */
   /* background-color: rgb(32, 42, 184, 0.4); */
+}
+
+.teamName {
+  text-align: center;
+  line-height: 1.1;
+  font-size: 1rem;
+  font-weight: 600;
+
+  overflow-wrap: break-word;
+  hyphens: auto;
+}
+
+.teamName.longName {
+  font-size: 0.8rem;
 }
 
 .wcFlag {
@@ -802,7 +902,10 @@ input[type=number] {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 1rem;
+  gap: 0.5rem;
+  margin: 0.25rem 0.15rem;
+  border-radius: 8px;
+  background-color: rgba(255, 255, 255, 0.6);
 }
 
 .scoreRow div {
@@ -819,19 +922,24 @@ input[type=number] {
   padding: 0;
 }
 
+.vs {
+  font-size: 1.4rem;
+  font-weight: bolder;
+  color: var(--blue);
+}
+
 
 .homePred, .homeScore {
-  height: 2rem;
-  width: 2rem;
-  margin-right: 0.5rem;
+  height: 2.5rem;
+  width: 2.5rem;
+  /* margin-right: 0.5rem; */
   flex-shrink: 0;
-
 }
 
 .awayPred, .awayScore {
-  height: 2rem;
-  width: 2rem;
-  margin-left: 0.5rem;
+  height: 2.5rem;
+  width: 2.5rem;
+  /* margin-left: 0.5rem; */
   flex-shrink: 0;
 }
 
@@ -845,8 +953,8 @@ input[type=number] {
 }
 
 .pfSubmit {
-  margin-top: 0.25rem;
-  margin-bottom: 0.25rem;
+  margin-top: 0.15rem;
+  margin-bottom: 0.15rem;
   padding: 0.15rem 0.5rem;
   font-size: 0.9rem;
   border-radius: 20px;
@@ -855,6 +963,18 @@ input[type=number] {
 
 
 /* -- End of Fixture Fieldset */
+
+.deadlineCell {
+  /* display: flex;
+  flex-direction: column;
+  justify-content: center; */
+  align-self: center;
+  text-align: left;
+  font-size: 0.7rem;
+  line-height: 0.7rem;
+}
+
+/* -- END OF FIXTURE CARD */
 
 /* -- END OF FIXTURES */
 
