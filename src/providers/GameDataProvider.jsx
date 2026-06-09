@@ -7,7 +7,7 @@ export default function GameDataProvider ({children}) {
     return (
         <FixturesProvider>
             <FixturesFiltersProvider>
-                <PredictionProvider>
+                <PredictionProvider flavourId={1}>
                     <GameDataReadyGate>
                         {children}
                     </GameDataReadyGate>

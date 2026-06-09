@@ -677,25 +677,42 @@ input[type=number] {
 
 .perPredictionStatus {
   position: absolute;
-  right: 0.5rem;
+  right: 0.25rem;
   top: 40%;
+  width: 110px;
   transform: translateY(-50%);
   display: flex;
+  justify-content: space-between;
   align-items: center;
   gap: 0.4em;
   font-size: 0.75rem;
   font-weight: 600;
+  text-align: end;
+}
+.perPredictionStatus .countdown {
+  width: 90px;
 }
 
-.fixtureStatus .dot {
+.perPredictionStatus .label {
+  width: 90px;
+}
+
+.perPredictionStatus .dot {
   width: 8px;
   height: 8px;
   border-radius: 50%;
+  /* margin-left: 1rem; */
 }
 
 .perPredictionStatus.grey { color: rgb(46, 48, 46);}
 .perPredictionStatus.amber { color: orange;}
+.perPredictionStatus.blue { color: rgb(25, 0, 255);}
 .perPredictionStatus.red { color: rgb(201, 17, 33);}
+
+.perPredictionStatus.grey .dot { background: rgb(46, 48, 46);}
+.perPredictionStatus.amber .dot { background: orange;}
+.perPredictionStatus.blue .dot { background: rgb(25, 0, 255);}
+.perPredictionStatus.red .dot { background: rgb(201, 17, 33);}
 
 /* -- End of FixtureCard Header */
 
@@ -778,13 +795,14 @@ input[type=number] {
   font-size: 1.2rem;
   text-align: center;
   font-weight: bold;
+  padding: 0;
 }
 
 
 .homePred, .homeScore {
   height: 2rem;
   width: 2rem;
-  margin-right: 1rem;
+  margin-right: 0.5rem;
   flex-shrink: 0;
 
 }
@@ -792,17 +810,26 @@ input[type=number] {
 .awayPred, .awayScore {
   height: 2rem;
   width: 2rem;
-  margin-right: 0;
+  margin-left: 0.5rem;
   flex-shrink: 0;
 }
 
 .homeScore, .awayScore {
   background: white;
   color: black;
-  margin: auto auto;
+  /* margin: auto auto; */
   border-radius: 5px;
   font-size: 1.2rem;
   font-weight: bold;
+}
+
+.pfSubmit {
+  margin-top: 0.25rem;
+  margin-bottom: 0.25rem;
+  padding: 0.15rem 0.5rem;
+  font-size: 0.9rem;
+  border-radius: 20px;
+  letter-spacing: 0.05rem;
 }
 
 

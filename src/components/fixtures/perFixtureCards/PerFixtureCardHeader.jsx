@@ -32,7 +32,8 @@ export default function PerFixtureCardHeader({ fixture }) {
   const prediction = usePredictionStatus(fixture);
 
   const showPrediction =
-    prediction.mode !== "blank";
+    prediction.mode !== "blank"
+  ;
 
   return (
     <div className="fixtureCardHeader perFixtureCardHeader">
@@ -60,10 +61,10 @@ export default function PerFixtureCardHeader({ fixture }) {
             </span>
           ) : (
             <>
-              <span className="dot" />
               <span className="label">
                 {prediction.label}
               </span>
+              <span className="dot" />
             </>
           )}
 
