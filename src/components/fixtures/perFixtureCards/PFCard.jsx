@@ -3,6 +3,7 @@ import PerFixtureCardFieldset from "./PerFixtureCardFieldset";
 import PerFixtureCardHeader from "./PerFixtureCardHeader";
 import TeamBlock from "./TeamBlock";
 import { usePredictions } from "../../../hooks/usePredictions";
+import PFCardBody from "./PFCardBody";
 
 
 export default function PFCard({ 
@@ -45,9 +46,14 @@ export default function PFCard({
                 fixture={fixture}
             />
 
-            
+            <PFCardBody 
+                fixture={fixture}
+                predictionDrafts={predictionDrafts}
+                setPredictionDrafts={setPredictionDrafts}
+                predictionsMap={predictionsMap}
+            />
 
-            <div className="fixtureBody">
+            {/* <div className="fixtureBody">
                 <div className="teamCol homeCol" >
                     <TeamBlock 
                         name={fixture.home_team_name} 
@@ -74,7 +80,7 @@ export default function PFCard({
                         short={fixture.away_short_code}
                     />
                 </div>
-            </div>            
+            </div>             */}
         
             {/* Footer - deadline open/close date. */}
             
