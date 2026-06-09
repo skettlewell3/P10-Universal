@@ -19,7 +19,7 @@ const getPredictionStatus = (fixture) => {
   if (!fixture.prediction_open && fixture.fixture_status === "live") {
     return {
       mode: "closed",
-      label: "Closed",
+      label: "CLOSED",
       color: "red",
       countdownTo: null
     };
@@ -32,7 +32,7 @@ const getPredictionStatus = (fixture) => {
   if (now < open) {
     return {
       mode: "preOpen",
-      label: "Opens soon",
+      label: "OPEN SOON",
       color: "grey",
       countdownTo: open
     };

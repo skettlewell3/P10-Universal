@@ -42,6 +42,13 @@ export function PredictionProvider({ children, flavourId }) {
         }
       );
 
+      console.log("RPC RESULT", {
+        profileId,
+        flavourId,
+        data,
+        error,
+      });
+
       if (error) throw error;
 
       const list = data || [];
@@ -122,6 +129,10 @@ export function PredictionProvider({ children, flavourId }) {
       supabase.removeChannel(channel);
     };
   }, [supabase, refreshPredictions]);
+
+  console.log(predictions)
+
+
 
   return (
     <PredictionsContext.Provider

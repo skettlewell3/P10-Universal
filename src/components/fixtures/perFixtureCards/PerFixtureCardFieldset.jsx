@@ -18,7 +18,17 @@ export default function PerFixtureCardFieldset({
       draft?.away ??
       prediction?.pred_away_goals ?? ""
     ;
+      
+    const newEntry =
+      !!draft &&
+      (
+        draft.home != prediction?.pred_home_goals ||
+        draft.away != prediction?.pred_away_goals
+      );
 
+    const inputColor = newEntry ? "#0000ff" : "#000000";
+
+    // console.log("prediction:", prediction)
     return (
         <div className="fixtureFieldset">
             
@@ -30,6 +40,7 @@ export default function PerFixtureCardFieldset({
                         type="number"
                         className="predInput homePred"
                         name={fixture.home_team_name}
+                        style={{color: inputColor}}
                         min="0"
                         max="10"
                         // disabled={loading}
@@ -59,6 +70,7 @@ export default function PerFixtureCardFieldset({
                         type="number"
                         className="predInput awayPred"
                         name={fixture.away_team_name}
+                        style={{color: inputColor}}
                         min="0"
                         max="10"
                         // disabled={loading}
@@ -84,7 +96,7 @@ export default function PerFixtureCardFieldset({
             <div className="actionRow">
 
                 {isOpen && (
-                    <button type="submit">
+                    <button type="submit" className="pfSubmit">
                         Submit
                     </button>
                 )}

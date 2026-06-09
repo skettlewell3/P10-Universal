@@ -49,7 +49,10 @@ export default function PFCard({
 
             <div className="fixtureBody">
                 <div className="teamCol homeCol" >
-                    <TeamBlock team={fixture.home_team_name} />
+                    <TeamBlock 
+                        name={fixture.home_team_name} 
+                        short={fixture.home_short_code}
+                    />
                 </div>
 
                 <div className="detailsCol">
@@ -66,7 +69,10 @@ export default function PFCard({
                 </div>
 
                 <div className="teamCol awayCol" >
-                    <TeamBlock team={fixture.away_team_name} />
+                    <TeamBlock 
+                        name={fixture.away_team_name} 
+                        short={fixture.away_short_code}
+                    />
                 </div>
             </div>            
         
