@@ -1,17 +1,22 @@
 import AuthGate from './components/authgate/AuthGate'
-import AppWithUser from './AppWithUser'
+import AppShell from './AppShell'
 import { DatabaseProvider } from './providers/DatabaseProvider'
 import { AuthProvider } from './providers/AuthProvider'
+import { ProfileProvider } from './providers/ProfileProvider'
 import './App.css'
+import AppLoadingGate from './components/app/AppLoadingGate'
 
 function App() {
   
-
   return (
     <DatabaseProvider>
       <AuthProvider>
         <AuthGate>
-          <AppWithUser/>
+          <ProfileProvider>
+            <AppLoadingGate>
+              <AppShell/>
+            </AppLoadingGate>
+          </ProfileProvider>
         </AuthGate>
       </AuthProvider>
     </DatabaseProvider>

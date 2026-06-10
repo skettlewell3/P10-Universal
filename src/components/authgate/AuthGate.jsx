@@ -2,7 +2,7 @@ import { useAuth } from "../../hooks/useAuth";
 import Login from "./Login";
 
 export default function AuthGate({ children }) {
-  const { user, profile, loading } = useAuth();
+  const { user, loading } = useAuth();
 
   if (loading) return <div>AUTH LOADING</div>;
 
@@ -10,14 +10,9 @@ export default function AuthGate({ children }) {
     return <Login />;
   }
 
-  if (!profile) {
-    return <div>PROFILE LOADING</div>;
-  }
-
   console.log({
     loading,
-    user,
-    profile
+    user
   });
 
   return children;

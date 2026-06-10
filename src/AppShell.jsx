@@ -8,18 +8,21 @@ export default function AppWithUser() {
     const { profile } = useProfile();
 
     return (
-        <GameDataProvider>
-            <AppContainer>
-                <HeaderProfile 
-                    profile={profile} 
-                />
+        <AppContainer>
+            <HeaderProfile 
+                profile={profile} 
+            />
 
-                <div className="appContent">                    
+            <GameDataProvider>
+
+                <div className="appContent">                                        
                     <AppRouter />
                 </div>
 
                 
-            </AppContainer>
-        </GameDataProvider>
+
+            </GameDataProvider>
+                
+        </AppContainer>
     )
 }

@@ -7,75 +7,36 @@ export function AuthProvider({ children }) {
 
   const [session, setSession] = useState(null);
   const [user, setUser] = useState(null);
-  const [profile, setProfile] = useState(null);
-  const [loading, setLoading] = useState(true);
+  const [loadingState, setLoadingState] = useState({
+    loading: true,
+    message: "Auth Loading..."
+  });
 
   useEffect(() => {
-    const fetchProfile = async (authUserId) => {
-      if (!authUserId) return;
+    console.log("INIT AUTH START");
 
-      const { data, error } = await supabase
-        .from("user_profiles")
-        .select("*")
-        .eq("auth_id", authUserId)
-        .single();
+    supabase.auth.getSession().then(({ data }) => {
+      const sessionData = data.session;
 
-      if (error) {
-        console.error(error);
-        return;
-      }
+      setSession(sessionData);
+      setUser(sessionData?.user ?? null);
 
-      setProfile(data);
-    };
+      setLoadingState({
+        loading: true,
+        message: "Fetching session..."
+      });
 
-    const initialiseAuth = async () => {
-      try {
+      console.log("INIT AUTH FINISHED");
+    });
 
-        console.log("INIT AUTH START");
+    const { data: { subscription } } =
+      supabase.auth.onAuthStateChange((_event, session) => {
 
-        const { data, error } = await supabase.auth.getSession();
-
-        console.log("GET SESSION RESULT:", data?.session?.user?.id, error);
-
-        if (error) {
-          console.error(error);
-        }
-
-        const sessionData = data.session;
-
-        setSession(sessionData);
-        setUser(sessionData?.user ?? null);
-
-        if (sessionData?.user?.id) {
-          await fetchProfile(sessionData.user.id);
-        }
-      } catch (err) {
-        console.error(err);
-      } finally {
-        console.log("INIT AUTH FINISHED")
-        setLoading(false);
-      }
-    };
-
-    initialiseAuth();
-
-    const {
-      data: { subscription },
-    } = supabase.auth.onAuthStateChange(
-      async (_event, session) => {
-
-        console.log("AUTH EVENT:", _event, session?.user?.id);
+        console.log("AUTH EVENT:", _event);
 
         setSession(session);
         setUser(session?.user ?? null);
-
-        if (session?.user?.id) {
-          await fetchProfile(session.user.id);
-        } else {
-          setProfile(null);
-        }
-      }
-    );
+      });
 
     return () => subscription.unsubscribe();
   }, [supabase]);
@@ -85,15 +46,12 @@ export function AuthProvider({ children }) {
   };
 
   return (
-    <AuthContext.Provider
-      value={{
-        session,
-        user,
-        profile,
-        loading,
-        signOut,
-      }}
-    >
+    <AuthContext.Provider value={{
+      session,
+      user,
+      loadingState,
+      signOut,
+    }}>
       {children}
     </AuthContext.Provider>
   );
