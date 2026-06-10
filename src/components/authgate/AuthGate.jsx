@@ -14,5 +14,11 @@ export default function AuthGate({ children }) {
     return <div>PROFILE LOADING</div>;
   }
 
+  console.log({
+    loading,
+    user,
+    profile
+  });
+
   return children;
 }

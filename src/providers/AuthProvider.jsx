@@ -52,6 +52,7 @@ export function AuthProvider({ children }) {
       } catch (err) {
         console.error(err);
       } finally {
+        console.log("INIT AUTH FINISHED")
         setLoading(false);
       }
     };
