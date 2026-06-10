@@ -1010,6 +1010,7 @@ input[type=number] {
   text-align: center;
   font-weight: bold;
   padding: 0;
+  background-color: white;
 }
 
 .vs {
@@ -1051,13 +1052,17 @@ input[type=number] {
   letter-spacing: 0.05rem;
 }
 
+.pfSubmit .canSubmit {
+  background-color: var(--green);
+}
+
 
 /* -- End of Fixture Fieldset */
 
 .deadlineCell {
-  /* display: flex;
+  display: flex;
   flex-direction: column;
-  justify-content: center; */
+  justify-content: center;
   align-self: center;
   text-align: left;
   font-size: 0.7rem;

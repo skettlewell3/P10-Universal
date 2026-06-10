@@ -73,7 +73,7 @@ export default function PFCardBody({
                     {isOpen && (
                     <button 
                         type="submit" 
-                        className="pfSubmit"
+                        className={`pfSubmit ${canSubmit ? "canSubmit" : "noSubmit"}`}
                         disabled={!canSubmit || predictionsLoading}
                     >
                         {existing ? (isDirty ? "Update" : "Saved") : "Submit"}
