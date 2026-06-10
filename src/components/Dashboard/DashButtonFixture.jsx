@@ -15,7 +15,7 @@ export default function DashButtonFixture ({ label, to }) {
         >
             <div className="dashFixtures">
                 <div className="dashButtonLabel">
-                    {label}
+                    <span>{label}</span>
                 </div>
 
                 <FixtureSnapshot />
