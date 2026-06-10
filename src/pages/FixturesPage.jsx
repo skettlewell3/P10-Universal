@@ -15,9 +15,10 @@ export default function FixturesPage() {
 
     const [predictionDrafts, setPredictionDrafts] = useState({});
 
-    const filteredFixtures = fixtures.filter(f => 
-        statusFilter === "all" ? true : f.fixture_status === statusFilter
-    );
+    const filteredFixtures = fixtures
+    .filter(f => f.home_team_id != null && f.away_team_id != null)
+    .filter(f => statusFilter === "all" ? true : f.fixture_status === statusFilter);
+
 
     const validDrafts = useMemo(() => {
       return Object.entries(predictionDrafts)

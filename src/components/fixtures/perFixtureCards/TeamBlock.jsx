@@ -19,7 +19,7 @@ export default function TeamBlock ({ name, short }) {
                     isLongName ? "longName" : ""
                 }`}
             >
-                {name}
+                {name ? name : "TBC"}
             </div>
         </div>
     )
