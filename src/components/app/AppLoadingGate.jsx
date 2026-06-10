@@ -1,5 +1,5 @@
-import { useAuth } from "../hooks/useAuth";
-import { useProfile } from "../hooks/useProfile";
+import { useAuth } from "../../hooks/useAuth";
+import { useProfile } from "../../hooks/useProfile";
 
 import SplashScreen from "./SplashScreen";
 

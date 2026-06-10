@@ -1,16 +1,15 @@
-import PerFixtureCardDetails from "./PerFixtureCardDetails";
-import PerFixtureCardFieldset from "./PerFixtureCardFieldset";
 import PerFixtureCardHeader from "./PerFixtureCardHeader";
-import TeamBlock from "./TeamBlock";
 import { usePredictions } from "../../../hooks/usePredictions";
 import PFCardBody from "./PFCardBody";
+import { isValidPrediction } from "../../../utils/helpers";
 
 
 export default function PFCard({ 
     fixture,
     predictionDrafts,
     setPredictionDrafts,
-    submitPredictions
+    submitPredictions, 
+    predictionsLoading
 }) {
     const { predictionsMap } = usePredictions();
 
@@ -18,7 +17,7 @@ export default function PFCard({
         e.preventDefault();
 
         const draft = predictionDrafts[fixture.fixture_id];
-        if (!draft) return;
+        if (!isValidPrediction(draft)) return;
 
         const payload = {
             fixture_id: fixture.fixture_id,
@@ -51,38 +50,8 @@ export default function PFCard({
                 predictionDrafts={predictionDrafts}
                 setPredictionDrafts={setPredictionDrafts}
                 predictionsMap={predictionsMap}
+                predictionsLoading={predictionsLoading}
             />
-
-            {/* <div className="fixtureBody">
-                <div className="teamCol homeCol" >
-                    <TeamBlock 
-                        name={fixture.home_team_name} 
-                        short={fixture.home_short_code}
-                    />
-                </div>
-
-                <div className="detailsCol">
-                    <PerFixtureCardDetails
-                        fixture={fixture}
-                    />
-                    
-                    <PerFixtureCardFieldset 
-                        fixture={fixture}
-                        predictionDrafts={predictionDrafts}
-                        setPredictionDrafts={setPredictionDrafts}
-                        prediction={predictionsMap[fixture.fixture_id]}
-                    />
-                </div>
-
-                <div className="teamCol awayCol" >
-                    <TeamBlock 
-                        name={fixture.away_team_name} 
-                        short={fixture.away_short_code}
-                    />
-                </div>
-            </div>             */}
-        
-            {/* Footer - deadline open/close date. */}
             
         </form>
     )

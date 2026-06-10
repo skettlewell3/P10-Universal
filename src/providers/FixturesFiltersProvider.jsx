@@ -2,7 +2,7 @@ import { FixturesFiltersContext } from "../context/FixturesFiltersContext";
 import { useState } from "react";
 
 export function FixturesFiltersProvider({ children }) {
-    const [statusFilter, setStatusFilter] = useState("all");
+    const [statusFilter, setStatusFilter] = useState("upcoming");
 
     const value = {
         statusFilter,
