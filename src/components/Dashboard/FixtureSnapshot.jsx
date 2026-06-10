@@ -1,5 +1,6 @@
 import { format } from "date-fns";
 import { useFixtures } from "../../hooks/useFixtures"
+import { COUNTRY_FLAG_MAP } from "../../config";
 
 export default function FixtureSnapshot() {
     const { fixtures } = useFixtures();
@@ -38,10 +39,22 @@ export default function FixtureSnapshot() {
       "dd/MM"
     );
 
+    const homeFlag = COUNTRY_FLAG_MAP[snapshotFixture.home_short_code];
+    const awayFlag = COUNTRY_FLAG_MAP[snapshotFixture.away_short_code];
+
     return (
         <div className="fixtureSnapshot">
-            <div className="snapshotCol Team Home">
+            <div className="snapshotCol team home">
+              <div className="flagWrap">
+                  <img
+                      src={`https://flagcdn.com/w40/${homeFlag}.png`}
+                      alt={`${snapshotFixture.home_short_code} flag`}
+                      className="wcFlagSnap"
+                  />
+              </div>
+              <div>
                 {snapshotFixture.home_short_code}
+              </div>
             </div>
             <div className="snapshotCol snapshotDetails">
 
@@ -57,14 +70,29 @@ export default function FixtureSnapshot() {
                   </div>
                 )}
 
+                {!isLive && (
+                  <div className="snapScore vs">
+                    V
+                  </div>
+                )}
+
                 <div className="snapDetail">
                     <p>{snapKO}</p>
                     <p>{snapDate}</p>
                 </div>
 
             </div>
-            <div className="snapshotCol Team Away">
+            <div className="snapshotCol team away">
+                <div className="flagWrapSnap">
+                  <img
+                      src={`https://flagcdn.com/w40/${awayFlag}.png`}
+                      alt={`${snapshotFixture.away_short_code} flag`}
+                      className="wcFlagSnap"
+                  />
+              </div>
+              <div>
                 {snapshotFixture.away_short_code}
+              </div>
             </div>
         </div>
     )
