@@ -1,11 +1,11 @@
 import { useEffect, useState, useCallback } from "react";
 import { PredictionsContext } from "../context/PredictionsContext";
 import { useDatabase } from "../hooks/useDatabase";
-import { useAuth } from "../hooks/useAuth";
+import { useProfile } from "../hooks/useProfile";
 
 export function PredictionProvider({ children, flavourId }) {
   const { supabase } = useDatabase();
-  const { profile } = useAuth();
+  const { profile } = useProfile();
 
   const profileId = profile?.profile_id;
 
