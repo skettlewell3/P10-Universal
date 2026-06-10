@@ -1,6 +1,7 @@
 :root {
   --blue: rgb(28, 44, 91);
   --green: rgb(32, 100, 60);
+  --gren2: rgb(35, 110, 52);
   --bkgrey: #555;
   --gtable: rgba(50, 153, 91, .3);
   --gold: #ccaa39;
@@ -1064,6 +1065,84 @@ input[type=number] {
 }
 
 /* -- END OF FIXTURE CARD */
+
+/* SUBMIT SLIDE UP */
+
+.bulkSubmitBar {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 999;
+  padding: 16px 20px;
+  background: rgba(10, 10, 10, 0.72);
+  backdrop-filter: blur(14px);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  transform: translateY(100%);
+  opacity: 0;
+  animation: slideUpBar 420ms cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  box-shadow: 0 -10px 30px rgba(0, 0, 0, 0.35);
+}
+
+
+@keyframes slideUpBar {
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.bulkSubmitBar button {
+  min-width: 180px;
+  padding: 12px 22px;
+
+  border-radius: 10px;
+
+  font-size: 1.2rem;
+  font-weight: 600;
+  letter-spacing: 0.35px;
+
+  color: white;
+  background: linear-gradient(180deg, rgb(35, 110, 52), rgb(32, 100, 60));
+
+  border: 1px solid rgba(255, 255, 255, 0.445);
+
+  box-shadow:
+    0 6px 0 rgb(32, 100, 60),
+    0 10px 18px rgba(0, 0, 0, 0.35);
+
+  cursor: pointer;
+
+  transform: translateY(0);
+  transition: all 140ms ease;
+}
+
+.bulkSubmitBar button:hover {
+  transform: translateY(-1px);
+  box-shadow:
+    0 7px 0 rgb(32, 100, 60),
+    0 14px 22px rgba(0, 0, 0, 0.4);
+}
+
+.bulkSubmitBar button:active {
+  transform: translateY(4px);
+  box-shadow:
+    0 2px 0 rgb(32, 100, 60),
+    0 6px 12px rgba(0, 0, 0, 0.25);
+}
+
+.bulkSubmitBar button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  box-shadow: none;
+  transform: none;
+}
+
+/* -- END OF SUBMIT SLIDE UP */
 
 /* -- END OF FIXTURES */
 

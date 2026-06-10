@@ -85,17 +85,26 @@ export function PredictionProvider({ children, flavourId }) {
       if (!payloads?.length) return;
 
       try {
+        setLoadingState({
+          loading: true,
+          message: "Saving Predictions"
+        });
+
         const { error } = await supabase.rpc("upsert_predictions", {
           predictions: payloads,
         });
 
         if (error) throw error;
 
-        // keep UI in sync
-        refreshPredictions();
+        await refreshPredictions();
       } catch (error) {
         console.error("Failed to submit predictions:", error);
         throw error;
+      } finally {
+        setLoadingState({
+          loading: false,
+          message: ""
+        });
       }
     },
     [supabase, refreshPredictions]

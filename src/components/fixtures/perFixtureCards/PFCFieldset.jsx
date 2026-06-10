@@ -1,3 +1,5 @@
+import { buildDraft } from "../../../utils/helpers";
+
 export default function PFCFieldset({ 
     fixture,
     prediction,
@@ -42,14 +44,18 @@ export default function PFCFieldset({
                     // disabled={loading}
                     value={homeValue}
                     onChange={(e) => {
-                        const val = e.target.value;
-                        setPredictionDrafts(prev => ({
-                            ...prev,
-                            [fixture.fixture_id]: {
-                                ...prev[fixture.fixture_id],
-                                home: val
-                            }
-                        }))
+                      const val = e.target.value;
+
+                      setPredictionDrafts(prev => ({
+                        ...prev,
+                        [fixture.fixture_id]: {
+                          ...buildDraft(
+                            prev[fixture.fixture_id],
+                            prediction
+                          ),
+                          home: val,
+                        },
+                      }));
                     }}
                 />
             ) : (
@@ -70,13 +76,16 @@ export default function PFCFieldset({
                     value={awayValue}
                     onChange={(e) => {
                       const val = e.target.value;
-                    
+                                        
                       setPredictionDrafts(prev => ({
                         ...prev,
                         [fixture.fixture_id]: {
-                          ...prev[fixture.fixture_id],
-                          away: val
-                        }
+                          ...buildDraft(
+                            prev[fixture.fixture_id],
+                            prediction
+                          ),
+                          away: val,
+                        },
                       }));
                     }}
                 />                    

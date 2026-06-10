@@ -1,15 +1,17 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import ContentBanner from "../components/app/ContentBanner";
 import FixturesFilters from "../components/fixtures/FixturesFilters";
 import PFCard from "../components/fixtures/perFixtureCards/PFCard";
+import SubmitSlideUp from "../components/fixtures/SubmitSlideUp";
 import { useFixtures } from "../hooks/useFixtures";
 import { useFixturesFilters } from "../hooks/useFixturesFilters";
 import { usePredictions } from "../hooks/usePredictions";
+import { isValidPrediction, isDirtyPrediction } from "../utils/helpers";
 
 export default function FixturesPage() {
     const { fixtures } = useFixtures();
     const { statusFilter } = useFixturesFilters();
-    const { submitPredictions } = usePredictions();
+    const { submitPredictions, predictionsLoading, predictionsMap } = usePredictions();
 
     const [predictionDrafts, setPredictionDrafts] = useState({});
 
@@ -17,14 +19,34 @@ export default function FixturesPage() {
         statusFilter === "all" ? true : f.fixture_status === statusFilter
     );
 
+    const validDrafts = useMemo(() => {
+      return Object.entries(predictionDrafts)
+        .filter(([fixtureId, draft]) => {
+          const prediction = predictionsMap[fixtureId];
+
+          return (
+            isValidPrediction(draft) &&
+            isDirtyPrediction(draft, prediction)
+          );
+        });
+    }, [predictionDrafts, predictionsMap]);
+
+    // const hasValidDrafts = validDrafts.length > 0;
+    const hasMultiple = validDrafts.length >= 2;
+
+    console.log({
+      predictionDrafts,
+      validDrafts,
+      count: validDrafts.length
+    });
+
+
     const handleBulkSubmit = async () => {
-        const payloads = Object.entries(predictionDrafts).map(
-            ([fixture_id, draft]) => ({
-                fixture_id: Number(fixture_id),
-                pred_home_goals: Number(draft.home),
-                pred_away_goals: Number(draft.away),
-            })
-        );
+        const payloads = validDrafts.map(([fixture_id, draft]) => ({
+          fixture_id: Number(fixture_id),
+          pred_home_goals: Number(draft.home),
+          pred_away_goals: Number(draft.away),
+        }));
 
         if (!payloads.length) return;
 
@@ -39,7 +61,6 @@ export default function FixturesPage() {
 
     return (
         <div className="pageShell">
-            {/* Page Banner (e.g back button + page title) */}
             <ContentBanner/>
             
             <FixturesFilters/>
@@ -52,13 +73,20 @@ export default function FixturesPage() {
                         predictionDrafts={predictionDrafts}
                         setPredictionDrafts={setPredictionDrafts}
                         submitPredictions={submitPredictions}
+                        predictionsLoading={predictionsLoading}
                     />
                 ))}
 
             </div>
 
-            {/* submit all slide up div - handleBulkSubmit  */}
-            
+            {hasMultiple && (
+                <SubmitSlideUp 
+                    validDrafts={validDrafts}
+                    handleBulkSubmit={handleBulkSubmit}
+                    predictionsLoading={predictionsLoading}                    
+                />
+
+            )} 
         </div>
     )
 }

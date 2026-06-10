@@ -2,15 +2,32 @@ import TeamBlock from "./TeamBlock";
 import PerFixtureCardDetails from "./PerFixtureCardDetails";
 import PFCFieldset from "./PFCFieldset";
 import PFCardDeadline from "./PFCardDeadline";
+import { isValidPrediction } from "../../../utils/helpers";
 
 export default function PFCardBody({
     fixture, 
     predictionDrafts, 
     setPredictionDrafts, 
     predictionsMap,
+    predictionsLoading
 }) {   
 
     const isOpen = fixture.predictions_open && fixture.fixture_status === "upcoming";
+
+    const existing = predictionsMap[fixture.fixture_id];
+    const draft = predictionDrafts[fixture.fixture_id];
+
+    const canSubmit = isValidPrediction(draft);
+
+    const isDirty = (() => {
+      if (!draft) return false;
+      if (!existing) return true;
+
+      return (
+        Number(draft.home) !== existing.pred_home_goals ||
+        Number(draft.away) !== existing.pred_away_goals
+      );
+    })();
 
     
     return (
@@ -54,8 +71,12 @@ export default function PFCardBody({
                 />
                 <div className="submitCell">
                     {isOpen && (
-                    <button type="submit" className="pfSubmit">
-                        Submit
+                    <button 
+                        type="submit" 
+                        className="pfSubmit"
+                        disabled={!canSubmit || predictionsLoading}
+                    >
+                        {existing ? (isDirty ? "Update" : "Saved") : "Submit"}
                     </button>
                 )}
                 </div>
