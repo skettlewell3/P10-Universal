@@ -73,7 +73,7 @@ export default function PFCardBody({
 
             <div className="fCardCol R">
                 <div className="groupCell">
-                    {fixture.group_letter}
+                    group {fixture.group_letter}
                 </div>
                 <TeamBlock 
                     name={fixture.away_team_name} 

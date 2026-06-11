@@ -9,12 +9,12 @@ export default function FixtureSnapshot() {
       fixtures
         .filter(
           f =>
-            f.fixture_status === "live" ||
+            f.fixture_status === "live_90" ||
             f.fixture_status === "upcoming"
         )
         .sort((a, b) => {
-          if (a.fixture_status === "live" && b.fixture_status !== "live") return -1;
-          if (b.fixture_status === "live" && a.fixture_status !== "live") return 1  ;
+          if (a.fixture_status === "live_90" && b.fixture_status !== "live_90") return -1;
+          if (b.fixture_status === "live_90" && a.fixture_status !== "live_90") return 1  ;
       
           const koDiff =
             new Date(a.kickoff_at) - new Date(b.kickoff_at) ;
@@ -24,7 +24,7 @@ export default function FixtureSnapshot() {
     ;
 
     const isLive =
-      snapshotFixture.fixture_status === "live";
+      snapshotFixture.fixture_status === "live_90";
 
     const snapLabel =
       isLive ? "Live!" : "Next:";

@@ -11,7 +11,7 @@ export const COUNTRY_FLAG_MAP = {
   CPV: "cv",
   CAN: "ca",
   COL: "co",
-  CGO: "cd", // Congo DR (note: FlagCDN uses CD, not CGO)
+  COD: "cd", // Congo DR (note: FlagCDN uses CD, not CGO)
   CIV: "ci",
   CRO: "hr",
   CUW: "cw",

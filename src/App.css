@@ -622,6 +622,7 @@ input[type=number] {
   ;
   overflow: hidden;
   background-color: var(--bg);
+  padding: 0.5rem 0;
 
 
 }
@@ -630,9 +631,7 @@ input[type=number] {
   /* border: 1px solid red; */
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
-  gap: 0.5rem;
 
   color: white;
   font-weight: 700;
@@ -646,12 +645,13 @@ input[type=number] {
 .snapshotCol.team {
   color: var(--blue);
   font-size: 1rem;
+  gap: 0.5rem;
+  justify-content: center;
 }
 
-/* .snapshotDetails {
-  color: var(--blue);
-
-} */
+.snapshotDetails {
+  justify-content: space-between;
+}
 
 .snapLabel {
   font-size: 1rem;
@@ -890,6 +890,12 @@ input[type=number] {
   font-size: 0.7rem;
   line-height: 0.7rem;
   text-align: left;
+}
+
+.groupCell {
+  font-size: 0.7rem;
+  line-height: 0.7rem;
+  text-align: right;
 }
 
 .teamCol {
