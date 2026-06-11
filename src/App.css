@@ -502,6 +502,10 @@ input[type=number] {
 
   min-height: 8rem;
   min-width: 0;
+
+  display: flex;
+  padding: 0.5rem;
+  overflow: hidden;
   
   aspect-ratio: 1;
   margin-bottom: 0.5rem;
@@ -529,6 +533,8 @@ input[type=number] {
       transform 0.1s,
       box-shadow 0.1s
   ;
+  outline: 2px solid rgb(55, 55, 56);
+
 }
 
 .dashboardButton:active {
@@ -562,8 +568,10 @@ input[type=number] {
 .dashFixtures {
   height: 100%;
   width: 100%;
-  display: grid;
-  grid-template-rows: 1.5fr 4.5fr;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
 }
 
 .dashButtonLabel {
@@ -603,7 +611,8 @@ input[type=number] {
 
 .fixtureSnapshot {
   /* width: 100%; */
-
+  flex: 1;
+  min-height: 0;
   border-radius: 12px;
   /* background: rgb(245, 245, 245); */
 
