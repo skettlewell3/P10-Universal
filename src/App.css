@@ -799,13 +799,13 @@ input[type=number] {
   border-radius: 50%;
 }
 
-.fixtureStatus.green { color: green;}
+.fixtureStatus.grey { color: grey;}
 .fixtureStatus.amber { color: orange;}
-.fixtureStatus.red { color: blue;}
+.fixtureStatus.blue { color: blue;}
 
-.fixtureStatus.green .dot { background: green;}
+.fixtureStatus.grey .dot { background: grey;}
 .fixtureStatus.amber .dot { background: orange;}
-.fixtureStatus.red .dot { background: blue;}
+.fixtureStatus.blue .dot { background: blue;}
 
 /* Prediction Status */
 
@@ -843,13 +843,13 @@ input[type=number] {
 
 .perPredictionStatus.grey { color: rgb(46, 48, 46);}
 .perPredictionStatus.amber { color: orange;}
-.perPredictionStatus.blue { color: rgb(25, 0, 255);}
-.perPredictionStatus.red { color: rgb(201, 17, 33);}
+.perPredictionStatus.green { color:green;}
+.perPredictionStatus.blue { color: blue;}
 
 .perPredictionStatus.grey .dot { background: rgb(46, 48, 46);}
 .perPredictionStatus.amber .dot { background: orange;}
-.perPredictionStatus.blue .dot { background: rgb(25, 0, 255);}
-.perPredictionStatus.red .dot { background: rgb(201, 17, 33);}
+.perPredictionStatus.green .dot { background:green;}
+.perPredictionStatus.blue .dot { background: blue;}
 
 /* -- End of FixtureCard Header */
 

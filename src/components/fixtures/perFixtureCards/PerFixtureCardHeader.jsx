@@ -22,8 +22,8 @@ export default function PerFixtureCardHeader({ fixture }) {
 
   const statusMap = {
     upcoming: { label: "Upcoming", color: "amber" },
-    live: { label: "Live", color: "green" },
-    finished: { label: "Finished", color: "red" }
+    live_90: { label: "Live", color: "blue" },
+    finished: { label: "Finished", color: "grey" }
   };
 
   const statusMeta = statusMap[fixture.fixture_status];
