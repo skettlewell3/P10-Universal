@@ -1043,6 +1043,10 @@ input[type=number] {
   font-weight: bold;
 }
 
+.submitCell {
+  flex-shrink: 1;
+}
+
 .pfSubmit {
   margin-top: 0.15rem;
   margin-bottom: 0.15rem;
@@ -1067,11 +1071,14 @@ input[type=number] {
   text-align: left;
   font-size: 0.7rem;
   line-height: 0.7rem;
+  flex-shrink: 1;
 }
 
 .leaderboardToggle {
-  font-size: 0.7rem;
+  font-size: 0.8rem;
   text-decoration: dotted;
+  line-height: 0.8rem;
+  color: rgb(255, 255, 255, 0.6);
 }
 
 /* Fixture Leaderboard */
