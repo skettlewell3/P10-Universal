@@ -11,7 +11,7 @@ export default function FixtureLeaderboardToggle({
             className="leaderboardToggle"
             onClick={handleClick}
         >
-            {showLeaderboard ? "Close leaderboard" : "Open leaderboard"}
+            {showLeaderboard ? "Collapse" : "Expand"}
         </p>
     );
 }
