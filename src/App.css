@@ -501,13 +501,14 @@ input[type=number] {
   position: relative;
 
   min-height: 8rem;
+  min-width: 8rem;
   min-width: 0;
 
   display: flex;
   padding: 0.5rem;
   overflow: hidden;
   
-  aspect-ratio: 1;
+  /* aspect-ratio: 1; */
   margin-bottom: 0.5rem;
   padding: 0.5rem;
   cursor: pointer;
