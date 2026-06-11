@@ -16,11 +16,11 @@ const getPredictionStatus = (fixture) => {
     return { mode: "blank" };
   }
 
-  if (!fixture.prediction_open && fixture.fixture_status === "live") {
+  if (!fixture.prediction_open && fixture.fixture_status === "live_90") {
     return {
       mode: "closed",
       label: "CLOSED",
-      color: "red",
+      color: "grey",
       countdownTo: null
     };
   }
@@ -44,7 +44,7 @@ const getPredictionStatus = (fixture) => {
     return {
       mode: closingSoon ? "closingSoon" : "open",
       label: closingSoon ? "Closes soon" : "OPEN",
-      color: closingSoon ? "amber" : "blue",
+      color: closingSoon ? "amber" : "green",
       countdownTo: close
     };
   }
