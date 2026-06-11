@@ -1069,6 +1069,52 @@ input[type=number] {
   line-height: 0.7rem;
 }
 
+.leaderboardToggle {
+  font-size: 0.7rem;
+  text-decoration: dotted;
+}
+
+/* Fixture Leaderboard */
+
+.fixtureLeaderboard {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  padding: 0.2rem;
+}
+
+.lbLayout {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1.5fr 3.5fr 3fr 2fr ;
+  border: 1px solid white;
+  text-align: center;
+  margin-bottom: 0.2rem;
+  border-radius: 12px;
+  padding-bottom: 0.1rem;
+}
+
+.lbHeaderRow {
+  background-color: white;
+  color: var(--blue);
+  font-weight: bold;
+  font-size: 0.9rem;
+  line-height: 0.9rem;
+}
+
+.lbRow {
+  font-size: 0.7rem;
+  line-height: 1rem;
+}
+
+.displayName.lb {
+  text-align: left;
+}
+
+/* --End of Fixture Leaderboard */
+
 /* -- END OF FIXTURE CARD */
 
 /* SUBMIT SLIDE UP */

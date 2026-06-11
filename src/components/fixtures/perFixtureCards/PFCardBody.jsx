@@ -3,16 +3,26 @@ import PerFixtureCardDetails from "./PerFixtureCardDetails";
 import PFCFieldset from "./PFCFieldset";
 import PFCardDeadline from "./PFCardDeadline";
 import { isValidPrediction } from "../../../utils/helpers";
+import FixtureLeaderboardToggle from "./FixtureLeaerboardToggle";
 
 export default function PFCardBody({
     fixture, 
     predictionDrafts, 
     setPredictionDrafts, 
     predictionsMap,
-    predictionsLoading
+    predictionsLoading,
+    showLeaderboard,
+    setShowLeaderboard
 }) {   
 
-    const isOpen = fixture.predictions_open && fixture.fixture_status === "upcoming";
+    const isOpen = 
+        fixture.predictions_open && 
+        fixture.fixture_status === "upcoming"
+    ;
+    const toggleAllowed =
+        fixture.fixture_status !== "upcoming" &&
+        fixture.fixture_status !== "postponed"
+    ;
 
     const existing = predictionsMap[fixture.fixture_id];
     const draft = predictionDrafts[fixture.fixture_id];
@@ -28,7 +38,6 @@ export default function PFCardBody({
         Number(draft.away) !== existing.pred_away_goals
       );
     })();
-
     
     return (
         <div className="fixtureBody">
@@ -40,10 +49,11 @@ export default function PFCardBody({
                 <TeamBlock 
                     name={fixture.home_team_name} 
                     short={fixture.home_short_code}
-                />
+                />               
                 <PFCardDeadline 
-                    fixture={fixture}
-                />
+                    fixture={fixture}                    
+                />                 
+                
             </div>
 
             <div className="fCardDetailsCol">
@@ -71,14 +81,21 @@ export default function PFCardBody({
                 />
                 <div className="submitCell">
                     {isOpen && (
-                    <button 
-                        type="submit" 
-                        className={`pfSubmit ${canSubmit ? "canSubmit" : "noSubmit"}`}
-                        disabled={!canSubmit || predictionsLoading}
-                    >
-                        {existing ? (isDirty ? "Update" : "Saved") : "Submit"}
-                    </button>
-                )}
+                        <button 
+                            type="submit" 
+                            className={`pfSubmit ${canSubmit ? "canSubmit" : "noSubmit"}`}
+                            disabled={!canSubmit || predictionsLoading}
+                        >
+                            {existing ? (isDirty ? "Update" : "Saved") : "Submit"}
+                        </button>
+                    )}
+                    {toggleAllowed && (
+                        <FixtureLeaderboardToggle 
+                            showLeaderboard={showLeaderboard}
+                            setShowLeaderboard={setShowLeaderboard}
+                        />
+                    )}
+
                 </div>
             </div>
         </div>

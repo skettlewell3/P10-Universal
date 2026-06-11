@@ -1,7 +1,9 @@
+import { useState } from "react";
 import PerFixtureCardHeader from "./PerFixtureCardHeader";
 import { usePredictions } from "../../../hooks/usePredictions";
 import PFCardBody from "./PFCardBody";
 import { isValidPrediction } from "../../../utils/helpers";
+import FixtureLeaderboardContainer from "./FixtureLeaderboardContainer";
 
 
 export default function PFCard({ 
@@ -11,6 +13,9 @@ export default function PFCard({
     submitPredictions, 
     predictionsLoading
 }) {
+
+    const [showLeaderboard, setShowLeaderboard] = useState(false);
+
     const { predictionsMap } = usePredictions();
 
     const handleSubmit = async (e) => {
@@ -51,7 +56,17 @@ export default function PFCard({
                 setPredictionDrafts={setPredictionDrafts}
                 predictionsMap={predictionsMap}
                 predictionsLoading={predictionsLoading}
+                showLeaderboard={showLeaderboard}
+                setShowLeaderboard={setShowLeaderboard}
             />
+
+            { showLeaderboard && (
+                <FixtureLeaderboardContainer 
+                    fixtureId={fixture.fixture_id}
+                />
+            )
+
+            }
             
         </form>
     )
