@@ -44,6 +44,16 @@ input[type=number] {
   margin: auto auto;
 }
 
+/* Utilities */
+
+.displayName {
+  text-align: Left;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+/* End of Utilities */
+
 /* APP STRUCTURE */
 
 #appContainer {
@@ -59,8 +69,8 @@ input[type=number] {
   box-shadow: 0 0 20px (rgba(223, 221, 221, 1));
   margin: auto auto;
   overflow: hidden;
-  padding-left: 0.5rem;
-  padding-right: 0.5rem;
+  padding-left: 0.3rem;
+  padding-right: 0.3rem;
   /* padding-bottom: 1rem; */
 
   /* background: var(--appbg); */
@@ -118,7 +128,7 @@ input[type=number] {
   overflow: hidden;
 
   padding-top: 4.5rem;
-  padding-bottom: 2rem;
+  padding-bottom: 0.5rem;
 }
 
 .pageShell {
@@ -138,8 +148,8 @@ input[type=number] {
   width: 100%;
   overflow-y: auto;
   overflow-x: hidden;
-
-  padding: 0.3rem;
+  background-color: rgba(255, 255, 255, 0.2);
+  border-radius: 10px;
 
   /* border: 1px solid white; */
 }
@@ -697,11 +707,27 @@ input[type=number] {
 
 /* -- END OF DASHBOARD */
 
+/* FILTERS - STANDARD */
+
+.filters {
+  margin-bottom: 0.5rem;
+  padding: 0.25rem;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  border-radius: 10px;
+  background-color: rgba(0, 0, 0, 0.4);
+}
+
+/* -- END OF FILTERS - STANDARD */
+
 /* FIXTURES */
 
-/* Filters */
+/* Fixture Filters */
 
-.fixtureFilters {
+/* .fixtureFilters {
   margin-bottom: 0.5rem;
   padding: 0.25rem;
 
@@ -711,7 +737,7 @@ input[type=number] {
 
   border-radius: 10px;
   background-color: rgba(255, 255, 255, 0.2);
-}
+} */
 
 .fixStatusFilter {
   display: grid;
@@ -730,11 +756,12 @@ input[type=number] {
   color: white;
 }
 
+/* -- End of Fixture Filters */
+
 /* Fixtures List */
 
 .fixturesList {
-  background-color: rgba(255, 255, 255, 0.2);
-  border-radius: 10px;
+ padding: 0.3rem
 }
 
 /* -- End of Fixtures List */
@@ -1128,9 +1155,9 @@ input[type=number] {
   line-height: 1rem;
 }
 
-.displayName.lb {
+/* .displayName.lb {
   text-align: left;
-}
+} */
 
 /* --End of Fixture Leaderboard */
 
@@ -1217,5 +1244,121 @@ input[type=number] {
 /* -- END OF FIXTURES */
 
 
+/* LEADERBOARDS */
 
+/* Leaderboard Filters */
+
+.leaderboardFilters {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+}
+
+.scopeTypeFilter {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.25rem
+}
+
+.scopeTypeFilter button {
+  width: 50%;
+  border-radius: 10px;
+  border: none;
+  padding: 0.2rem 0;
+  background-color: var(--blue);
+  color: white;
+  letter-spacing: 0.05rem;
+}
+
+.scopeTypeFilter button.active {
+  background-color: var(--green);
+}
+
+
+/* -- End of Leaderboard Filters */
+
+.boardList {
+  padding: 0.4rem 0.2rem;
+}
+
+.boardHeaderContainer {
+  flex: 0;
+  padding: 0.2rem 0.3rem;
+  width: 100%;
+  margin-bottom: 0.5rem;
+
+  background-color: rgba(255, 255, 255, 0.2);
+  color: var(--blue);
+  font-weight: bold;
+  border-radius: 10px;
+}
+
+.leaderboardLayout {
+  display: grid;
+  grid-template-columns:
+    0.7fr
+    2.5fr
+    0.8fr
+    2fr
+    0.7fr
+    0.7fr
+    0.7fr
+    0.7fr
+    0.7fr
+  ;
+  gap: 0.1rem;
+  align-items: center;
+}
+
+.leaderboardLayout .borderR {
+  border-right: 1px solid White;
+}
+
+.leaderboardHeader .normal {
+  background-color: white;
+  border-radius: 10px;
+  font-size: 0.9rem;
+  padding: 0.2rem 0;
+}
+
+.leaderboardLayout .focus {
+  background: var(--green) !important;
+  border-radius: 10px;
+  color: white;
+  font-size: 1.1rem;
+  font-weight: bold;
+}
+
+.focus.double {
+  display: flex;
+  justify-content: space-around;
+}
+
+.focus {
+  padding: 0.2rem 0;
+}
+
+.rank {
+  font-weight: bold;
+  font-size: 1.1rem;
+}
+
+
+.leaderboardRow {
+  margin-bottom: 0.2rem;
+  border: 2px solid white;
+  border-radius: 10px;
+  background-color: rgb(58, 110, 147, 0.6);
+}
+
+.leaderboardRow div {
+  padding: 0.2rem 0;
+}
+
+
+
+.displayName.leaderboard {
+  margin-left: 0.2rem;
+}
+
+/* -- END OF LEADERBOARDS */
 

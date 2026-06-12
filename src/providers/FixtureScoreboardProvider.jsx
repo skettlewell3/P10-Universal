@@ -83,7 +83,7 @@ export function FixtureScoreboardProvider({ children }) {
         activeFixtureIds.current.delete(fixtureId);
     }, []);
 
-    console.log("leaderboard:", fixtureLeaderboard)
+    // console.log("leaderboard:", fixtureLeaderboard)
 
     useEffect(() => {
 
