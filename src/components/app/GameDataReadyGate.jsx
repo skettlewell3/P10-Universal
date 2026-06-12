@@ -1,7 +1,7 @@
 import SplashScreen from "./SplashScreen";
 import { useFixtures } from "../../hooks/useFixtures";
 import { usePredictions } from "../../hooks/usePredictions";
-// import useLeaderboards from "../../hooks/useLeaderboards";
+import { useLeaderboard }from "../../hooks/useLeaderboard";
 // import usePredictions from "../../hooks/usePredictions";
 
 export default function GameDataReadyGate({ children }) {
@@ -10,10 +10,10 @@ export default function GameDataReadyGate({ children }) {
         fixturesLoadingMessage
     } = useFixtures();
 
-    // const {
-    //     leaderboardsLoading,
-    //     leaderboardsLoadingMessage
-    // } = useLeaderboards();
+    const {
+        leaderboardLoading,
+        leaderboardLoadingMessage
+    } = useLeaderboard();
 
     const {
         predictionsLoading,
@@ -26,10 +26,10 @@ export default function GameDataReadyGate({ children }) {
             message: fixturesLoadingMessage
         },
 
-        // {
-        //     active: leaderboardsLoading,
-        //     message: leaderboardsLoadingMessage
-        // },
+        {
+            active: leaderboardLoading,
+            message: leaderboardLoadingMessage
+        },
 
         {
             active: predictionsLoading,
