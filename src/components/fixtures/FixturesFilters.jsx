@@ -6,7 +6,7 @@ export default function FixturesFilters() {
     const fixtStatusOpts = ["upcoming", "live_90", "finished", "all"];
 
     return (
-        <div className="fixtureFilters">
+        <div className="filters fixtureFilters">
             <div className="fixStatusFilter">
                 {fixtStatusOpts.map(opt => (
                     <button
