@@ -47,9 +47,9 @@ export default function FixtureSnapshot() {
             <div className="snapshotCol team home">
               <div className="flagWrap">
                   <img
-                      src={`https://flagcdn.com/w40/${homeFlag}.png`}
-                      alt={`${snapshotFixture.home_short_code} flag`}
-                      className="wcFlagSnap"
+                    src={`https://flagcdn.com/w40/${homeFlag}.png`}
+                    alt={`${snapshotFixture.home_short_code} flag`}
+                    className="wcFlagSnap"
                   />
               </div>
               <div>
@@ -58,36 +58,35 @@ export default function FixtureSnapshot() {
             </div>
             <div className="snapshotCol snapshotDetails">
 
-                <div className="snapLabel">
-                    {snapLabel}
+              <div className="snapLabel">
+                  {snapLabel}
+              </div>
+              {isLive && (
+                <div className="snapScore">
+                  {snapshotFixture.ft_home_goals}
+                  {" - "}
+                  {snapshotFixture.ft_away_goals}
                 </div>
-
-                {isLive && (
-                  <div className="snapScore">
-                    {snapshotFixture.ft_home_goals}
-                    {" - "}
-                    {snapshotFixture.ft_away_goals}
-                  </div>
-                )}
-
-                {!isLive && (
-                  <div className="snapScore vs">
-                    V
-                  </div>
-                )}
-
+              )}
+              {!isLive && (
+                <div className="snapScore vs">
+                  V
+                </div>
+              )}
+              { !isLive && (
                 <div className="snapDetail">
-                    <p>{snapKO}</p>
-                    <p>{snapDate}</p>
+                  <p>{snapKO}</p>
+                  <p>{snapDate}</p>
                 </div>
+              )}
 
             </div>
             <div className="snapshotCol team away">
                 <div className="flagWrapSnap">
                   <img
-                      src={`https://flagcdn.com/w40/${awayFlag}.png`}
-                      alt={`${snapshotFixture.away_short_code} flag`}
-                      className="wcFlagSnap"
+                    src={`https://flagcdn.com/w40/${awayFlag}.png`}
+                    alt={`${snapshotFixture.away_short_code} flag`}
+                    className="wcFlagSnap"
                   />
               </div>
               <div>

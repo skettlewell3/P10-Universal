@@ -6,7 +6,7 @@ export default function DashboardPage() {
             {/* <div className="dashboardHeader">
                 WELCOME
             </div> */}
-            <div className="scrollArea">
+            <div className="scrollArea dashboardScroll">
                 <DashboardContainer/>
             </div>
         </div>

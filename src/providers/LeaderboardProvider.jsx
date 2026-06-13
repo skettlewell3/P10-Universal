@@ -1,8 +1,8 @@
-import { useCallback, useEffect, useState } from "react";
-import { LeaderboardContext } from "../context/LeaderboardContext"
-import { useDatabase } from "../hooks/useDatabase"
+import { useCallback, useEffect, useState, useRef } from "react";
+import { LeaderboardContext } from "../context/LeaderboardContext";
+import { useDatabase } from "../hooks/useDatabase";
 
-export default function LeaderboardProvider({children}) {
+export default function LeaderboardProvider({ children }) {
     const { supabase } = useDatabase();
 
     const [leaderboard, setLeaderboard] = useState([]);
@@ -12,11 +12,38 @@ export default function LeaderboardProvider({children}) {
     });
 
     const [scopeType, setScopeType] = useState("campaign");
-    const [scopeId, setScopeId] = useState(null);
+    const [scopeId, setScopeId] = useState(1);
 
     const flavourId = 1;
 
+    const cacheRef = useRef({});
+    const requestRef = useRef(0);
+
+    const getCacheKey = useCallback(() => {
+        return `${flavourId}:${scopeType}:${scopeId}`;
+    }, [flavourId, scopeType, scopeId]);
+
     const refreshLeaderboard = useCallback(async () => {
+        if (
+            (scopeType === "campaign" || scopeType === "stage") &&
+            scopeId == null
+        ) {
+            return;
+        }
+
+        const cacheKey = `${flavourId}:${scopeType}:${scopeId}`;
+
+        if (cacheRef.current[cacheKey]) {
+            setLeaderboard(cacheRef.current[cacheKey]);
+            setLoadingState({
+                loading: false,
+                message: ""
+            });
+            return;
+        }
+
+        const requestId = ++requestRef.current;
+
         setLoadingState({
             loading: true,
             message: "Fetching Leaderboard..."
@@ -24,24 +51,31 @@ export default function LeaderboardProvider({children}) {
 
         try {
             const { data, error } = await supabase.rpc(
-                'get_from_leaderboard',
+                "get_from_leaderboard",
                 {
                     p_flavour_id: flavourId,
-                    p_scope_type:scopeType,
+                    p_scope_type: scopeType,
                     p_scope_id: scopeId
                 }
             );
 
             if (error) throw error;
 
-            setLeaderboard(data ?? []);
+            if (requestId !== requestRef.current) return;
+
+            const result = data ?? [];
+
+            cacheRef.current[cacheKey] = result;
+            setLeaderboard(result);
         } catch (error) {
             console.error(error);
         } finally {
-            setLoadingState({
-                loading: false,
-                message: ""
-            });
+            if (requestId === requestRef.current) {
+                setLoadingState({
+                    loading: false,
+                    message: ""
+                });
+            }
         }
     }, [supabase, flavourId, scopeType, scopeId]);
 
@@ -50,9 +84,8 @@ export default function LeaderboardProvider({children}) {
     }, [refreshLeaderboard]);
 
     useEffect(() => {
-        
         const channel = supabase
-            .channel("leadboard-provider")
+            .channel("leaderboard-provider")
             .on(
                 "postgres_changes",
                 {
@@ -61,7 +94,11 @@ export default function LeaderboardProvider({children}) {
                     table: "leaderboard"
                 },
                 (payload) => {
-                    console.log("leaderboard changed", payload)
+                    console.log("leaderboard changed", payload);
+
+                    // IMPORTANT: invalidate cache so realtime actually updates UI
+                    cacheRef.current = {};
+
                     refreshLeaderboard();
                 }
             )
@@ -70,25 +107,25 @@ export default function LeaderboardProvider({children}) {
         return () => {
             supabase.removeChannel(channel);
         };
-    }, [supabase, refreshLeaderboard])
+    }, [supabase, refreshLeaderboard]);
 
     const value = {
         leaderboard,
-        leadeboardCount: leaderboard.length,
+        leaderboardCount: leaderboard.length,
         leaderboardLoading: loadingState.loading,
         leaderboardLoadingMessage: loadingState.message,
+
         scopeType,
         scopeId,
-        
+
         refreshLeaderboard,
         setScopeType,
         setScopeId
-    }
-
+    };
 
     return (
         <LeaderboardContext.Provider value={value}>
             {children}
         </LeaderboardContext.Provider>
-    )
+    );
 }
