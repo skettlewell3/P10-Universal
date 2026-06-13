@@ -53,6 +53,14 @@ export function FixturesProvider({ children }) {
         // console.log("Fixtures initial load fired");
     }, [refreshFixtures]);
 
+    // useEffect(() => {
+    //     const interval = setInterval(() => {
+    //         refreshFixtures();
+    //     }, 60000);
+
+    //     return () => clearInterval(interval);
+    // }, [refreshFixtures]);
+
     // realtime updates
     useEffect(() => {
         const channel = supabase
