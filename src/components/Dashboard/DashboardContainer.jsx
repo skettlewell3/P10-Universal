@@ -6,7 +6,7 @@ export default function DashboardContainer () {
         <div id="dashboardContainer">
             <DashButtonFixture label="Fixtures" to="/fixtures" />
             {/* <DashboardButton label="results" to="/results" disabled/> */}
-            <DashboardButton label="leaderboards" to="/leaderboards" />
+            <DashboardButton label="Leaderboard" to="/leaderboards" />
             {/* <DashboardButton label="stats" to="/stats" disbaled />             */}
         </div>
     )

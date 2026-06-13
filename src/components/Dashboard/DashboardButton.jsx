@@ -12,7 +12,15 @@ export default function DashboardButton ({ label, to }) {
             className="dashboardButton"
             onClick={handleClick}
         >
-            <span>{label}</span>
+            <div className="dashContent">
+                <div className="dashButtonLabel leaderboard">
+                    <span>{label}</span>
+                </div>
+
+                
+
+
+            </div>
         </button>
     )
 }

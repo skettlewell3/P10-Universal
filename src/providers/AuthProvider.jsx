@@ -45,6 +45,20 @@ export function AuthProvider({ children }) {
     await supabase.auth.signOut();
   };
 
+  // useEffect(() => {
+  //   const checkSessionExpiry = async () => {
+  //     const loginTime = Number(localStorage.getItem("login_time"));
+
+  //     if (loginTime && Date.now() - loginTime > 12 * 60 * 60 * 1000) {
+  //       await supabase.auth.signOut();
+  //       setSession(null);
+  //       setUser(null);
+  //     }
+  //   };
+
+  //   checkSessionExpiry();
+  // }, []);
+
   return (
     <AuthContext.Provider value={{
       session,
