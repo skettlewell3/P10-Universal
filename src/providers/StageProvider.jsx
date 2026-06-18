@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState, useMemo } from "react";
 import { StageContext } from "../context/StageContext";
 import { useDatabase } from "../hooks/useDatabase";
 import { useAuth } from "../hooks/useAuth";
@@ -81,12 +81,20 @@ export default function StageProvider({ children }) {
         refreshStages();
     }, [refreshSignal, refreshStages]);
 
+    const activeStage = useMemo(
+        () => stages.find(stage => stage.is_active) ?? null,
+        [stages]
+    );
 
+    const activeStageId = activeStage?.stage_id ?? null;
 
     const value = {
         stages,
         stagesLoading: loadingState.loading,
         stagesLoadingMessage: loadingState.message,
+        activeStage,
+        activeStageId,
+
         refreshStages
     };
 

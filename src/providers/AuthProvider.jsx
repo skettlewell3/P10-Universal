@@ -134,8 +134,7 @@ export function AuthProvider({ children }) {
   }, []);
 
   useEffect(() => {
-    const MAX_IDLE =
-      72 * 60 * 60 * 1000;
+    const MAX_IDLE = 72 * 60 * 60 * 1000;
 
     const interval = setInterval(async () => {
       const idleTime =

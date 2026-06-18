@@ -59,7 +59,7 @@ export default function Login() {
   })
 
   return (
-    <div id="logInContainer">
+    <div className="logInContainer">
       <img
         src={LOGO_SRC}
         alt="logo"
@@ -112,6 +112,10 @@ export default function Login() {
       {error && (
         <p style={{ color: "red" }}>{error}</p>
       )}
+
+      <p style={{ marginTop: "12px", fontSize: "0.9rem" }}>
+        <a href="/forgot-password">Forgot password?</a>
+      </p>
     </div>
   );
 }

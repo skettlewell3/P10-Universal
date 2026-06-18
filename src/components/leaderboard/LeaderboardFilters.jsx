@@ -6,25 +6,22 @@ export default function LeaderboardFilters({ scopeId,
     scopeType, 
     setScopeType 
 }) {
-    const { stages } = useStage();
+    const { stages, activeStage, activeStageId } = useStage();
 
     const visibleStages = useMemo(
         () => stages.filter(s => s.is_active || s.is_finished),
         [stages]
     );
 
-    const defaultStageId = useMemo(() => {
-        if (!visibleStages?.length) return null;
+    const defaultStageId = activeStageId
 
-        return visibleStages[0].stage_id;
-        
-    }, [visibleStages]);
+    useEffect(() => {
+        if (scopeType !== "stage") return;
+        if (scopeId != null) return;
+        if (!defaultStageId) return;
 
-    useEffect(() =>  {
-        if (scopeType === "stage" && scopeId == null && defaultStageId) {
-            setScopeId(defaultStageId);
-        }
-    }, [scopeType, scopeId, defaultStageId, setScopeId])
+        setScopeId(defaultStageId);
+    }, [scopeType, scopeId, defaultStageId, setScopeId]);
 
     const handleCampaign = () => {
         setScopeType("campaign");
@@ -33,7 +30,7 @@ export default function LeaderboardFilters({ scopeId,
 
     const handleStage = () => {
         setScopeType("stage");
-        setScopeId(1);
+        setScopeId(null);
     };
 
     const handleChange = (e) => {
