@@ -16,6 +16,8 @@ export function FixtureScoreboardProvider({ children }) {
     const activeFixtureIds = useRef(new Set());
     const lastFetched = useRef({});
     const pendingRefreshes = useRef({});
+    const leaderboardRef = useRef({});
+    const timers = useRef({});
 
     const fetchFixtureLeaderboard = useCallback(async (
         fixtureId,
@@ -24,14 +26,14 @@ export function FixtureScoreboardProvider({ children }) {
 
         const now = Date.now();
         const lastFetchTime = lastFetched.current[fixtureId];
-        const existingData = fixtureLeaderboard[fixtureId];
+
+        const existingData = leaderboardRef.current[fixtureId];
         const hasData = existingData !== undefined;
 
         const isStale =
             !lastFetchTime ||
             (now - lastFetchTime > STALE_AFTER_MS);
 
-        // prevent unnecessary calls
         if (!force && hasData && !isStale) {
             return;
         }
@@ -62,10 +64,15 @@ export function FixtureScoreboardProvider({ children }) {
             return;
         }
 
-        setFixtureLeaderboard(prev => ({
-            ...prev,
-            [fixtureId]: data ?? []
-        }));
+        setFixtureLeaderboard(prev => {
+            const next = {
+                ...prev,
+                [fixtureId]: data ?? []
+            };
+
+            leaderboardRef.current = next;
+            return next;
+        });
 
         lastFetched.current[fixtureId] = now;
 
@@ -74,7 +81,7 @@ export function FixtureScoreboardProvider({ children }) {
             [fixtureId]: false
         }));
 
-    }, [fixtureLeaderboard, supabase]);
+    }, [supabase]);
 
     const openFixtureLeaderboard = useCallback((fixtureId) => {
         activeFixtureIds.current.add(fixtureId);
@@ -95,8 +102,6 @@ export function FixtureScoreboardProvider({ children }) {
             );
         });
     }, [refreshSignal, fetchFixtureLeaderboard]);
-
-    // console.log("leaderboard:", fixtureLeaderboard)
 
     useEffect(() => {
 
@@ -127,7 +132,11 @@ export function FixtureScoreboardProvider({ children }) {
 
                     pendingRefreshes.current[fixtureId] = true;
 
-                    setTimeout(async () => {
+                    if (timers.current[fixtureId]) {
+                        clearTimeout(timers.current[fixtureId]);
+                    }
+
+                    timers.current[fixtureId] = setTimeout(async () => {
                         try {
                             await fetchFixtureLeaderboard(
                                 fixtureId,
@@ -151,7 +160,6 @@ export function FixtureScoreboardProvider({ children }) {
     const value = {
         fixtureLeaderboard,
         loadingFixtureLeaderboard,
-
         fetchFixtureLeaderboard,
         openFixtureLeaderboard,
         closeFixtureLeaderboard
