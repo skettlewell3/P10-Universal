@@ -22,7 +22,7 @@ export default function HeaderProfile({ profile }) {
                 overallRanking={overallRanking}
                 overallScore={overallScore} 
             />
-            <FlavourDropdown  />
+            {/* <FlavourDropdown  /> */}
         </header>
     );
 }

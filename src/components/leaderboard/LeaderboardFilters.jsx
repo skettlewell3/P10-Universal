@@ -8,23 +8,17 @@ export default function LeaderboardFilters({ scopeId,
 }) {
     const { stages } = useStage();
 
+    const visibleStages = useMemo(
+        () => stages.filter(s => s.is_active || s.is_finished),
+        [stages]
+    );
+
     const defaultStageId = useMemo(() => {
-        if (!stages?.length) return null;
+        if (!visibleStages?.length) return null;
 
-        const activeStages = stages.filter(s => s.is_active);
-
-        if (activeStages.length === 1) {
-            return activeStages[0].stage_id;
-        }
-
-        if (activeStages.length > 1) {
-            return activeStages
-                .sort((a, b) => a.order_index - b.order_index)[0].stage_id;
-        }
-
-        return stages
-            .sort((a, b) => b.order_index - a.order_index)[0].stage_id;
-    }, [stages]);
+        return visibleStages[0].stage_id;
+        
+    }, [visibleStages]);
 
     useEffect(() =>  {
         if (scopeType === "stage" && scopeId == null && defaultStageId) {
@@ -44,9 +38,7 @@ export default function LeaderboardFilters({ scopeId,
 
     const handleChange = (e) => {
         setScopeId(Number(e.target.value))
-    };
-
-    const visibleStages = stages.filter(s => s.is_active || s.is_finished)
+    };    
 
     return (
         <div className="filters leaderboardFilters">
