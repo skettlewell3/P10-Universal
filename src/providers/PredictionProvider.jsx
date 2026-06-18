@@ -2,10 +2,12 @@ import { useEffect, useState, useCallback } from "react";
 import { PredictionsContext } from "../context/PredictionsContext";
 import { useDatabase } from "../hooks/useDatabase";
 import { useProfile } from "../hooks/useProfile";
+import { useAuth } from "../hooks/useAuth";
 
 export function PredictionProvider({ children, flavourId }) {
   const { supabase } = useDatabase();
   const { profile } = useProfile();
+  const { refreshSignal } = useAuth();
 
   const profileId = profile?.profile_id;
 
@@ -78,6 +80,11 @@ export function PredictionProvider({ children, flavourId }) {
     if (!profileId) return;
     refreshPredictions();
   }, [profileId, refreshPredictions]);
+
+  useEffect(() => {
+    if (!refreshSignal) return;
+    refreshPredictions();
+  }, [refreshSignal, refreshPredictions])
 
   // submit function 
   const submitPredictions = useCallback(

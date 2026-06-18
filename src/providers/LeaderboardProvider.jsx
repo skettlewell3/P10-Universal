@@ -1,9 +1,11 @@
 import { useCallback, useEffect, useState, useRef } from "react";
 import { LeaderboardContext } from "../context/LeaderboardContext";
 import { useDatabase } from "../hooks/useDatabase";
+import { useAuth } from "../hooks/useAuth";
 
 export default function LeaderboardProvider({ children }) {
     const { supabase } = useDatabase();
+    const { refreshSignal } = useAuth();
 
     const [leaderboard, setLeaderboard] = useState([]);
     const [loadingState, setLoadingState] = useState({
@@ -82,6 +84,14 @@ export default function LeaderboardProvider({ children }) {
     useEffect(() => {
         refreshLeaderboard();
     }, [refreshLeaderboard]);
+
+    useEffect(() => {
+        if (!refreshSignal) return;
+
+        cacheRef.current = {};
+
+        refreshLeaderboard();
+    }, [refreshSignal, refreshLeaderboard])
 
     useEffect(() => {
         const channel = supabase

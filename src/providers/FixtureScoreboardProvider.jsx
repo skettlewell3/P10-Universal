@@ -1,12 +1,14 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 import { FixtureScoreboardContext } from "../context/FixtureScoreboardContext";
 import { useDatabase } from "../hooks/useDatabase";
+import { useAuth } from "../hooks/useAuth";
 
 const STALE_AFTER_MS = 60 * 1000;
 const DEBOUNCE_MS = 500;
 
 export function FixtureScoreboardProvider({ children }) {
     const { supabase } = useDatabase();
+    const { refreshSignal } = useAuth();
 
     const [fixtureLeaderboard, setFixtureLeaderboard] = useState({});
     const [loadingFixtureLeaderboard, setLoadingFixtureLeaderboard] = useState({});
@@ -82,6 +84,17 @@ export function FixtureScoreboardProvider({ children }) {
     const closeFixtureLeaderboard = useCallback((fixtureId) => {
         activeFixtureIds.current.delete(fixtureId);
     }, []);
+
+    useEffect(() => {
+        if (!refreshSignal) return;
+
+        activeFixtureIds.current.forEach(fixtureId => {
+            fetchFixtureLeaderboard(
+                fixtureId,
+                { force: true }
+            );
+        });
+    }, [refreshSignal, fetchFixtureLeaderboard]);
 
     // console.log("leaderboard:", fixtureLeaderboard)
 

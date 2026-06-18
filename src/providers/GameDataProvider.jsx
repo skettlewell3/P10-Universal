@@ -4,21 +4,24 @@ import { FixturesFiltersProvider } from "./FixturesFiltersProvider";
 import { FixturesProvider } from "./FixturesProvider";
 import LeaderboardProvider from "./LeaderboardProvider";
 import { PredictionProvider } from "./PredictionProvider";
+import StageProvider from "./StageProvider";
 
 export default function GameDataProvider ({children}) {
     return (
-        <FixturesProvider>
-            <FixturesFiltersProvider>
-                <PredictionProvider flavourId={1}>
-                    <LeaderboardProvider>
-                        <FixtureScoreboardProvider>
-                            <GameDataReadyGate>
-                                {children}
-                             </GameDataReadyGate>
-                        </FixtureScoreboardProvider>
-                    </LeaderboardProvider>
-                </PredictionProvider>
-            </FixturesFiltersProvider>
-        </FixturesProvider>
+        <StageProvider>
+            <FixturesProvider>
+                <FixturesFiltersProvider>
+                    <PredictionProvider flavourId={1}>
+                        <LeaderboardProvider>
+                            <FixtureScoreboardProvider>
+                                <GameDataReadyGate>
+                                    {children}
+                                </GameDataReadyGate>
+                            </FixtureScoreboardProvider>
+                        </LeaderboardProvider>
+                    </PredictionProvider>
+                </FixturesFiltersProvider>
+            </FixturesProvider>
+        </StageProvider>
     )
 }

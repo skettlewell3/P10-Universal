@@ -1,9 +1,11 @@
 import { useCallback, useEffect, useRef, useState } from "react";
-import { useDatabase } from "../hooks/useDatabase";
 import { StageContext } from "../context/StageContext";
+import { useDatabase } from "../hooks/useDatabase";
+import { useAuth } from "../hooks/useAuth";
 
 export default function StageProvider({ children }) {
     const { supabase } = useDatabase();
+    const { refreshSignal } = useAuth();
 
     const [stages, setStages] = useState([]);
 
@@ -63,11 +65,21 @@ export default function StageProvider({ children }) {
             }
         }
     }, [supabase]);
-
+    
     // initial load
     useEffect(() => {
         refreshStages();
     }, [refreshStages]);
+    
+    useEffect(() => {
+        if (!refreshSignal) return;
+
+        cacheRef.current = {};
+        
+        refreshStages();
+    }, [refreshSignal, refreshStages]);
+
+
 
     const value = {
         stages,

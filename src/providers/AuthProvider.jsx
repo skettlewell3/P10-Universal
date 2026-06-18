@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useDatabase } from "../hooks/useDatabase";
 import { AuthContext } from "../context/AuthContext";
 
@@ -12,18 +12,28 @@ export function AuthProvider({ children }) {
     message: "Auth Loading..."
   });
 
+  const lastActivityRef = useRef(0);
+  const lastRefreshRef = useRef(0);
+
+  const [refreshSignal, setRefreshSignal] = useState(0);
+
   useEffect(() => {
     console.log("INIT AUTH START");
 
     supabase.auth.getSession().then(({ data }) => {
+      setLoadingState({
+        loading: true,
+        message: "Fetching session..."
+      });
+
       const sessionData = data.session;
 
       setSession(sessionData);
       setUser(sessionData?.user ?? null);
 
       setLoadingState({
-        loading: true,
-        message: "Fetching session..."
+        loading: false,
+        message: "Session fetched"
       });
 
       console.log("INIT AUTH FINISHED");
@@ -45,19 +55,101 @@ export function AuthProvider({ children }) {
     await supabase.auth.signOut();
   };
 
-  // useEffect(() => {
-  //   const checkSessionExpiry = async () => {
-  //     const loginTime = Number(localStorage.getItem("login_time"));
+  useEffect(() => {
+    const updateActivity = () => {
+      lastActivityRef.current = Date.now();
+      lastRefreshRef.current = Date.now();
+    };
 
-  //     if (loginTime && Date.now() - loginTime > 12 * 60 * 60 * 1000) {
-  //       await supabase.auth.signOut();
-  //       setSession(null);
-  //       setUser(null);
-  //     }
-  //   };
+    const events = [
+      "mousedown",
+      "keydown",
+      "touchstart",
+      "scroll",
+      "click"
+    ];
 
-  //   checkSessionExpiry();
-  // }, []);
+    events.forEach(event =>
+      window.addEventListener(event, updateActivity)
+    );
+
+    return () => {
+      events.forEach(event =>
+        window.removeEventListener(event, updateActivity)
+      );
+    };
+  }, []);
+
+  useEffect(() => {
+    const STALE_AFTER = 60 * 1000;
+
+    const handleResume = () => {
+      if (document.visibilityState !== "visible") return;
+
+      const now = Date.now();
+
+      const stale =
+        now - lastRefreshRef.current > STALE_AFTER;
+
+      if (stale) {
+        console.log("APP RESUMED -> REQUEST REFRESH");
+
+        lastRefreshRef.current = now;
+
+        setRefreshSignal(now);
+      }
+    };
+
+    document.addEventListener(
+      "visibilitychange",
+      handleResume
+    );
+
+    window.addEventListener(
+      "focus",
+      handleResume
+    );
+
+    window.addEventListener(
+      "online",
+      handleResume
+    );
+
+    return () => {
+      document.removeEventListener(
+        "visibilitychange",
+        handleResume
+      );
+
+      window.removeEventListener(
+        "focus",
+        handleResume
+      );
+
+      window.removeEventListener(
+        "online",
+        handleResume
+      );
+    };
+  }, []);
+
+  useEffect(() => {
+    const MAX_IDLE =
+      72 * 60 * 60 * 1000;
+
+    const interval = setInterval(async () => {
+      const idleTime =
+        Date.now() - lastActivityRef.current;
+
+      if (idleTime > MAX_IDLE) {
+        console.log("SESSION EXPIRED");
+
+        await supabase.auth.signOut();
+      }
+    }, 60 * 1000);
+
+    return () => clearInterval(interval);
+  }, [supabase]);
 
   return (
     <AuthContext.Provider value={{
@@ -65,6 +157,8 @@ export function AuthProvider({ children }) {
       user,
       loadingState,
       signOut,
+
+      refreshSignal
     }}>
       {children}
     </AuthContext.Provider>

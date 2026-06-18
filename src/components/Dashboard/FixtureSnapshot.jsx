@@ -58,7 +58,7 @@ export default function FixtureSnapshot() {
             </div>
             <div className="snapshotCol snapshotDetails">
 
-              <div className="snapLabel">
+              <div className={`snapLabel ${isLive ? "blink" : ""}`}>
                   {snapLabel}
               </div>
               {isLive && (
