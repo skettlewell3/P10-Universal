@@ -81,7 +81,7 @@ export function AuthProvider({ children }) {
   }, []);
 
   useEffect(() => {
-    const STALE_AFTER = 60 * 1000;
+    const STALE_AFTER = 5 * 60 * 1000;
 
     const handleResume = () => {
       if (document.visibilityState !== "visible") return;

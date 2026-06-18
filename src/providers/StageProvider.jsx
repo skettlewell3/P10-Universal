@@ -54,6 +54,8 @@ export default function StageProvider({ children }) {
             cacheRef.current[cacheKey] = result;
             setStages(result);
 
+            console.log("stages:", result)
+
         } catch (error) {
             console.error("Failed to load stages:", error);
         } finally {
