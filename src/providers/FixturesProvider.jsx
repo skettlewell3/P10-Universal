@@ -1,9 +1,11 @@
 import { useEffect, useState, useCallback } from 'react';
 import { FixturesContext } from '../context/FixturesContext';
 import { useDatabase } from '../hooks/useDatabase';
+import { useAuth } from '../hooks/useAuth';
 
 export function FixturesProvider({ children }) {
     const { supabase } = useDatabase();
+    const { refreshSignal } = useAuth();
 
     const [fixtures, setFixtures] = useState([]);
 
@@ -53,13 +55,15 @@ export function FixturesProvider({ children }) {
         // console.log("Fixtures initial load fired");
     }, [refreshFixtures]);
 
-    // useEffect(() => {
-    //     const interval = setInterval(() => {
-    //         refreshFixtures();
-    //     }, 60000);
+    useEffect(() => {
+      if (!refreshSignal) return;
 
-    //     return () => clearInterval(interval);
-    // }, [refreshFixtures]);
+      console.log(
+        "SESSION REFRESH REQUEST -> FIXTURES"
+      );
+
+      refreshFixtures();
+    }, [refreshSignal, refreshFixtures]);
 
     // realtime updates
     useEffect(() => {
