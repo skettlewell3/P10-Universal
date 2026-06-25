@@ -3,7 +3,24 @@ import { useFixturesFilters } from "../../hooks/useFixturesFilters";
 export default function FixturesFilters() {
     const { statusFilter, setStatusFilter } = useFixturesFilters();
 
-    const fixtStatusOpts = ["upcoming", "live_90", "finished", "all"];
+    const fixtStatusOpts = [
+        {
+            label: "Upcoming",
+            value: "upcoming" 
+        },
+        {
+            label: "Live",
+            value: "live" 
+        }, 
+        {
+            label: "Finished",
+            value: "finished" 
+        }, 
+        {
+            label: "All",
+            value: "all" 
+        },  
+    ];
 
     return (
         <div className="filters fixtureFilters">
