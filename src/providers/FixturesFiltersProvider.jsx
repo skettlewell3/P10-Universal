@@ -25,13 +25,13 @@ function resolveSort(filtersStatus, sortPreset) {
     const base = getDefaultSortForStatus(filtersStatus);
 
     switch (sortPreset) {
-        case "newest":
+        case "desc":
             return {
                 field: "kickoff_at",
                 direction: "desc",
             };
 
-        case "oldest":
+        case "asc":
             return {
                 field: "kickoff_at",
                 direction: "asc",
@@ -200,10 +200,10 @@ export function FixturesFiltersProvider({ children }) {
         });
     };
 
-    const setPredictionsFilter = (predictionsOpenOnly) => {
+    const togglePredictionsFilter = () => {
         setFilters(prev => ({
             ...prev,
-            predictionsOpenOnly,
+            predictionsOpenOnly: !prev.predictionsOpenOnly,
         }));
     };
 
@@ -299,7 +299,7 @@ export function FixturesFiltersProvider({ children }) {
         setStageFilter,
         setGroupFilter,
         setTeamFilter,
-        setPredictionsFilter,
+        togglePredictionsFilter,
 
         setSortPreset,
 
