@@ -1,6 +1,8 @@
+import { useMemo, useState } from "react";
 import { FixturesFiltersContext } from "../context/FixturesFiltersContext";
 import { useFixtures } from "../hooks/useFixtures";
-import { useMemo, useState } from "react";
+import { useTeams } from "../hooks/useTeams";
+import { useStage } from "../hooks/useStage";
 
 function getDefaultSortForStatus(status) {
     switch (status) {
@@ -45,6 +47,8 @@ function resolveSort(filtersStatus, sortPreset) {
 
 export function FixturesFiltersProvider({ children }) {
     const { fixtures } = useFixtures();
+    const { availableTeams, teamsMap } = useTeams();
+    const { availableStages } = useStage();
 
     const [filters, setFilters] = useState({
         status: "upcoming",
@@ -64,15 +68,17 @@ export function FixturesFiltersProvider({ children }) {
         return resolveSort(filters.status, sortPreset);
     }, [filters.status, sortPreset]);
 
+    
+
     const filteredFixtures = useMemo(() => {
         let filtered = [...fixtures];
 
-        // Remove incomplete fixtures
-        filtered = filtered.filter(
-            f =>
-                f.home_team_id != null &&
-                f.away_team_id != null
-        );
+        // // Remove incomplete fixtures
+        // filtered = filtered.filter(
+        //     f =>
+        //         f.home_team_id != null &&
+        //         f.away_team_id != null
+        // );
 
         // Status
         if (filters.status !== "all") {
@@ -153,16 +159,16 @@ export function FixturesFiltersProvider({ children }) {
 
     const setStageFilter = (stageId) => {
         setFilters(prev => {
+            const normalized = stageId === null ? null : Number(stageId);
             const activatingScope = prev.stageId == null && stageId != null;
 
             if (!activatingScope) {
-                return {...prev, stageId};
+                return {...prev, stageId: normalized};
             }
             
             return {
                 ...prev,
-                stageId,
-
+                stageId: normalized,
                 status: prev.status === "upcoming" ? "all" : prev.status,
             };
         });
@@ -186,15 +192,16 @@ export function FixturesFiltersProvider({ children }) {
 
     const setTeamFilter = (teamId) => {
         setFilters(prev => {
+            const normalized = teamId === null ? null : Number(teamId);
             const activatingScope = prev.teamId == null && teamId != null;
 
             if (!activatingScope) {
-                return { ...prev, teamId };
+                return { ...prev, teamId: normalized };
             }
 
             return {
                 ...prev,
-                teamId,
+                teamId: normalized,
                 status: prev.status === "upcoming" ? "all" : prev.status,
             };
         });
@@ -227,53 +234,94 @@ export function FixturesFiltersProvider({ children }) {
         )].sort();
     }, [fixtures]);
 
+    const constraintFixtures = useMemo(() => {
+        let filtered = [...fixtures];
+
+        if (filters.status !== "all") {
+            if (filters.status === "live") {
+                filtered = filtered.filter(
+                    f =>
+                        f.fixture_status === "live_90" ||
+                        f.fixture_status === "live_et"
+                );
+            } else {
+                filtered = filtered.filter(
+                    f => f.fixture_status === filters.status
+                );
+            }
+        }
+
+        if (filters.stageId != null) {
+            filtered = filtered.filter(
+                f => f.stage_id === filters.stageId
+            );
+        }
+
+        if (filters.groupLetter) {
+            filtered = filtered.filter(
+                f => f.group_letter === filters.groupLetter
+            );
+        }
+
+        return filtered;
+    }, [fixtures, filters.status, filters.stageId, filters.groupLetter]);
+
+    const filteredTeams = useMemo(() => {
+        const teamIds = new Set();
+
+        for (const f of constraintFixtures) {
+            if (f.home_team_id) teamIds.add(f.home_team_id);
+            if (f.away_team_id) teamIds.add(f.away_team_id);
+        }
+
+        return availableTeams.filter(team =>
+            teamIds.has(team.value)
+        );
+    }, [constraintFixtures, availableTeams]);
+
     const uiConstraints = useMemo(() => {
         const teamSelected = filters.teamId != null;
-        const groupSelected = filters.groupLetter != null;
-
-        const filteredTeams = groupSelected
-            ? fixtures
-                  .filter(f => f.group_letter === filters.groupLetter)
-                  .flatMap(f => [f.home_team_id, f.away_team_id])
-                  .filter(Boolean)
-            : null;
 
         return {
             disableGroup: teamSelected,
             disableTeam: false,
-            filteredTeams,
+            disableStage: false,    
         };
-    }, [filters, fixtures]);
+    }, [filters.teamId]);
 
     const activeFilters = useMemo(() => {
         const out = [];
 
         if (filters.stageId != null) {
+            const stage = availableStages.find(s => s.value === filters.stageId);
+
             out.push({
                 key: "stageId",
-                id: filters.stageId,
                 label: "Stage",
+                display: stage?.labelShort ?? stage?.label ?? filters.stageId,
             });
         }
 
         if (filters.groupLetter) {
             out.push({
                 key: "groupLetter",
-                id: filters.groupLetter,
                 label: "Group",
+                display: `Group: ${filters.groupLetter}`,
             });
         }
 
         if (filters.teamId != null) {
+            const team = teamsMap[filters.teamId];
+
             out.push({
                 key: "teamId",
-                id: filters.teamId,
                 label: "Team",
+                display: team?.short_code ?? team?.team_name ?? filters.teamId,
             });
         }
 
         return out;
-    }, [filters]);
+    }, [filters, availableStages, teamsMap]);
 
     const hasActiveFilters = activeFilters.length > 0;
 
@@ -282,6 +330,7 @@ export function FixturesFiltersProvider({ children }) {
 
         filters,
 
+        filteredTeams,
         availableGroups,
         uiConstraints,
         activeFilters,

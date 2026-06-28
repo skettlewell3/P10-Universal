@@ -1,10 +1,12 @@
 import { useFixturesFilters } from "../../hooks/useFixturesFilters";
 import FixtureFilterChip from "./FixtureFilterChip";
 import FixtureFilterSelect from "./FixtureFilterSelect";
+import { useStage } from "../../hooks/useStage";
 
 export default function FixturesFilters() {
     const { 
         availableGroups,
+        filteredTeams,
         uiConstraints,
         activeFilters,
         hasActiveFilters,
@@ -47,6 +49,8 @@ export default function FixturesFilters() {
         },  
     ];
 
+    const {  availableStages } = useStage();
+
     const handleResetClick = () => {
         resetFilters();
     }
@@ -55,6 +59,7 @@ export default function FixturesFilters() {
         value: group,
         label: `Group ${group}`,
     }))
+
 
     return (
         <div className="filters fixtureFilters">
@@ -77,7 +82,6 @@ export default function FixturesFilters() {
                 >
                     {predictionsFilter === true ? "Predictions Open" : "All Matches"}
                 </button>
-
             </div>
 
             <FixtureFilterSelect
@@ -86,6 +90,22 @@ export default function FixturesFilters() {
                 placeholder="All Groups"
                 disabled={uiConstraints.disableGroup}
                 onChange={setGroupFilter}
+            />
+
+            <FixtureFilterSelect
+                value={stageFilter}
+                options={availableStages}
+                placeholder="All Stages"
+                disabled={uiConstraints.disableStage}
+                onChange={setStageFilter}
+            />
+
+            <FixtureFilterSelect 
+                value={teamFilter}
+                options={filteredTeams}
+                placeholder="All Teams"
+                disabled={uiConstraints.disableTeam}
+                onChange={setTeamFilter}
             />
 
             <div className="fixtureFiltersFooter">
@@ -98,6 +118,7 @@ export default function FixturesFilters() {
                                     key={`${filter.key}-${filter.id}`}
                                     label={filter.label}
                                     value={filter.id}
+                                    display={filter.display}
                                     onRemove={() => {
                                         if (filter.key === "stageId") setStageFilter(null);
                                         if (filter.key === "groupLetter") setGroupFilter(null);

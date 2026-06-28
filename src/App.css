@@ -794,8 +794,9 @@ input[type=number] {
   border-radius: 10px;
 
   display: grid;
-  grid-template-columns: 4fr 1fr; 
-  gap: 1rem;
+  grid-template-columns: 4fr .5fr; 
+  row-gap: .35rem;
+  column-gap: .5rem;
   padding: 0.2rem;
   margin-top: 0.2rem; 
 
