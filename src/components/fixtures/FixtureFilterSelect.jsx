@@ -4,11 +4,13 @@ export default function FixtureFilterSelect({
     placeholder,
     disabled = false,
     onChange,
+    active
 }) {
     return (
-        <div className="fixtureSelectContainer">
+        <div className="filterSelectContainer">
             <select
                 value={value ?? ""}
+                className={active ? "active" : null}
                 disabled={disabled}
                 onChange={(e) =>
                     onChange(
