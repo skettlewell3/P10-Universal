@@ -1,9 +1,8 @@
-export default function FixtureFilterChip({ label, value, onRemove }) {
+export default function FixtureFilterChip({ display, onRemove }) {
     return (
         <div className="filterChip">
             <div className="chipLabels">
-                <span>{label}</span>
-                <span>{value}</span>
+                <span>{display}</span>
             </div>
             <div className="chipX">
                 <button 

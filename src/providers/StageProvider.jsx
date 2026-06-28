@@ -88,15 +88,56 @@ export default function StageProvider({ children }) {
 
     const activeStageId = activeStage?.stage_id ?? null;
 
+    const availableStages = useMemo(
+        () =>
+            stages.filter(
+                stage => 
+                    stage.is_active ||
+                    stage.is_finished
+            )
+            .map(stage => ({
+                value: stage.stage_id,
+                label: stage.stage_name,
+                labelShort: stage.stage_code,
+            })),
+        [stages]
+    );
+
+    useEffect(() => {
+        const channel = supabase
+            .channel(`flavour-stages-${flavourId}`)
+            .on(
+                "postgres_changes",
+                {
+                    event: "*",
+                    schema: "public",
+                    table: "flavour_stages",
+                    filter: `flavour_id=eq.${flavourId}`,
+                },
+                () => {
+                    cacheRef.current = {};
+                    refreshStages();
+                }
+            )
+            .subscribe();
+        
+        return () => {
+            supabase.removeChannel(channel);
+        };
+    }, [supabase, flavourId, refreshStages]);
+
     const value = {
         stages,
         stagesLoading: loadingState.loading,
         stagesLoadingMessage: loadingState.message,
         activeStage,
         activeStageId,
+        availableStages,
 
         refreshStages
     };
+
+    
 
     return (
         <StageContext.Provider value={value}>
