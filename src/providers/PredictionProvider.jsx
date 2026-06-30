@@ -3,11 +3,14 @@ import { PredictionsContext } from "../context/PredictionsContext";
 import { useDatabase } from "../hooks/useDatabase";
 import { useProfile } from "../hooks/useProfile";
 import { useAuth } from "../hooks/useAuth";
+import { useFlavour } from "../hooks/useFlavour";
 
-export function PredictionProvider({ children, flavourId }) {
+export function PredictionProvider({ children }) {
   const { supabase } = useDatabase();
   const { profile } = useProfile();
   const { refreshSignal } = useAuth();
+
+  const { flavourId } = useFlavour();
 
   const profileId = profile?.profile_id;
 
@@ -39,7 +42,7 @@ export function PredictionProvider({ children, flavourId }) {
       const { data, error } = await supabase.rpc(
         "get_user_flavour_predictions",
         {
-          p_flavour_id: flavourId ?? 1,
+          p_flavour_id: flavourId,
           p_profile_id: profileId,
         }
       );

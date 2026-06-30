@@ -2,10 +2,12 @@ import { useCallback, useEffect, useRef, useState, useMemo } from "react";
 import { StageContext } from "../context/StageContext";
 import { useDatabase } from "../hooks/useDatabase";
 import { useAuth } from "../hooks/useAuth";
+import { useFlavour } from "../hooks/useFlavour";
 
 export default function StageProvider({ children }) {
     const { supabase } = useDatabase();
     const { refreshSignal } = useAuth();
+    const { flavourId } = useFlavour();
 
     const [stages, setStages] = useState([]);
 
@@ -13,8 +15,6 @@ export default function StageProvider({ children }) {
         loading: true,
         message: "Loading stages..."
     });
-
-    const flavourId = 1;
 
     const cacheRef = useRef({});
     const requestRef = useRef(0);
@@ -66,7 +66,7 @@ export default function StageProvider({ children }) {
                 });
             }
         }
-    }, [supabase]);
+    }, [supabase, flavourId]);
     
     // initial load
     useEffect(() => {
