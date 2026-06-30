@@ -58,6 +58,7 @@ export default function FixturesPage() {
                         setPredictionDrafts={setPredictionDrafts}
                         submitPredictions={submitPredictions}
                         predictionsLoading={predictionsLoading}
+                        hasMultiple={hasMultiple}
                     />
                 ))}
             </div>

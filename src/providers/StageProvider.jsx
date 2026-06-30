@@ -88,7 +88,7 @@ export default function StageProvider({ children }) {
 
     const activeStageId = activeStage?.stage_id ?? null;
 
-    const availableStages = useMemo(
+    const leaderboardStages = useMemo(
         () =>
             stages.filter(
                 stage => 
@@ -96,6 +96,16 @@ export default function StageProvider({ children }) {
                     stage.is_finished
             )
             .map(stage => ({
+                value: stage.stage_id,
+                label: stage.stage_name,
+                labelShort: stage.stage_code,
+            })),
+        [stages]
+    );
+
+    const fixtureStages = useMemo(
+        () =>
+            stages.map(stage => ({
                 value: stage.stage_id,
                 label: stage.stage_name,
                 labelShort: stage.stage_code,
@@ -132,7 +142,8 @@ export default function StageProvider({ children }) {
         stagesLoadingMessage: loadingState.message,
         activeStage,
         activeStageId,
-        availableStages,
+        fixtureStages,
+        leaderboardStages,
 
         refreshStages
     };

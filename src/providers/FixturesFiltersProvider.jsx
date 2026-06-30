@@ -48,7 +48,7 @@ function resolveSort(filtersStatus, sortPreset) {
 export function FixturesFiltersProvider({ children }) {
     const { fixtures } = useFixtures();
     const { availableTeams, teamsMap } = useTeams();
-    const { availableStages } = useStage();
+    const { fixtureStages } = useStage();
 
     const [filters, setFilters] = useState({
         status: "upcoming",
@@ -293,7 +293,7 @@ export function FixturesFiltersProvider({ children }) {
         const out = [];
 
         if (filters.stageId != null) {
-            const stage = availableStages.find(s => s.value === filters.stageId);
+            const stage = fixtureStages.find(s => s.value === filters.stageId);
 
             out.push({
                 key: "stageId",
@@ -321,7 +321,7 @@ export function FixturesFiltersProvider({ children }) {
         }
 
         return out;
-    }, [filters, availableStages, teamsMap]);
+    }, [filters, fixtureStages, teamsMap]);
 
     const hasActiveFilters = activeFilters.length > 0;
 
