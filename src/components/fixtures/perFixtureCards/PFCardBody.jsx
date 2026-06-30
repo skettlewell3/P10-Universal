@@ -12,7 +12,8 @@ export default function PFCardBody({
     predictionsMap,
     predictionsLoading,
     showLeaderboard,
-    setShowLeaderboard
+    setShowLeaderboard,
+    hasMulitple,
 }) {   
 
     const isOpen = 
@@ -84,7 +85,7 @@ export default function PFCardBody({
                         <button 
                             type="submit" 
                             className={`pfSubmit ${canSubmit ? "canSubmit" : "noSubmit"}`}
-                            disabled={!canSubmit || predictionsLoading}
+                            disabled={!canSubmit || predictionsLoading || hasMulitple}
                         >
                             {existing ? (isDirty ? "Update" : "Saved") : "Submit"}
                         </button>

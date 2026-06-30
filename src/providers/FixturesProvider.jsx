@@ -2,10 +2,13 @@ import { useEffect, useState, useCallback } from 'react';
 import { FixturesContext } from '../context/FixturesContext';
 import { useDatabase } from '../hooks/useDatabase';
 import { useAuth } from '../hooks/useAuth';
+import { useFlavour } from '../hooks/useFlavour'; 
 
 export function FixturesProvider({ children }) {
     const { supabase } = useDatabase();
     const { refreshSignal } = useAuth();
+
+    const { flavourId } = useFlavour();
 
     const [fixtures, setFixtures] = useState([]);
 
@@ -15,7 +18,8 @@ export function FixturesProvider({ children }) {
     });
 
     const refreshFixtures = useCallback(async () => {
-        // single atomic "start loading" state update
+        if (!flavourId) return;
+
         setLoadingState({
             loading: true,
             message: "Fetching fixtures..."
@@ -25,13 +29,12 @@ export function FixturesProvider({ children }) {
             const { data, error } = await supabase.rpc(
                 'get_fixture_provider',
                 {
-                    p_flavour_id: 1
+                    p_flavour_id: flavourId
                 }
             );
 
             if (error) throw error;
 
-            // single atomic success update
             setFixtures(data || []);
 
             setLoadingState({
@@ -47,7 +50,7 @@ export function FixturesProvider({ children }) {
                 message: "Failed to load fixtures"
             });
         }
-    }, [supabase]);
+    }, [supabase, flavourId]);
 
     // initial load (safe, no dependency chain issues)
     useEffect(() => {

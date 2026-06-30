@@ -2,6 +2,7 @@ import { useCallback, useEffect, useState, useRef } from "react";
 import { LeaderboardContext } from "../context/LeaderboardContext";
 import { useDatabase } from "../hooks/useDatabase";
 import { useAuth } from "../hooks/useAuth";
+import { useFlavour } from "../hooks/useFlavour";
 
 export default function LeaderboardProvider({ children }) {
     const { supabase } = useDatabase();
@@ -16,7 +17,7 @@ export default function LeaderboardProvider({ children }) {
     const [scopeType, setScopeType] = useState("campaign");
     const [scopeId, setScopeId] = useState(1);
 
-    const flavourId = 1;
+    const { flavourId } = useFlavour();
 
     const cacheRef = useRef({});
     const requestRef = useRef(0);

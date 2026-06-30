@@ -52,7 +52,7 @@ export default function FixturesFilters() {
         },  
     ];
 
-    const {  availableStages } = useStage();
+    const {  fixtureStages } = useStage();
 
     const handleResetClick = () => {
         resetFilters();
@@ -91,7 +91,7 @@ export default function FixturesFilters() {
 
                     <FixtureFilterSelect
                         value={stageFilter}
-                        options={availableStages}
+                        options={fixtureStages}
                         placeholder="All Stages"
                         disabled={uiConstraints.disableStage}
                         onChange={setStageFilter}

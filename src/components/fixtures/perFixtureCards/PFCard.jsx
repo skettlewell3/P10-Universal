@@ -11,7 +11,8 @@ export default function PFCard({
     predictionDrafts,
     setPredictionDrafts,
     submitPredictions, 
-    predictionsLoading
+    predictionsLoading,
+    hasMultiple,
 }) {
 
     const [showLeaderboard, setShowLeaderboard] = useState(false);
@@ -58,6 +59,7 @@ export default function PFCard({
                 predictionsLoading={predictionsLoading}
                 showLeaderboard={showLeaderboard}
                 setShowLeaderboard={setShowLeaderboard}
+                hasMulitple={hasMultiple}
             />
 
             { showLeaderboard && (

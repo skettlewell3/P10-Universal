@@ -10,12 +10,12 @@ import { TeamsContext } from "../context/TeamsContext";
 import { useDatabase } from "../hooks/useDatabase";
 import { useAuth } from "../hooks/useAuth";
 import { TEAM_GROUPS_MAP } from "../config";
+import { useFlavour } from "../hooks/useFlavour";
 
 export default function TeamsProvider({ children }) {
     const { supabase } = useDatabase();
     const { refreshSignal } = useAuth();
-
-    const flavourId = 1;
+    const { flavourId } = useFlavour();
 
     const [teams, setTeams] = useState([]);
 
@@ -70,7 +70,7 @@ export default function TeamsProvider({ children }) {
                 });
             }
         }
-    }, [supabase]);
+    }, [supabase, flavourId]);
 
     // initial load
     useEffect(() => {
