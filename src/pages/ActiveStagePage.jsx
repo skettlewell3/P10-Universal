@@ -92,17 +92,6 @@ export default function ActiveStagePage() {
                         />
                     ))}
                 </form>
-
-                {/* <div className="test">
-                    {Object.entries(groupedFixtures).map(([kickoff, fixtures]) => (
-                        <pre key={kickoff}>
-                            {kickoff}
-                            {fixtures.length}
-                        </pre>
-                    ))}
-                </div> */}
-
-
             </div>
             
             {canSubmit && (
