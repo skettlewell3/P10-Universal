@@ -6,10 +6,10 @@ export default function LeaderboardFilters({ scopeId,
     scopeType, 
     setScopeType 
 }) {
-    const { stages, activeStage, activeStageId } = useStage();
+    const { stages, activeStageId } = useStage();
 
     const visibleStages = useMemo(
-        () => stages.filter(s => s.is_active || s.is_finished),
+        () => stages.filter(s => s.is_live || s.is_finished),
         [stages]
     );
 
