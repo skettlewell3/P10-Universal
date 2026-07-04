@@ -76,9 +76,8 @@ export default function LeaderboardFilters({ scopeId,
                             )
                         })}                    
                     </select>
-                )}
-                
+                )}                
             </div>         
         </div>
-    )
-}
+    );
+};
