@@ -66,9 +66,7 @@ export default function PFCard({
                 <FixtureLeaderboardContainer 
                     fixtureId={fixture.fixture_id}
                 />
-            )
-
-            }
+            )}
             
         </form>
     )

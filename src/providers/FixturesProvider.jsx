@@ -1,4 +1,4 @@
-import { useEffect, useState, useCallback } from 'react';
+import { useEffect, useState, useCallback, useMemo } from 'react';
 import { FixturesContext } from '../context/FixturesContext';
 import { useDatabase } from '../hooks/useDatabase';
 import { useAuth } from '../hooks/useAuth';
@@ -110,11 +110,26 @@ export function FixturesProvider({ children }) {
         };
     }, [supabase, refreshFixtures]);
 
+    const groupByKickoff = (fixtures) => {
+        return fixtures.reduce((acc, f) => {
+            const key = f.kickoff_at; // or formatted time bucket
+            if (!acc[key]) acc[key] = [];
+            acc[key].push(f);
+            return acc;
+        }, {});
+    };
+
+    const groupedByKickoff = useMemo(() => {
+        return groupByKickoff(fixtures);
+    }, [fixtures]);
+
     // console.log(fixtures)
     return (
         <FixturesContext.Provider
             value={{
                 fixtures,
+                groupByKickoff,
+                groupedByKickoff,
                 fixturesLoading: loadingState.loading,
                 fixturesLoadingMessage: loadingState.message,
                 refreshFixtures

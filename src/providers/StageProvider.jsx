@@ -43,7 +43,7 @@ export default function StageProvider({ children }) {
                 .from("flavour_stages")
                 .select("*")
                 .eq("flavour_id", flavourId)
-                .order("order_index");
+                .order("order_index", { ascending: true, nullsFirst: false });
 
             if (error) throw error;
 
