@@ -48,3 +48,37 @@ export const isDirtyPrediction = (draft, prediction) => {
     Number(draft.away) !== prediction.pred_away_goals
   );
 };
+
+export const isWithinWindow = (now, openAt, closeAt) => {
+  if (!openAt || !closeAt) return false;
+
+  const open = new Date(openAt).getTime();
+  const close = new Date(closeAt).getTime();
+
+  if (Number.isNaN(open) || Number.isNaN(close)) return false;
+
+  return now >= open && now < close;
+};
+
+
+export const getWindowStatus = (now, openAt, closeAt) => {
+  if (!openAt || !closeAt) return "closed";
+
+  const open = new Date(openAt).getTime();
+  const close = new Date(closeAt).getTime();
+
+  if (Number.isNaN(open) || Number.isNaN(close)) return "closed";
+
+  if (now < open) return "locked";
+  if (now >= open && now < close) return "open";
+  return "closed";
+};
+
+
+// sorting by order_index. push nulls to last. 
+
+// stages.sort((a, b) => {
+//   if (a.order_index == null) return 1;
+//   if (b.order_index == null) return -1;
+//   return a.order_index - b.order_index;
+// });

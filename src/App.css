@@ -151,6 +151,9 @@ input[type=number] {
   background-color: rgba(255, 255, 255, 0.2);
   border-radius: 10px;
 
+  padding: 0.3rem;
+  padding-bottom: 3.5rem;
+
   /* border: 1px solid white; */
 }
 
@@ -980,14 +983,14 @@ input[type=number] {
 
 /* Fixtures List */
 
-.fixturesList {
+/* .fixturesList {
  padding: 0.3rem;
  padding-bottom: 3.5rem;
-}
+} */
 
 /* -- End of Fixtures List */
 
-/* FIXTURE CARD */
+/* PER FIXTURE CARD */
 
 .fixtureCard {
   width: 100%;
@@ -1000,10 +1003,12 @@ input[type=number] {
   margin-bottom: 1rem;
   padding: 0;
 
+  background-image: linear-gradient(to top, #1c2c5b, #203c6a, #264c78, #2f5d86, #3a6e93, #3a6e93, #3a6e93, #3a6e93, #2f5d86, #264c78, #203c6a, #1c2c5b);
+
 }
 
 .perFixtureCard {
-  background-image: linear-gradient(to top, #1c2c5b, #203c6a, #264c78, #2f5d86, #3a6e93, #3a6e93, #3a6e93, #3a6e93, #2f5d86, #264c78, #203c6a, #1c2c5b);
+  /* background-image: linear-gradient(to top, #1c2c5b, #203c6a, #264c78, #2f5d86, #3a6e93, #3a6e93, #3a6e93, #3a6e93, #2f5d86, #264c78, #203c6a, #1c2c5b); */
   min-height: 7rem;
 }
 
@@ -1385,7 +1390,40 @@ input[type=number] {
 
 /* --End of Fixture Leaderboard */
 
-/* -- END OF FIXTURE CARD */
+/* -- END OF PER FIXTURE CARD */
+
+/* STAGE FIXTURE CARD */
+
+.groupedFixturesCard {
+  /* background-image: linear-gradient(to top, #1c2c5b, #203c6a, #264c78, #2f5d86, #3a6e93, #3a6e93, #3a6e93, #3a6e93, #2f5d86, #264c78, #203c6a, #1c2c5b); */
+}
+
+.fixtureFieldsetWrapper {
+  width: 100%;
+}
+
+.stageFixtureRow {
+  padding: 0.2em;
+  border: none;
+  cursor: pointer;
+  width: 100%;
+
+  display: grid;
+  grid-template-columns: 0.3fr 2fr 1fr .3fr 1fr 2fr 0.3fr;
+}
+
+.stageFixtureRow  div {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+
+
+
+
+/* -- STAGE FIXTURE CARD */
+
 
 /* SUBMIT SLIDE UP */
 
