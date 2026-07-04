@@ -4,8 +4,7 @@ import LeaderboardHeader from "../components/leaderboard/LeaderboardHeader";
 import LeaderboardRow from "../components/leaderboard/LeaderboardRow";
 import { useLeaderboard } from "../hooks/useLeaderboard";
 
-
-export default function LeaderboardPage({}) {
+export default function LeaderboardPage() {
     const {
         leaderboard, 
         scopeType, 
@@ -34,7 +33,6 @@ export default function LeaderboardPage({}) {
                     row={row}
                 />
               ))}
-
             </div>    
         </div>
     )
