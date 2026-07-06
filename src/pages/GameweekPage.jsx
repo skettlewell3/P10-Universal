@@ -53,7 +53,7 @@ export default function GameweekPage() {
         });
     }, [predictionDrafts, predictionsMap]);
 
-    const hasCompleteDraftSet = validDrafts.length === fixtureCount;
+    const hasCompleteDraftSet = validDrafts.length > 0 && validDrafts.length === fixtureCount;
 
     const isUpdating = hasExistingSet && validDrafts.length > 0;
 

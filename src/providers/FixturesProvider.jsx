@@ -123,7 +123,7 @@ export function FixturesProvider({ children }) {
         return groupByKickoff(fixtures);
     }, [fixtures]);
 
-    // console.log(fixtures)
+    console.log("RAW FIXTURES:", fixtures);
     return (
         <FixturesContext.Provider
             value={{

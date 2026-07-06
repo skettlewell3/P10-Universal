@@ -355,6 +355,8 @@ export function FixturesFiltersProvider({ children }) {
         resetFilters,
     };
 
+    console.log("FILTERED FIXTURES:", filteredFixtures);
+
     return (
         <FixturesFiltersContext.Provider value={value}>
             {children}

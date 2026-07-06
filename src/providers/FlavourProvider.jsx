@@ -72,8 +72,9 @@ export function FlavourProvider({ children }) {
     }, []);
 
     const setSelectedFlavour = (id) => {
-        setSelectedFlavourId(id);
+        if (id === selectedFlavourId) return ;
 
+        setSelectedFlavourId(id);
         localStorage.setItem("selectedFlavourId", id);
     };
 
