@@ -17,7 +17,7 @@ export default function GameweekPage() {
         if (!activeGameweekId) return [];
 
         return [...fixtures]
-            .filter(f => f.stage_id === activeGameweekId)
+            .filter(f => f.gameweek_id === activeGameweekId)
             .sort (
                 (a, b) => 
                     new Date(a.kickoff_at) -
@@ -83,8 +83,9 @@ export default function GameweekPage() {
     
                 <div className="scrollArea activeStageScroll">
                     <form id="predictionForm">
-                        {Object.entries(groupedFixtures).map(([fixtures]) => (
+                        {Object.entries(groupedFixtures).map(([groupKey, fixtures]) => (
                             <StageFixturesCard
+                            key={groupKey}
                                 fixtures={fixtures}
                                 predictionDrafts={predictionDrafts}
                                 setPredictionDrafts={setPredictionDrafts}

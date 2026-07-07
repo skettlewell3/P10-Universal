@@ -1,3 +1,5 @@
+import { getTeamStyle } from "../../../utils/helpers";
+
 export default function StageFixtureFieldset({ 
     fixture,
     prediction,
@@ -5,6 +7,18 @@ export default function StageFixtureFieldset({
     setPredictionDrafts,
     predictionWindowOpen
 }) {
+
+    const homeTeamStyle = getTeamStyle(
+    fixture.home_color_1,
+    fixture.home_color_2,
+    fixture.home_color_3
+);
+
+const awayTeamStyle = getTeamStyle(
+    fixture.away_color_1,
+    fixture.away_color_2,
+    fixture.away_color_3
+);
 
     let mode = "blank";
 
@@ -44,7 +58,10 @@ else if (prediction) {
                   ⓘ
                 </div>
 
-                <div className="homeTeam">
+                <div 
+                    className="team home"
+                    style={homeTeamStyle}
+                >
                     {fixture.home_short_code}
                 </div>
 
@@ -116,7 +133,11 @@ else if (prediction) {
 
                 </div>
 
-                <div className="awayTeam">
+                <div 
+                    className="team away"
+                    style={awayTeamStyle}
+                
+                >
                     {fixture.away_short_code}
                 </div>
 

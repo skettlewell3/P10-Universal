@@ -2,13 +2,16 @@ import { useState, useMemo } from "react";
 import ContentBanner from "../components/app/ContentBanner";
 import FixturesFilters from "../components/fixtures/FixturesFilters";
 import PFCard from "../components/fixtures/perFixtureCards/PFCard";
+import GWPFCard from "../components/fixtures/perFixtureCards/GWPFCard";
 import SubmitSlideUp from "../components/fixtures/SubmitSlideUp";
 import { useFixturesFilters } from "../hooks/useFixturesFilters";
 import { usePredictions } from "../hooks/usePredictions";
 import { isValidPrediction, isDirtyPrediction } from "../utils/helpers";
+import { useFlavour } from "../hooks/useFlavour";
 
 export default function FixturesPage() {
     const { filteredFixtures } = useFixturesFilters();
+    const { formatCode } = useFlavour();
     const { submitPredictions, predictionsLoading, predictionsMap } = usePredictions();
 
     const [predictionDrafts, setPredictionDrafts] = useState({});
@@ -43,6 +46,8 @@ export default function FixturesPage() {
         }
     };
 
+    const FixtureCardComponent = formatCode === "GWK" ? GWPFCard : PFCard;
+
     return (
         <div className="pageShell">
             <ContentBanner />
@@ -51,7 +56,7 @@ export default function FixturesPage() {
 
             <div className="scrollArea fixturesList">
                 {filteredFixtures.map(f => (
-                    <PFCard
+                    <FixtureCardComponent
                         key={f.fixture_id}
                         fixture={f}
                         predictionDrafts={predictionDrafts}

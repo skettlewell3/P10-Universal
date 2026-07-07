@@ -112,7 +112,7 @@ export function FixturesProvider({ children }) {
 
     const groupByKickoff = (fixtures) => {
         return fixtures.reduce((acc, f) => {
-            const key = f.kickoff_at; // or formatted time bucket
+            const key = f.kickoff_at; 
             if (!acc[key]) acc[key] = [];
             acc[key].push(f);
             return acc;
@@ -123,7 +123,7 @@ export function FixturesProvider({ children }) {
         return groupByKickoff(fixtures);
     }, [fixtures]);
 
-    console.log("RAW FIXTURES:", fixtures);
+    // console.log("RAW FIXTURES:", fixtures);
     return (
         <FixturesContext.Provider
             value={{

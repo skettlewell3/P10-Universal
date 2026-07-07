@@ -82,3 +82,22 @@ export const getWindowStatus = (now, openAt, closeAt) => {
 //   if (b.order_index == null) return -1;
 //   return a.order_index - b.order_index;
 // });
+
+
+export const getTeamStyle = (primary, secondary, tertiary) => {
+    const style = {
+        backgroundColor: primary,
+        color: secondary,
+    };
+
+    if (tertiary) {
+        style.textShadow = `
+            -0.5px -0.5px 0 ${tertiary},
+             0.5px -0.5px 0 ${tertiary},
+            -0.5px  0.5px 0 ${tertiary},
+             0.5px  0.5px 0 ${tertiary}
+        `;
+    }
+
+    return style;
+}
