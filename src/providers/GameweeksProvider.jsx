@@ -105,14 +105,14 @@ export default function GameweeksProvider({ children }) {
     ------------------------------*/
 
     const activeGameweek = useMemo(
-        () => gameweeks.find(gw => gw.gameweek_status === "live") ?? null,
+        () => gameweeks.find(gw => gw.gameweek_status === "active") ?? null,
         [gameweeks]
     );
 
     const activeGameweekId = activeGameweek?.gameweek_id ?? null;
 
     const nextGameweek = useMemo(() => {
-        const idx = gameweeks.findIndex(gw => gw.gameweek_status === "live");
+        const idx = gameweeks.findIndex(gw => gw.gameweek_status === "active");
         return idx >= 0 ? gameweeks[idx + 1] ?? null : null;
     }, [gameweeks]);
 

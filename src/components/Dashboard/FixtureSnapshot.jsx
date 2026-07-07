@@ -20,7 +20,11 @@ export default function FixtureSnapshot() {
             new Date(a.kickoff_at) - new Date(b.kickoff_at) ;
       
           return koDiff || (a.fixture_id - b.fixture_id);
-        })[0]
+        })[0];
+
+      if (!snapshotFixture) {
+        return null;
+      }
     ;
 
     const isLive =
