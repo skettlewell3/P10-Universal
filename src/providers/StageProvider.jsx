@@ -159,6 +159,7 @@ export default function StageProvider({ children }) {
         fixtureStages,
         leaderboardStages,
         tickerStageId: tickerStage?.stage_id ?? null,
+        tickerStageLabel: tickerStage?.stage_code ?? null,
 
         refreshStages
     };

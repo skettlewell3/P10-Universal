@@ -27,14 +27,14 @@ export default function FlavourDropdown() {
                 id="flavourDropdownToggle"
                 onClick={() => setOpen(prev => !prev)}
             >
-                <img src={
+                {/* <img src={
                         resolvedFlavour?.logo_url ??
                         "https://placehold.co/35" 
                     } 
                     alt="" id="flavourLogo" 
-                />
+                /> */}
                 <div class="flavourName">
-                    {resolvedFlavour?.flavour_name}
+                    {resolvedFlavour?.competition_code} ▼
                 </div>
             </button>
             {open && (
@@ -51,16 +51,16 @@ export default function FlavourDropdown() {
                                     : ""
                             }                        
                         >
-                            <img 
+                            {/* <img 
                                 src={
                                     flavour.logo_url ?? 
                                     "https://placehold.co/25"
                                 } 
                                 alt=""
                                 className="flavourLogo" 
-                            />
+                            /> */}
                             <span>
-                                {flavour.flavour_name}
+                                {flavour.flavour_code}
                             </span>
                         </li>
                     ))}                    
