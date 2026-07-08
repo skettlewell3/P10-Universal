@@ -1,14 +1,20 @@
+import { useProfile } from "../../hooks/useProfile"
+import { useProfileTicker } from "../../hooks/useProfileTicker";
+
 export default function ProfileIdentity() {
+
+    const { profile } = useProfile(); 
+    const { globalPoints } = useProfileTicker();
 
     return (
         <div className="profileIdentity">
             
             <div className="profileName">
-                Sam K
+                {profile.display_name}
             </div>
 
             <div className="profilePoints">
-                ⭐ 100 PTS
+                ⭐'s: {globalPoints ?? "-"} 
             </div>
     
         </div>

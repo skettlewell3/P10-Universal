@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { useProfile } from "./hooks/useProfile";
+// import { useProfile } from "./hooks/useProfile";
 import { useFlavour } from "./hooks/useFlavour";
 import AppContainer from "./components/app/AppContainer";
 // import HeaderProfile from "./components/Header/HeaderProfile";
