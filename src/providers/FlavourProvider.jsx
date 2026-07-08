@@ -100,10 +100,13 @@ export function FlavourProvider({ children }) {
 
         // convenience access (no duplication of logic elsewhere)
         flavourId: resolvedFlavour?.flavour_id ?? null,
+        flavourCode: resolvedFlavour?.flavour_code ?? null,
         competitionId: resolvedFlavour?.competition_id ?? null,
         competitionCode: resolvedFlavour?.competition_code ?? null,
         formatId: resolvedFlavour?.format_id ?? null,
         formatCode: resolvedFlavour?.format_code ?? null,
+        activeCampaignId: resolvedFlavour?.active_campaign_id ?? null,
+        activeCampaignLabel: resolvedFlavour?.active_campaign_label ?? null,
 
         isGameweekFormat: resolvedFlavour?.format_code === "GWK",
         isPerFixtureFormat: resolvedFlavour?.format_code === "PFX",
