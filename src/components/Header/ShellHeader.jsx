@@ -6,15 +6,18 @@ import ProfileTickerRow from "./ProfileTickerRow";
 export default function ShellHeader () {
 
     return (
+        <>
+        <div className="headerLogo">
+            <ProfileDropdown />
+        </div>
+
         <div id="shellHeader">
-            <div className="headerLogo">
-                <ProfileDropdown />
-            </div>
             <div className="profileRow" >
                 <ProfileIdentity />
                 <FlavourDropdown />
             </div>
             <ProfileTickerRow />
         </div>
+        </>
     )
 }

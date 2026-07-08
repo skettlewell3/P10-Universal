@@ -26,7 +26,15 @@
     rgba(62, 77, 92)
     )
   ;
+  --greenbg: linear-gradient(
+      180deg,
+      rgb(60, 125, 82),
+      rgb(20, 75, 45)
+    )
+  ;
   --headerbg: rgba(255, 255, 255);
+  --menubg: rgba(255, 255, 255, 0.8);
+  --bggreen: rgb(32, 100, 60, 0.8)
 }
 
 /* Chrome, Safari, Edge, Opera- no spinner*/
@@ -128,7 +136,7 @@ input[type=number] {
   flex-direction: column;
   overflow: hidden;
 
-  padding-top: 5rem;
+  padding-top: 1rem;
   padding-bottom: 0.5rem;
 }
 
@@ -303,13 +311,19 @@ input[type=number] {
 }
 
 .headerLogo {
-  grid-row: 1 / span 2;
+  /* grid-row: 1 / span 2; */
+  /* height: 100%; */
 
   display: flex;
   align-items: center;
   justify-content: center;
 
-  height: 100%;
+  top: 0;
+  left: 0;
+  z-index: 201;
+  height: 4.5rem;
+  width: 4rem;
+
 }
 
 .profileRow {
@@ -436,8 +450,8 @@ input[type=number] {
   display: flex;   
   align-items: center;
   justify-content: center;
-  height: 3.5rem;
-  width: 3.5rem;
+  height: 3.7rem;
+  width: 3.7rem;
   border-radius: 50%;
   cursor: pointer;
   background: none;
@@ -456,7 +470,7 @@ input[type=number] {
   left: 0; /*left edge of button anchor*/
   background: var(--green);
   color: white;
-  border: 2px solid rgb(234, 236, 231);
+  border: 2px solid var(--bggreen);
   border-radius: 4px;
   min-width: 170px;
   z-index:  1000;
@@ -515,7 +529,7 @@ input[type=number] {
   width: 100%;
   
   cursor: pointer;
-  background: var(--bluebg);
+  background: var(--greenbg);
 
   /* margin: 0.3em 0; */
   padding: 0.25em 0.5em;
@@ -537,7 +551,7 @@ input[type=number] {
   right: 0.25em;
   left: 0.25em;
   top: 100%;
-  background: var(--bluebg);
+  background: var(--greenbg);
   color: white;
   list-style: none;
   margin: 4px 0 0;
