@@ -26,6 +26,15 @@
     rgba(62, 77, 92)
     )
   ;
+  --greenbg: linear-gradient(
+      180deg,
+      rgb(60, 125, 82),
+      rgb(20, 75, 45)
+    )
+  ;
+  --headerbg: rgba(255, 255, 255);
+  --menubg: rgba(255, 255, 255, 0.8);
+  --bggreen: rgb(32, 100, 60, 0.8)
 }
 
 /* Chrome, Safari, Edge, Opera- no spinner*/
@@ -127,7 +136,7 @@ input[type=number] {
   flex-direction: column;
   overflow: hidden;
 
-  padding-top: 5rem;
+  padding-top: 1rem;
   padding-bottom: 0.5rem;
 }
 
@@ -292,21 +301,29 @@ input[type=number] {
 
   height: 4.5rem;
 
-  background: rgba(35, 110, 52,.6);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
+  /* background: rgba(35, 110, 52,.6); */
+  background: var(--headerbg);
 
   box-shadow: 0 1px 3px rgba(0,0,0,.25);
+  border-bottom: 2px solid black;
+
+  opacity: 0.8;
 }
 
 .headerLogo {
-  grid-row: 1 / span 2;
+  /* grid-row: 1 / span 2; */
+  /* height: 100%; */
 
   display: flex;
   align-items: center;
   justify-content: center;
 
-  height: 100%;
+  top: 0;
+  left: 0;
+  z-index: 201;
+  height: 4.5rem;
+  width: 4rem;
+
 }
 
 .profileRow {
@@ -323,37 +340,62 @@ input[type=number] {
 
 .profileIdentity {
   display: flex;
-  align-items: center;
+  align-items: baseline;
   gap: 0.5rem;
-}
-
-.profileIdentityInfo {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
+  color: var(--green);
+  letter-spacing: 0.02rem;
 }
 
 .profileName {
   font-weight: 700;
-  font-size: 1.4rem;
+  font-size: 1.6rem;
   margin-left: 0.5rem;
+  text-shadow:
+    0 1px 0 rgba(82, 81, 81, 0.9),
+    0 1px 2px rgba(0,0,0,0.15)
+  ;
 }
 
 .profilePoints {
   font-size: 0.85rem;
   opacity: 0.75;
+  font-weight: 650;
 }
 
 .profileTickerRow {
   grid-column: 2;
   grid-row: 2;
   height: 1.5rem;
+  padding-left: 1rem;
 
   overflow: hidden;
   display: flex;
   align-items: center;
 
   position: relative;
+  background: linear-gradient(
+    105deg,
+    var(--headerbg) 8%,
+    var(--green) 25%
+  );
+}
+
+.profileTickerRow::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 2rem;
+
+  background: linear-gradient(
+    90deg,
+    var(--headerbg),
+    transparent
+  );
+
+  z-index: 2;
+  pointer-events: none;
 }
 
 .tickerTrack {
@@ -376,6 +418,7 @@ input[type=number] {
 
 .tickerStat span {
   font-weight: 700;
+  letter-spacing: 0.1rem;
 }
 
 .tickerStat small {
@@ -396,9 +439,6 @@ input[type=number] {
     }
 }
 
-
-/* -- END OF NEW HEADER */
-
 /* Profile Dropdown */
 
 #profileDropdown {
@@ -410,8 +450,8 @@ input[type=number] {
   display: flex;   
   align-items: center;
   justify-content: center;
-  height: 3.5rem;
-  width: 3.5rem;
+  height: 3.7rem;
+  width: 3.7rem;
   border-radius: 50%;
   cursor: pointer;
   background: none;
@@ -430,7 +470,7 @@ input[type=number] {
   left: 0; /*left edge of button anchor*/
   background: var(--green);
   color: white;
-  border: 2px solid rgb(234, 236, 231);
+  border: 2px solid var(--bggreen);
   border-radius: 4px;
   min-width: 170px;
   z-index:  1000;
@@ -489,13 +529,14 @@ input[type=number] {
   width: 100%;
   
   cursor: pointer;
-  background: var(--bluebg);
+  background: var(--greenbg);
 
   /* margin: 0.3em 0; */
-  padding: 0.25em;
+  padding: 0.25em 0.5em;
   box-shadow: 0 1px 2px rgba(0,0,0,1);
   border-radius: 4px;
   border: 1px solid black;
+  letter-spacing: 0.05rem;
 }
 
 #flavourLogo {
@@ -510,7 +551,7 @@ input[type=number] {
   right: 0.25em;
   left: 0.25em;
   top: 100%;
-  background: var(--bluebg);
+  background: var(--greenbg);
   color: white;
   list-style: none;
   margin: 4px 0 0;

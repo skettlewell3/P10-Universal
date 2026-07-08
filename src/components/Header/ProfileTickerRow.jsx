@@ -84,9 +84,9 @@ export default function ProfileTickerRow() {
                         key={item.label}
                         className="tickerStat"
                     >
-                        <span>{item.label}</span>
-                        <small>#{item.rank ?? "-"}</small>
+                        <span>{item.label}:</span>
                         <strong>{item.points ?? 0} PTS</strong>
+                        <p>#{item.rank ?? "-"}</p>
                     </div>
                 ))}
             </div>
