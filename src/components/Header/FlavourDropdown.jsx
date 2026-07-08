@@ -34,7 +34,7 @@ export default function FlavourDropdown() {
                     alt="" id="flavourLogo" 
                 /> */}
                 <div class="flavourName">
-                    {resolvedFlavour?.competition_code} ▼
+                    {resolvedFlavour?.competition_code} <span>▼</span>
                 </div>
             </button>
             {open && (
