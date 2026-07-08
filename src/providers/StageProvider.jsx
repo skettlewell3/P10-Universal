@@ -113,6 +113,18 @@ export default function StageProvider({ children }) {
         [stages]
     );
 
+    const tickerStage = useMemo(
+    () =>
+        stages.find(stage => stage.is_live)
+        ??
+        [...stages]
+            .filter(stage => stage.is_finished)
+            .sort((a,b) => b.order_index - a.order_index)[0]
+        ??
+        null,
+    [stages]
+);
+
     useEffect(() => {
         const channel = supabase
             .channel(`flavour-stages-${flavourId}`)
@@ -136,6 +148,8 @@ export default function StageProvider({ children }) {
         };
     }, [supabase, flavourId, refreshStages]);
 
+
+
     const value = {
         stages,
         stagesLoading: loadingState.loading,
@@ -144,6 +158,8 @@ export default function StageProvider({ children }) {
         activeStageId,
         fixtureStages,
         leaderboardStages,
+        tickerStageId: tickerStage?.stage_id ?? null,
+        tickerStageLabel: tickerStage?.stage_code ?? null,
 
         refreshStages
     };
