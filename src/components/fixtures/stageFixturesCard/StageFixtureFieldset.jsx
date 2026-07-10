@@ -133,7 +133,7 @@ else if (prediction) {
 
                 </div>
 
-                <div 
+                <div                
                     className="team away"
                     style={awayTeamStyle}
                 

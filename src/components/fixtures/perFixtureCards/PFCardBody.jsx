@@ -1,9 +1,9 @@
 import TeamBlock from "./TeamBlock";
 import PerFixtureCardDetails from "./PerFixtureCardDetails";
-import PFCFieldset from "./PFCFieldset";
 import PFCardDeadline from "./PFCardDeadline";
 import { isValidPrediction } from "../../../utils/helpers";
 import FixtureLeaderboardToggle from "./FixtureLeaerboardToggle";
+import ScorePanel from "./ScorePanel";
 
 export default function PFCardBody({
     fixture, 
@@ -20,7 +20,8 @@ export default function PFCardBody({
         fixture.predictions_open && 
         fixture.fixture_status === "upcoming"
     ;
-    const toggleAllowed =
+
+    const postKickoff =
         fixture.fixture_status !== "upcoming" &&
         fixture.fixture_status !== "postponed"
     ;
@@ -62,13 +63,15 @@ export default function PFCardBody({
                     fixture={fixture}                    
                 />
 
-                <PFCFieldset 
+                <ScorePanel 
                     isOpen={isOpen}
+                    postKickoff={postKickoff}
                     fixture={fixture}
                     prediction={predictionsMap[fixture.fixture_id]}
                     predictionDrafts={predictionDrafts}
                     setPredictionDrafts={setPredictionDrafts}
                 />
+
             </div>
             
 
@@ -90,7 +93,7 @@ export default function PFCardBody({
                             {existing ? (isDirty ? "Update" : "Saved") : "Submit"}
                         </button>
                     )}
-                    {toggleAllowed && (
+                    {postKickoff && (
                         <FixtureLeaderboardToggle 
                             showLeaderboard={showLeaderboard}
                             setShowLeaderboard={setShowLeaderboard}
