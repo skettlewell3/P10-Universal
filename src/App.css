@@ -136,7 +136,7 @@ input[type=number] {
   flex-direction: column;
   overflow: hidden;
 
-  padding-top: 1rem;
+  /* padding-top: 0rem; */
   padding-bottom: 0.5rem;
 }
 
@@ -1123,7 +1123,7 @@ input[type=number] {
 
 .perFixtureCard {
   /* background-image: linear-gradient(to top, #1c2c5b, #203c6a, #264c78, #2f5d86, #3a6e93, #3a6e93, #3a6e93, #3a6e93, #2f5d86, #264c78, #203c6a, #1c2c5b); */
-  min-height: 7rem;
+  /* min-height: 7em; */
 }
 
 /* Fixture Card Header */
@@ -1240,34 +1240,57 @@ input[type=number] {
 .fCardCol {
   display: grid;
   grid-template-columns: 1fr;
-  grid-template-rows: 1rem 3fr 1fr;
+  grid-template-rows: 
+    1rem 3fr 1.5fr
+  ;
   height: 100%;
   padding: 0.2rem;
 }
 
 .fCardDetailsCol {
-  display: grid;
-  grid-template-rows: repeat(2, 1fr);
+  display: flex;
+  flex-direction: column;
   height: 100%;
   padding: 0.2rem;
 }
 
-/* .stageCell, .groupCell, 
-.scoreRow, .submitCell, 
-.deadlineCell, .fixtureDetails, 
-.fCardDetailsCol, .fCardCol, .teamBlock  {
-  border: 1px solid white;
-} */
+.fixtureDetails {
+  height: 3rem;
+  flex-shrink: 0;
+  margin: 0.125rem 0.1rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 8px;
+  background-color: rgba(255, 255, 255, 0.2);
+  overflow-y: scroll;
+}
 
-.stageCell {
+.scorePanel {
+  width: 100%;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 0.15rem;
+  border-radius: 8px;
+  background-color: rgba(255, 255, 255, 0.6);
+  margin: 0.125rem 0;
+  padding: 0.25rem 0.1rem;
+}
+
+.stageCell, .groupCell {
   font-size: 0.7rem;
   line-height: 0.7rem;
+  height: 1rem;
+  flex-shrink: 0;
+}
+
+.stageCell { 
   text-align: left;
 }
 
 .groupCell {
-  font-size: 0.7rem;
-  line-height: 0.7rem;
   text-align: right;
 }
 
@@ -1293,16 +1316,6 @@ input[type=number] {
 
 /* Fixture Details */
 
-.fixtureDetails {
-  margin: 0.25rem 0.1rem;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  border-radius: 8px;
-  background-color: rgba(255, 255, 255, 0.2);
-
-}
-
 .fixtureLocation {
   margin-bottom: 0.4rem;
 }
@@ -1318,6 +1331,8 @@ input[type=number] {
 /* Team Block */
 
 .teamBlock {
+  /* height: 4rem; */
+  flex-shrink: 0;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -1354,19 +1369,20 @@ input[type=number] {
 
 /* -- End of Team Block */
 
-/* Fixture Fieldset */
+/* Fixture Fieldset -- Score Panel */
 
-.fixtureFieldset {
+/* .fixtureFieldset {
   width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  margin-top: 0.2rem;
-  margin-bottom: 0.2rem;
-}
+  margin-top: 0.125rem;
+  margin-bottom: 0.125rem;  
+} */
 
-.scoreRow, .actionRow {
+
+.actionRow {
   max-width: 100%;
   display: flex;
   align-items: center;
@@ -1377,7 +1393,16 @@ input[type=number] {
   background-color: rgba(255, 255, 255, 0.6);
 }
 
-.scoreRow div {
+.scoreRow, .predictionRow {
+  height: 2rem;
+  max-width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;  
+}
+
+.scoreRow div, .predictionRow div {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -1385,46 +1410,64 @@ input[type=number] {
 
 .predInput {
   border-radius: 5px;
-  font-size: 1.2rem;
+  font-size: 1.4rem;
   text-align: center;
   font-weight: bold;
   padding: 0;
   background-color: white;
+  height: 2.5rem;
+  width: 2.5rem;
 }
 
 .vs {
-  font-size: 1.4rem;
+  height: 2rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 0;
+  font-size: 1.2rem;
   font-weight: bolder;
   color: var(--blue);
 }
 
+.vsPred {
+  font-size: 1rem !important;
+}
 
-.homePred, .homeScore {
-  height: 2.5rem;
-  width: 2.5rem;
-  /* margin-right: 0.5rem; */
+.vs .label {
+  font-size: 0.6rem;
+  line-height: 0.6rem;
+  margin-bottom: -0.15rem;
+}
+
+.home, .away {
   flex-shrink: 0;
 }
 
-.awayPred, .awayScore {
-  height: 2.5rem;
-  width: 2.5rem;
-  /* margin-left: 0.5rem; */
-  flex-shrink: 0;
-}
-
-.homeScore, .awayScore {
+.predDiv {
+  height: 1.5rem;
+  width: 1.5rem;
   background: white;
   color: black;
   /* margin: auto auto; */
   border-radius: 5px;
-  font-size: 1.2rem;
+  font-size: 1rem;
+  font-weight: bold;
+}
+
+.homeScore, .awayScore {
+  height: 2rem;
+  width: 2rem;
+  background: white;
+  color: black;
+  /* margin: auto auto; */
+  border-radius: 5px;
+  font-size: 1.4rem;
   font-weight: bold;
 }
 
 .submitCell {
-  flex-shrink: 1;
-
+  flex: 1;
 }
 
 .pfSubmit {
@@ -1451,7 +1494,7 @@ input[type=number] {
   text-align: left;
   font-size: 0.7rem;
   line-height: 0.7rem;
-  flex-shrink: 1;
+  flex: 1;
 }
 
 .leaderboardToggle {
