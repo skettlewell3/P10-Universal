@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import PredictionRow from "./PredictionRow";
 import ScoreRow from "./ScoreRow";
+import ResolutionRow from "./ResolutionRow";
 
 export default function ScorePanel({
     fixture,
@@ -58,7 +59,7 @@ export default function ScorePanel({
             predictionDrafts={predictionDrafts}
             setPredictionDrafts={setPredictionDrafts}
         />,
-        <div className="resolution"></div>
+        <ResolutionRow fixture={fixture}/>
     ]    
 
     const scoreDisplay = scoreDisplays[displayIndex];

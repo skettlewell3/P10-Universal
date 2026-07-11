@@ -1,6 +1,12 @@
 import { COUNTRY_FLAG_MAP } from "../../../config"
 
-export default function TeamBlock ({ name, short }) {
+export default function TeamBlock ({ 
+    name, 
+    short,
+    isWinner = false,
+    isLoser = false,
+    showProgressionMarker = false,
+}) {
     const flagCode = COUNTRY_FLAG_MAP[short];
 
     const isLongName = name?.length > 15;
@@ -19,11 +25,18 @@ export default function TeamBlock ({ name, short }) {
                 </div>
             )}
             <div 
-                className={`teamName ${
-                    isLongName ? "longName" : ""
-                }`}
+                className={`
+                    teamName 
+                    ${isLongName ? "longName" : ""}
+                    ${isWinner ? "winner" : ""}
+                    ${isLoser ? "loser" : ""}
+                `}
             >
                 {name ? name : "TBC"}
+
+                {showProgressionMarker && (
+                    <sup className="qualifierMark">*</sup>
+                )}
             </div>
         </div>
     )
