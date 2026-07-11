@@ -40,6 +40,23 @@ export default function PFCardBody({
         Number(draft.away) !== existing.pred_away_goals
       );
     })();
+
+    const isFinished = fixture.fixture_status === "finished";
+
+    const homeWon =
+        isFinished &&
+        fixture.winner_team_id === fixture.home_team_id
+    ;
+
+    const awayWon =
+        isFinished &&
+        fixture.winner_team_id === fixture.away_team_id
+    ;
+
+    const showProgressionMarker =
+        isFinished &&
+        fixture.winner_team_id != null
+    ;
     
     return (
         <div className="fixtureBody">
@@ -51,6 +68,11 @@ export default function PFCardBody({
                 <TeamBlock 
                     name={fixture.home_team_name} 
                     short={fixture.home_short_code}
+                    isWinner={homeWon}
+                    isLoser={awayWon}
+                    showProgressionMarker={
+                        showProgressionMarker && homeWon
+                    }
                 />               
                 <PFCardDeadline 
                     fixture={fixture}                    
@@ -82,6 +104,11 @@ export default function PFCardBody({
                 <TeamBlock 
                     name={fixture.away_team_name} 
                     short={fixture.away_short_code}
+                    isWinner={awayWon}
+                    isLoser={homeWon}
+                    showProgressionMarker={
+                        showProgressionMarker && awayWon
+                    }
                 />
                 <div className="submitCell">
                     {isOpen && (
