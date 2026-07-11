@@ -7,6 +7,10 @@ export default function ResolutionRow({
         penalties: "won on penalties",
     }
 
+    if (!fixture.resolution_type) {
+        return null;
+    }
+    
     return (
         <div className="resolution">
             (*) {RESOLUTION_LABELS[fixture.resolution_type]}
