@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 
 export default function UserClubList() {
 
-    const { clubs } = useClubs();
+    const { myMemberships } = useClubs();
     const navigate = useNavigate();
 
 
@@ -15,17 +15,17 @@ export default function UserClubList() {
             </h2>
 
 
-            {clubs.map(club => (
+            {myMemberships.map(m => (
 
                 <button
-                    key={club.profile_id}
+                    key={m.club_id}
                     onClick={() =>
                         navigate(
-                            `/clubhouse/${club.profile_id}`
+                            `/clubhouse/${m.club_id}`
                         )
                     }
                 >
-                    {club.club_name}
+                    {m.club_name}
                 </button>
 
             ))}
