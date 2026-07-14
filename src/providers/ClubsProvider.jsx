@@ -16,7 +16,6 @@ export function ClubsProvider({ children }) {
         message: "Loading Clubs..."
     });
 
-
     const fetchClubs = useCallback(async () => {
 
         if (!user?.id) {
@@ -37,7 +36,6 @@ export function ClubsProvider({ children }) {
         setClubs(data ?? []);
 
     }, [supabase, user?.id]);
-
 
     const fetchInvites = useCallback(async () => {
 
@@ -60,7 +58,6 @@ export function ClubsProvider({ children }) {
 
     }, [supabase, user?.id]);
 
-
     const refreshClubs = useCallback(async () => {
 
         setLoadingState({
@@ -80,13 +77,9 @@ export function ClubsProvider({ children }) {
 
     }, [fetchClubs, fetchInvites]);
 
-
     useEffect(() => {
-
         refreshClubs();
-
     }, [refreshClubs]);
-
 
     const sendInvite = async (clubId, username) => {
 
@@ -104,7 +97,6 @@ export function ClubsProvider({ children }) {
             error
         };
     };
-
 
     const acceptInvite = async (inviteId) => {
 
@@ -125,7 +117,6 @@ export function ClubsProvider({ children }) {
         };
     };
 
-
     const declineInvite = async (inviteId) => {
 
         const { error } = await supabase.rpc(
@@ -145,11 +136,9 @@ export function ClubsProvider({ children }) {
         };
     };
 
-
     const ownedClub = clubs.find(
         club => club.club_role === "owner"
     ) ?? null;
-
 
     return (
         <ClubsContext.Provider

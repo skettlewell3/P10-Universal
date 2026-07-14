@@ -8,11 +8,9 @@ export default function ClubInvitesCard() {
         declineInvite
     } = useClubs();
 
-
     if (!invites.length) {
         return null;
     }
-
 
     return (
         <section className="accountCard">
@@ -21,9 +19,7 @@ export default function ClubInvitesCard() {
                 Club Invites
             </h2>
 
-
             {invites.map(invite => (
-
                 <div key={invite.invite_id}>
 
                     <strong>
@@ -34,7 +30,6 @@ export default function ClubInvitesCard() {
                         Invited by {invite.sender_name}
                     </p>
 
-
                     <button
                         onClick={() =>
                             acceptInvite(invite.invite_id)
@@ -42,7 +37,6 @@ export default function ClubInvitesCard() {
                     >
                         Accept
                     </button>
-
 
                     <button
                         onClick={() =>
@@ -53,9 +47,7 @@ export default function ClubInvitesCard() {
                     </button>
 
                 </div>
-
             ))}
-
         </section>
     );
 }
