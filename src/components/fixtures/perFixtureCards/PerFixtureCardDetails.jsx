@@ -1,6 +1,12 @@
 import { formatInTimeZone } from "date-fns-tz";
+import { format } from "date-fns";
 
 export default function PerFixtureCardDetails({ fixture }) {
+
+    const userKO = format(
+        new Date(fixture.kickoff_at),
+        "HH:mm"
+    )
 
     const venueKO = formatInTimeZone(
         fixture.kickoff_at,
@@ -8,16 +14,12 @@ export default function PerFixtureCardDetails({ fixture }) {
         "HH:mm"
     );
 
-    // console.log({
-    //   kickoff_at: fixture.kickoff_at,
-    //   parsed: new Date(fixture.kickoff_at),
-    //   timezone: fixture.timezone
-    // });
+    const timeCheck = venueKO != userKO
 
     return (
         <div className="fixtureDetails perFixtureDetails">
             <div className="fixtureLocation">
-                <p>{venueKO}</p>
+                {timeCheck && (<p>{venueKO}</p>)}
                 <p>{fixture.venue_name}</p>
                 <p>
                     <span>{fixture.city}, </span>

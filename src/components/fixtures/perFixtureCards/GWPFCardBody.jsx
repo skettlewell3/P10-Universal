@@ -1,6 +1,6 @@
 import GWTeamBlock from "./GWTeamBlock";
 import PerFixtureCardDetails from "./PerFixtureCardDetails";
-import PFCFieldset from "./PFCFieldset";
+import ScorePanel from "./ScorePanel";
 import PFCardDeadline from "./PFCardDeadline";
 import FixtureLeaderboardToggle from "./FixtureLeaerboardToggle";
 import { isValidPrediction, getTeamStyle } from "../../../utils/helpers";
@@ -20,7 +20,8 @@ export default function GWPFCardBody({
         fixture.predictions_open && 
         fixture.fixture_status === "upcoming"
     ;
-    const toggleAllowed =
+
+    const postKickoff =
         fixture.fixture_status !== "upcoming" &&
         fixture.fixture_status !== "postponed"
     ;
@@ -76,8 +77,9 @@ export default function GWPFCardBody({
                     fixture={fixture}                    
                 />
 
-                <PFCFieldset 
+                <ScorePanel 
                     isOpen={isOpen}
+                    postKickoff={postKickoff}
                     fixture={fixture}
                     prediction={predictionsMap[fixture.fixture_id]}
                     predictionDrafts={predictionDrafts}
@@ -105,7 +107,7 @@ export default function GWPFCardBody({
                             {existing ? (isDirty ? "Update" : "Saved") : "Submit"}
                         </button>
                     )}
-                    {toggleAllowed && (
+                    {postKickoff && (
                         <FixtureLeaderboardToggle 
                             showLeaderboard={showLeaderboard}
                             setShowLeaderboard={setShowLeaderboard}
