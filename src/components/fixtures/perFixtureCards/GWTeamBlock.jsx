@@ -1,6 +1,6 @@
 
 export default function GWTeamBlock ({ name, style }) {
-    const isLongName = name?.length > 15;
+    const isLongName = name?.length >= 11;
 
     return (
         <div className="teamBlock"  style={style}>
