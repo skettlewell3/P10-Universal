@@ -13,6 +13,8 @@ export default function DashboardContainer () {
             { isGameweekFormat && (
                 <DashboardButton label="Gameweek" to="/gameweek" />
             )}
+
+            <DashboardButton label="Clubs" to="/clubs" />
         </div>
     )
 }

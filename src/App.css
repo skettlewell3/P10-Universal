@@ -61,6 +61,28 @@ input[type=number] {
   overflow: hidden;
 }
 
+.copyButton {
+  height: 24px !important; 
+  width: 24px;
+  padding: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+}
+
+.copyButton svg {
+  height: 14px;
+  width: 14px;
+}
+
+.copyButton:hover {
+  opacity: 1;
+}
+
 /* End of Utilities */
 
 /* APP STRUCTURE */
@@ -1854,4 +1876,95 @@ option.bold {
 }
 
 /* -- END OF LEADERBOARDS */
+
+
+/* USER ACCOUNT PAGE */
+
+.accountCard {
+  background: rgba(255,255,255,0.08);
+  border-radius: 12px;
+  padding: 16px;
+  margin-bottom: 16px;
+}
+
+.accountCard h2 {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  margin: 0 0 3px;
+  font-size: 1.2rem;
+  text-align: left;
+}
+
+.accountUsername {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.75rem;
+  font-weight: normal;
+  opacity: 0.55;
+}
+
+.accountCreated {
+  text-align: left;
+  font-size: 0.8rem;
+  opacity: 0.6;
+  margin: 0 0 0.5rem 0;
+  padding: 0;
+  line-height: 0.8rem;
+}
+
+.accountCard form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.accountCard label {
+  font-size: 0.85rem;
+  opacity: 0.8;
+}
+
+.accountCard input {
+  height: 40px;
+  padding: 0 12px;
+  border-radius: 8px;
+  border: 1px solid rgba(255,255,255,0.2);
+  background: rgba(0,0,0,0.15);
+  color: inherit;
+  font-size: 1rem;
+}
+
+.accountCard input:focus {
+  outline: none;
+  border-color: var(--green);
+}
+
+.accountCard button {
+  height: 40px;
+  border-radius: 8px;
+  border: none;
+  background: var(--green);
+  color: white;
+  font-weight: 600;
+  font-size: 1rem;
+  letter-spacing: 0.02rem;
+  cursor: pointer;
+}
+
+.accountCard button:hover {
+  opacity: 0.9;
+}
+
+.accountMessage {
+  margin: 0 0.5em;
+  font-size: 0.9rem;
+}
+
+.accountCard.club .clubStatus {
+  margin-top: 10px;
+}
+
+/* -- END OF USER ACCOUNT PAGE */
+
 

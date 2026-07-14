@@ -20,13 +20,7 @@ export default function AppWithUser() {
         <AppContainer>
             <GameDataProvider>
 
-                {/* <HeaderProfile 
-                    profile={profile} 
-                /> */}
-
-                <ShellHeader 
-                    // profile={profile}
-                />
+                <ShellHeader/>
 
                 <div className="appContent">                                        
                     <AppRouter />
