@@ -1,15 +1,17 @@
 import { useLocation, useNavigate } from "react-router-dom";
 
-export default function ContentBanner() {
+export default function ContentBanner({ title }) {
     const navigate = useNavigate();
     const location = useLocation();
 
-    const pageTitle = 
-        location.pathname
+    const pageTitle = title
+        ? title 
+        : location.pathname
             .slice(1)
             .replace(/-/g, " ")
             .toUpperCase()
-        ;
+    ;
+
 
     return (
         <div className="contentBanner">

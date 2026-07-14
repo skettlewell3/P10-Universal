@@ -1,5 +1,7 @@
 import { useState } from "react";
 import { useProfile } from "../../hooks/useProfile";
+import { format } from "date-fns";
+import CopyCode from "../app/CopyCode";
 
 export default function ProfileAccountCard() {
     const {
@@ -12,6 +14,11 @@ export default function ProfileAccountCard() {
     );
 
     const [message, setMessage] = useState("");
+
+    const createdDate = profile?.created_at
+        ? format(new Date(profile.created_at), "dd MMM yyyy")
+        : ""
+    ;
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -28,7 +35,24 @@ export default function ProfileAccountCard() {
     return (
         <section className="accountCard">
 
-            <h2>Account Details</h2>
+            <h2>
+                Account Details
+                {profile?.username && (
+                    <div className="accountUsername">
+                        <span >
+                            #{profile.username}
+                        </span>
+
+                        <CopyCode value={profile.username}/>
+                    </div>                
+                )}
+            </h2>
+
+            {createdDate && (
+                <p className="accountCreated">
+                    Member since {createdDate}
+                </p>
+            )}
 
             <form onSubmit={handleSubmit}>
 

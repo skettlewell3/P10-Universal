@@ -7,76 +7,164 @@ export function ClubsProvider({ children }) {
 
     const { supabase } = useDatabase();
     const { user } = useAuth();
-    
+
     const [clubs, setClubs] = useState([]);
+    const [invites, setInvites] = useState([]);
 
     const [loadingState, setLoadingState] = useState({
         loading: true,
         message: "Loading Clubs..."
     });
 
-    const fetchClubs = useCallback(
-        async () => {
 
-            if (!user?.id) {
-                setClubs([]);
+    const fetchClubs = useCallback(async () => {
 
-                setLoadingState({
-                    loading: false,
-                    message: "No user"
-                });
+        if (!user?.id) {
+            setClubs([]);
+            return;
+        }
 
-                return;
-            }
+        const { data, error } = await supabase.rpc(
+            "get_user_clubs"
+        );
 
-            setLoadingState({
-                loading: true,
-                message: "Fetching Clubs..."
-            });
+        if (error) {
+            console.error(error);
+            setClubs([]);
+            return;
+        }
 
-            const { data, error } = await supabase.rpc(
-                "get_user_clubs"
-            );
+        setClubs(data ?? []);
 
-            if (error) {
+    }, [supabase, user?.id]);
 
-                console.error(error);
 
-                setClubs([]);
+    const fetchInvites = useCallback(async () => {
 
-                setLoadingState({
-                    loading: false,
-                    message: "Failed to load clubs"
-                });
+        if (!user?.id) {
+            setInvites([]);
+            return;
+        }
 
-                return;
-            }
+        const { data, error } = await supabase.rpc(
+            "get_my_club_invites"
+        );
 
-            setClubs(data ?? []);
+        if (error) {
+            console.error(error);
+            setInvites([]);
+            return;
+        }
 
-            setLoadingState({
-                loading: false,
-                message: "Clubs loaded"
-            });
-        },
-        [supabase, user?.id]
-    );
+        setInvites(data ?? []);
+
+    }, [supabase, user?.id]);
+
+
+    const refreshClubs = useCallback(async () => {
+
+        setLoadingState({
+            loading: true,
+            message: "Refreshing Clubs..."
+        });
+
+        await Promise.all([
+            fetchClubs(),
+            fetchInvites()
+        ]);
+
+        setLoadingState({
+            loading: false,
+            message: "Clubs loaded"
+        });
+
+    }, [fetchClubs, fetchInvites]);
+
 
     useEffect(() => {
-        fetchClubs();
-    }, [fetchClubs]);
+
+        refreshClubs();
+
+    }, [refreshClubs]);
+
+
+    const sendInvite = async (clubId, username) => {
+
+        const { data, error } = await supabase.rpc(
+            "send_club_invite",
+            {
+                p_club_id: clubId,
+                p_username: username
+            }
+        );
+
+        return {
+            success: !error,
+            data,
+            error
+        };
+    };
+
+
+    const acceptInvite = async (inviteId) => {
+
+        const { error } = await supabase.rpc(
+            "accept_club_invite",
+            {
+                p_invite_id: inviteId
+            }
+        );
+
+        if (!error) {
+            await refreshClubs();
+        }
+
+        return {
+            success: !error,
+            error
+        };
+    };
+
+
+    const declineInvite = async (inviteId) => {
+
+        const { error } = await supabase.rpc(
+            "decline_club_invite",
+            {
+                p_invite_id: inviteId
+            }
+        );
+
+        if (!error) {
+            await fetchInvites();
+        }
+
+        return {
+            success: !error,
+            error
+        };
+    };
+
 
     const ownedClub = clubs.find(
         club => club.club_role === "owner"
     ) ?? null;
+
 
     return (
         <ClubsContext.Provider
             value={{
                 clubs,
                 ownedClub,
+                invites,
                 loadingState,
-                refreshClubs: fetchClubs
+
+                refreshClubs,
+                fetchInvites,
+
+                sendInvite,
+                acceptInvite,
+                declineInvite
             }}
         >
             {children}
