@@ -1855,3 +1855,71 @@ option.bold {
 
 /* -- END OF LEADERBOARDS */
 
+
+/* USER ACCOUNT PAGE */
+
+.accountCard {
+    background: rgba(255,255,255,0.08);
+    border-radius: 12px;
+    padding: 16px;
+    margin-bottom: 16px;
+}
+
+.accountCard h2 {
+    margin: 0 0 6px;
+    font-size: 1.2rem;
+    text-align: left;
+}
+
+.accountCard form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.accountCard label {
+    font-size: 0.85rem;
+    opacity: 0.8;
+}
+
+.accountCard input {
+    height: 40px;
+    padding: 0 12px;
+    border-radius: 8px;
+    border: 1px solid rgba(255,255,255,0.2);
+    background: rgba(0,0,0,0.15);
+    color: inherit;
+    font-size: 1rem;
+}
+
+.accountCard input:focus {
+    outline: none;
+    border-color: var(--green);
+}
+
+.accountCard button {
+    height: 40px;
+    border-radius: 8px;
+    border: none;
+    background: var(--green);
+    color: white;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.accountCard button:hover {
+    opacity: 0.9;
+}
+
+.accountMessage {
+    margin-top: 12px;
+    font-size: 0.9rem;
+}
+
+.accountCard.club .clubStatus {
+    margin-top: 12px;
+}
+
+/* -- END OF USER ACCOUNT PAGE */
+
+

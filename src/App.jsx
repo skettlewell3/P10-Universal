@@ -9,6 +9,7 @@ import { Route, Routes } from 'react-router-dom'
 import ForgotPassword from './pages/ForgotPassword'
 import ResetPasswordPage from './pages/ResetPasswordPage'
 import { FlavourProvider } from './providers/FlavourProvider'
+import { ClubsProvider } from './providers/ClubsProvider'
 
 function App() {
   
@@ -24,9 +25,11 @@ function App() {
               element={
                 <AuthGate>
                   <ProfileProvider>
-                    <AppLoadingGate>
-                      <AppShell/>
-                    </AppLoadingGate>
+                    <ClubsProvider>
+                      <AppLoadingGate>
+                        <AppShell/>
+                      </AppLoadingGate>
+                    </ClubsProvider>
                   </ProfileProvider>
                 </AuthGate>
               }

@@ -43,8 +43,15 @@ export default function ProfileDropdown({ profile }) {
 
       {open && (
         <div className="profileDropdownMenu left">
-          <div className="profileDropdownItem disabled">
-            Account <span className="tag">Soon!</span>
+          <div 
+            className="profileDropdownItem"
+            onClick={() => {
+              navigate("/account");
+              setOpen(false);
+            }}
+          
+          >
+            Account
           </div>
           <div className="profileDropdownItem disabled">
             Create Club <span className="tag">Soon!</span>
