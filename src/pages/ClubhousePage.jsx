@@ -2,20 +2,29 @@ import { useParams } from "react-router-dom";
 import { useClubs } from "../hooks/useClubs";
 import ContentBanner from "../components/app/ContentBanner";
 import SendClubInviteForm from "../components/clubs/SendClubInviteForm";
+import ClubMembersList from "../components/clubs/ClubMembersList";
 
 export default function ClubhousePage() {
 
     const { clubId } = useParams();
 
     const {
+        myMemberships,
         clubs
     } = useClubs();
 
 
-    const club = clubs.find(
-        club => club.profile_id === clubId
+    const club = myMemberships.find(
+        club => club.club_id === clubId
     );
 
+    const canManageClub =
+        ["owner", "captain"].includes(club?.club_role)
+    ;
+
+    const clubMates = clubs.filter(
+        clubMates => clubMates.club_id === clubId 
+    );
 
     return (
         <div className="pageShell">
@@ -24,14 +33,16 @@ export default function ClubhousePage() {
 
             <div className="scrollArea dashboardScroll">
 
-                {club && (
+                {canManageClub && (
                     <>
-                        <SendClubInviteForm clubId={club.profile_id} />
+                        <SendClubInviteForm clubId={club.club_id} />
                     </>
                 )}
 
+                {club && (
+                    <ClubMembersList clubMates={clubMates} />
+                )}
             </div>
-
         </div>
     );
 }

@@ -2,11 +2,13 @@ import { useState, useEffect, useCallback } from "react";
 import { ClubsContext } from "../context/ClubsContext";
 import { useDatabase } from "../hooks/useDatabase";
 import { useAuth } from "../hooks/useAuth";
+import { useProfile } from "../hooks/useProfile";
 
 export function ClubsProvider({ children }) {
 
     const { supabase } = useDatabase();
     const { user } = useAuth();
+    const { profile } = useProfile();
 
     const [clubs, setClubs] = useState([]);
     const [invites, setInvites] = useState([]);
@@ -18,7 +20,7 @@ export function ClubsProvider({ children }) {
 
     const fetchClubs = useCallback(async () => {
 
-        if (!user?.id) {
+        if (!user?.id || !profile?.profile_id) {
             setClubs([]);
             return;
         }
@@ -35,7 +37,7 @@ export function ClubsProvider({ children }) {
 
         setClubs(data ?? []);
 
-    }, [supabase, user?.id]);
+    }, [supabase, user?.id, profile?.profile_id]);
 
     const fetchInvites = useCallback(async () => {
 
@@ -136,13 +138,21 @@ export function ClubsProvider({ children }) {
         };
     };
 
-    const ownedClub = clubs.find(
+    const myMemberships = profile
+    ? clubs.filter(
+        club =>
+            club.member_profile_id === profile.profile_id
+    )
+    : [];
+
+    const ownedClub = myMemberships.find(
         club => club.club_role === "owner"
     ) ?? null;
 
     return (
         <ClubsContext.Provider
             value={{
+                myMemberships,
                 clubs,
                 ownedClub,
                 invites,
