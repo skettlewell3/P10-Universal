@@ -3,7 +3,7 @@ export default function ResolutionRow({
 }) {
 
     const RESOLUTION_LABELS = {
-        extra_time: "won in extra eime",
+        extra_time: "won in extra time",
         penalties: "won on penalties",
     }
 
