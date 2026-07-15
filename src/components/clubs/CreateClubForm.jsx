@@ -12,14 +12,20 @@ export default function CreateClubForm() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        const cleanName = clubName.trim();            
+        if (cleanName.length < 3) {
+            setMessage("Club name must be between 3 and 16 characters");
+            return;
+        }
 
         const result = await createClub({
-            clubName
+            cleanName
         });
 
         if (result.success) {
             await refreshClubs();
             setClubName("");
+            setMessage("");
         } else {
             setMessage(result.error.message);
         }
@@ -45,6 +51,10 @@ export default function CreateClubForm() {
                         setClubName(e.target.value)
                     }
                 />
+
+                {clubName.length > 0 && (
+                    <p>Choose a club name between 3 and 16 characters.</p>
+                )}
 
                 <button type="submit">
                     Create Club

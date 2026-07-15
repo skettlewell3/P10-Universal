@@ -1,35 +1,43 @@
 import { useClubs } from "../../hooks/useClubs";
-import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 export default function UserClubList() {
 
     const { myMemberships } = useClubs();
-    const navigate = useNavigate();
-
 
     return (
         <section className="accountCard">
+            <h2>My Clubs</h2>
 
-            <h2>
-                My Clubs
-            </h2>
+            <div className="clubList">
+                {myMemberships.map(club => (
+                    <Link
+                        key={club.club_id}
+                        to={`/clubhouse/${club.club_id}`}
+                        className="clubListRow"
+                    >
+                        <div className="clubListMain">
+                            <span className="clubName">
+                                {club.club_name}
+                            </span>
 
+                            <span className="clubRole">
+                                {club.club_role}
+                            </span>
+                        </div>
 
-            {myMemberships.map(m => (
+                        <div className="clubStats">
+                            <span>
+                                Rank -
+                            </span>
 
-                <button
-                    key={m.club_id}
-                    onClick={() =>
-                        navigate(
-                            `/clubhouse/${m.club_id}`
-                        )
-                    }
-                >
-                    {m.club_name}
-                </button>
-
-            ))}
-
+                            <span>
+                                Points -
+                            </span>
+                        </div>
+                    </Link>
+                ))}
+            </div>
         </section>
     );
 }

@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useMemo } from "react";
 import { ClubsContext } from "../context/ClubsContext";
 import { useDatabase } from "../hooks/useDatabase";
 import { useAuth } from "../hooks/useAuth";
@@ -83,8 +83,131 @@ export function ClubsProvider({ children }) {
         refreshClubs();
     }, [refreshClubs]);
 
-    const sendInvite = async (clubId, username) => {
+    const myMemberships = useMemo(() => {
 
+        if (!profile) return [];
+
+        return clubs.filter(
+            club =>
+                club.member_profile_id === profile.profile_id
+        );
+
+    }, [clubs, profile]);
+
+
+    const myClubIds = useMemo(() => {
+        return new Set(
+            myMemberships.map(
+                membership => membership.club_id
+            )
+        );
+    }, [myMemberships]);
+
+
+    const ownedClub = useMemo(() => {
+        return myMemberships.find(
+            club => club.club_role === "owner"
+        ) ?? null;
+    }, [myMemberships]);
+
+
+    useEffect(() => {
+        if (!user?.id || !profile?.profile_id) {
+            return;
+        }
+
+        const channel = supabase
+            .channel(`clubs-${profile.profile_id}`)
+
+            // membership changes inside my clubs
+            .on(
+                "postgres_changes",
+                {
+                    event: "*",
+                    schema: "public",
+                    table: "club_memberships"
+                },
+                payload => {
+
+                    const clubId =
+                        payload.new?.club_id ??
+                        payload.old?.club_id;
+
+
+                    if (
+                        clubId &&
+                        myClubIds.has(clubId)
+                    ) {
+                        refreshClubs();
+                    }
+
+                }
+            )
+
+            // club profile changes inside my clubs
+            .on(
+                "postgres_changes",
+                {
+                    event: "*",
+                    schema: "public",
+                    table: "club_profiles"
+                },
+                payload => {
+
+                    const clubId =
+                        payload.new?.profile_id ??
+                        payload.old?.profile_id;
+
+
+                    if (
+                        clubId &&
+                        myClubIds.has(clubId)
+                    ) {
+                        refreshClubs();
+                    }
+
+                }
+            )
+
+            // invites belong directly to the user
+            .on(
+                "postgres_changes",
+                {
+                    event: "*",
+                    schema: "public",
+                    table: "club_invites"
+                },
+                payload => {
+
+                    const recipient =
+                        payload.new?.recipient_profile_id ??
+                        payload.old?.recipient_profile_id;
+
+
+                    if (
+                        recipient === profile.profile_id
+                    ) {
+                        fetchInvites();
+                    }
+
+                }
+            )
+            .subscribe();
+
+        return () => {
+            supabase.removeChannel(channel);
+        };
+
+    }, [
+        supabase,
+        user?.id,
+        profile?.profile_id,
+        myClubIds,
+        refreshClubs,
+        fetchInvites
+    ]);
+
+    const sendInvite = async (clubId, username) => {
         const { data, error } = await supabase.rpc(
             "send_club_invite",
             {
@@ -101,7 +224,6 @@ export function ClubsProvider({ children }) {
     };
 
     const acceptInvite = async (inviteId) => {
-
         const { error } = await supabase.rpc(
             "accept_club_invite",
             {
@@ -120,7 +242,6 @@ export function ClubsProvider({ children }) {
     };
 
     const declineInvite = async (inviteId) => {
-
         const { error } = await supabase.rpc(
             "decline_club_invite",
             {
@@ -138,16 +259,110 @@ export function ClubsProvider({ children }) {
         };
     };
 
-    const myMemberships = profile
-    ? clubs.filter(
-        club =>
-            club.member_profile_id === profile.profile_id
-    )
-    : [];
+    const changeMemberRole = async (
+        clubId,
+        memberProfileId,
+        newRole
+    ) => {
+        const { error } = await supabase.rpc(
+            "change_club_member_role",
+            {
+                p_club_id: clubId,
+                p_member_profile_id: memberProfileId,
+                p_new_role: newRole
+            }
+        );
 
-    const ownedClub = myMemberships.find(
-        club => club.club_role === "owner"
-    ) ?? null;
+        if (!error) {
+            await refreshClubs();
+        }
+
+        return {
+            success: !error,
+            error
+        };
+    };
+
+    const leaveClub = async (clubId) => {
+        const { error } = await supabase.rpc(
+            "leave_club",
+            {
+                p_club_id: clubId
+            }
+        );
+
+        if (!error) {
+            await refreshClubs();
+        }
+
+        return {
+            success: !error,
+            error
+        };
+    };
+
+    const removeClubMember = async (
+        clubId,
+        memberProfileId
+    ) => {
+
+        const { error } = await supabase.rpc(
+            "remove_club_member",
+            {
+                p_club_id: clubId,
+                p_member_profile_id: memberProfileId
+            }
+        );
+
+        if (!error) {
+            await refreshClubs();
+        }
+
+        return {
+            success: !error,
+            error
+        };
+    };
+
+    const deleteClub = async (clubId) => {
+        const { error } = await supabase.rpc(
+            "delete_club",
+            {
+                p_club_id: clubId
+            }
+        );
+
+        if (!error) {
+            await refreshClubs();
+        }
+
+        return {
+            success: !error,
+            error
+        };
+    };
+
+    const transferClubOwnership = async (
+        clubId,
+        newOwnerProfileId
+    ) => {
+        const { error } = await supabase.rpc(
+            "transfer_club_ownership",
+            {
+                p_club_id: clubId,
+                p_new_owner_profile_id: newOwnerProfileId
+            }
+        );
+
+        if (!error) {
+            await refreshClubs();
+        }
+
+        return {
+            success: !error,
+            error
+        };
+    };
 
     return (
         <ClubsContext.Provider
@@ -163,7 +378,13 @@ export function ClubsProvider({ children }) {
 
                 sendInvite,
                 acceptInvite,
-                declineInvite
+                declineInvite,
+
+                changeMemberRole,
+                transferClubOwnership,
+                leaveClub,
+                deleteClub,
+                removeClubMember
             }}
         >
             {children}

@@ -101,3 +101,10 @@ export const getTeamStyle = (primary, secondary, tertiary) => {
 
     return style;
 }
+
+export const formatClubRole = (role) => {
+    return role
+        .replace("_", " ")
+        .replace(/\b\w/g, char => char.toUpperCase())
+    ;
+}
