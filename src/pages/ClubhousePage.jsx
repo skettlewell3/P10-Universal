@@ -21,6 +21,7 @@ export default function ClubhousePage() {
     const canManageClub =
         ["owner", "captain"].includes(club?.club_role)
     ;
+    const isOwner = club?.club_role === "owner";
 
     const clubMates = clubs.filter(
         clubMates => clubMates.club_id === clubId 
@@ -33,15 +34,21 @@ export default function ClubhousePage() {
 
             <div className="scrollArea dashboardScroll">
 
+                {club && (
+                    <ClubMembersList 
+                        clubId={club.club_id}
+                        clubMates={clubMates} 
+                        canManageClub={canManageClub}
+                        canManageRoles={isOwner}
+                    />
+                )}
+
                 {canManageClub && (
                     <>
                         <SendClubInviteForm clubId={club.club_id} />
                     </>
                 )}
 
-                {club && (
-                    <ClubMembersList clubMates={clubMates} />
-                )}
             </div>
         </div>
     );
