@@ -1,0 +1,37 @@
+export default function LeagueTableRow({ row }) {
+
+    const {
+        pos,
+        team_name,
+        played,
+        won,
+        drawn,
+        lost,
+        gf,
+        ga,
+        gd,
+        points
+    } = row;
+
+    // const teamClass =
+    //     team_name.length > 12
+    //  .       ? "longTeamName"
+    //         : "";
+
+    return (
+        <tr>
+            <td>{pos}</td>
+            <td className="teamCell">
+                {team_name}
+            </td>
+            <td>{played}</td>
+            <td>{won}</td>
+            <td>{drawn}</td>
+            <td>{lost}</td>
+            <td>{gf}</td>
+            <td>{ga}</td>
+            <td>{gd}</td>
+            <td>{points}</td>
+        </tr>
+    );
+}

@@ -3,6 +3,7 @@ import { useClubs } from "../hooks/useClubs";
 import ContentBanner from "../components/app/ContentBanner";
 import SendClubInviteForm from "../components/clubs/SendClubInviteForm";
 import ClubMembersList from "../components/clubs/ClubMembersList";
+import LeagueTableCard from "../components/tables/leagueTables/LeagueTableCard";
 
 export default function ClubhousePage() {
 
@@ -33,6 +34,12 @@ export default function ClubhousePage() {
             <ContentBanner title={club?.club_name ?? "Clubhouse"}/>
 
             <div className="scrollArea dashboardScroll">
+                
+                {canManageClub && (
+                    <>
+                        <SendClubInviteForm clubId={club.club_id} />
+                    </>
+                )}
 
                 {club && (
                     <ClubMembersList 
@@ -43,11 +50,11 @@ export default function ClubhousePage() {
                     />
                 )}
 
-                {canManageClub && (
-                    <>
-                        <SendClubInviteForm clubId={club.club_id} />
-                    </>
-                )}
+                <LeagueTableCard
+                    profileId={clubId}
+                    defaultView="predicted"
+                />
+
 
             </div>
         </div>
