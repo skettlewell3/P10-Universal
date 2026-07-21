@@ -1,3 +1,10 @@
+// src/config/
+
+export const APP_CONFIG = {
+    maintenanceMode: true
+};
+
+
 // countryFlags.js
 
 export const COUNTRY_FLAG_MAP = {
