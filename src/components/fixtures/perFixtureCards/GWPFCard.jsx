@@ -45,8 +45,13 @@ export default function GWPFCard({
         }
     };
 
+    const stageClass = fixture.gameweek_number
+        ? `gwStage-${fixture.gameweek_number % 4}`
+        : "specialStage"
+    ;
+
     return (
-        <form className="fixtureCard perFixtureCard" onSubmit={handleSubmit}>
+        <form className={`fixtureCard ${stageClass}`} onSubmit={handleSubmit}>
             <PerFixtureCardHeader 
                 fixture={fixture}
             />

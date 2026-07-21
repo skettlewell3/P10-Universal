@@ -12,10 +12,15 @@ export default function StageFixturesCard({
 
     const { predictionsMap } = usePredictions();
 
+    const fixture = fixtures[0];
 
+    const stageClass = fixture.gameweek_number
+        ? `gwStage-${fixture.gameweek_number % 4}`
+        : "specialStage"
+    ;
 
     return (
-        <div className="fixtureCard groupedFixturesCard">
+        <div className={`fixtureCard groupedFixturesCard ${stageClass}`}>
             
             <StageFixtureCardHeader 
                 fixtures={fixtures} 
@@ -24,6 +29,7 @@ export default function StageFixturesCard({
 
             {fixtures.map((fixture) => (            
                 <StageFixtureFieldset 
+                    key={fixture.fixture_id}
                     fixture={fixture}
                     prediction={predictionsMap[fixture.fixture_id]}
                     predictionDrafts={predictionDrafts}

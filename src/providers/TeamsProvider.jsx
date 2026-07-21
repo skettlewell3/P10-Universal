@@ -9,7 +9,6 @@ import {
 import { TeamsContext } from "../context/TeamsContext";
 import { useDatabase } from "../hooks/useDatabase";
 import { useAuth } from "../hooks/useAuth";
-import { TEAM_GROUPS_MAP } from "../config";
 import { useFlavour } from "../hooks/useFlavour";
 
 export default function TeamsProvider({ children }) {
@@ -85,25 +84,16 @@ export default function TeamsProvider({ children }) {
         refreshTeams();
     }, [refreshSignal, refreshTeams]);
 
-    // Temp join groups to teams
-    const teamsWithGroups = useMemo(() => {
-        return teams.map(team => ({
-            ...team,
-            group_letter: TEAM_GROUPS_MAP[team.team_id] ?? null,
-        }));
-    }, [teams]);
-
     /**
      * Active teams list (already flavour-scoped from DB)
      */
     const activeTeams = useMemo(() => teams, [teams]);
 
-
     /**
      * Dropdown-ready options (dumb UI consumption)
      */
     const availableTeams = useMemo(() => {
-        return [...teamsWithGroups]
+        return [...teams]
             .sort((a, b) =>
                 a.team_name.localeCompare(b.team_name.toLowerCase())
             )
@@ -113,7 +103,7 @@ export default function TeamsProvider({ children }) {
             shortCode: team.short_code,
             groupLetter: team.group_letter
         }));
-    }, [teamsWithGroups]);
+    }, [teams]);
 
     /**
      * Fast lookup map (for chips + rendering)

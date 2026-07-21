@@ -4,6 +4,7 @@ import PFCardDeadline from "./PFCardDeadline";
 import { isValidPrediction } from "../../../utils/helpers";
 import FixtureLeaderboardToggle from "./FixtureLeaerboardToggle";
 import ScorePanel from "./ScorePanel";
+import { useTeams } from "../../../hooks/useTeams";
 
 export default function PFCardBody({
     fixture, 
@@ -16,6 +17,11 @@ export default function PFCardBody({
     hasMulitple,
 }) {   
 
+    const { teamsMap } = useTeams();
+
+    const homeTeam = teamsMap[fixture.home_team_id];
+    const awayTeam = teamsMap[fixture.away_team_id];
+
     const isOpen = 
         fixture.predictions_open && 
         fixture.fixture_status === "upcoming"
@@ -24,6 +30,10 @@ export default function PFCardBody({
     const postKickoff =
         fixture.fixture_status !== "upcoming" &&
         fixture.fixture_status !== "postponed"
+    ;
+
+    const groupLetter =
+        homeTeam?.group_letter ?? awayTeam?.group_letter
     ;
 
     const existing = predictionsMap[fixture.fixture_id];
@@ -66,8 +76,8 @@ export default function PFCardBody({
                     {fixture.stage_name}
                 </div>
                 <TeamBlock 
-                    name={fixture.home_team_name} 
-                    short={fixture.home_short_code}
+                    name={homeTeam?.team_name}
+                    flagCode={homeTeam?.flag_code}
                     isWinner={homeWon}
                     isLoser={awayWon}
                     showProgressionMarker={
@@ -99,11 +109,12 @@ export default function PFCardBody({
 
             <div className="fCardCol R">
                 <div className="groupCell">
-                    {fixture.group_letter > 0 ? `Group ${fixture.group_letter}` : ""}
+                    {fixture.stage_type === "group" && `Group ${groupLetter}`}
                 </div>
+                
                 <TeamBlock 
-                    name={fixture.away_team_name} 
-                    short={fixture.away_short_code}
+                    name={awayTeam?.team_name}
+                    flagCode={awayTeam?.flag_code}
                     isWinner={awayWon}
                     isLoser={homeWon}
                     showProgressionMarker={
