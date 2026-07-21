@@ -1,6 +1,7 @@
 import { useEffect, useState, useRef } from "react";
 import { useDatabase } from "../hooks/useDatabase";
 import { AuthContext } from "../context/AuthContext";
+import { APP_CONFIG } from "../config";
 
 export function AuthProvider({ children }) {
   const { supabase } = useDatabase();
@@ -148,6 +149,12 @@ export function AuthProvider({ children }) {
     }, 60 * 1000);
 
     return () => clearInterval(interval);
+  }, [supabase]);
+
+  useEffect(() => {
+      if (!APP_CONFIG.maintenanceMode) return;
+
+      supabase.auth.signOut();
   }, [supabase]);
 
   return (
