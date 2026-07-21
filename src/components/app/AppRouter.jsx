@@ -6,6 +6,7 @@ import GameweekPage from "../../pages/GameweekPage";
 import UserProfilePage from "../../pages/UserProfilePage";
 import ClubsOverviewPage from "../../pages/ClubsOverview";
 import ClubhousePage from "../../pages/ClubhousePage";
+import FlavourStatsPage from "../../pages/FlavourStatsPage";
 
 export default function AppRouter() {
   return (
@@ -17,6 +18,7 @@ export default function AppRouter() {
       <Route path="/account" element={<UserProfilePage />} />
       <Route path="/clubs" element={<ClubsOverviewPage />} />
       <Route path="/clubhouse/:clubId" element={<ClubhousePage />} />
+      <Route path="/stats" element={<FlavourStatsPage />} />
     </Routes>
   );
 }

@@ -7,6 +7,7 @@ import LeaderboardProvider from "./LeaderboardProvider";
 import { PredictionProvider } from "./PredictionProvider";
 import ProfileTickerProvider from "./ProfileTickerProvider";
 import StageProvider from "./StageProvider";
+import { TablesProvider } from "./TablesProvider";
 import TeamsProvider from "./TeamsProvider";
 
 export default function GameDataProvider ({children}) {
@@ -16,17 +17,19 @@ export default function GameDataProvider ({children}) {
                 <ProfileTickerProvider>
                     <TeamsProvider>
                         <FixturesProvider>
-                            <FixturesFiltersProvider>
-                                <PredictionProvider>
-                                    <LeaderboardProvider>
-                                        <FixtureScoreboardProvider>
-                                            <GameDataReadyGate>
-                                                {children}
-                                            </GameDataReadyGate>
-                                        </FixtureScoreboardProvider>
-                                    </LeaderboardProvider>
-                                </PredictionProvider>
-                            </FixturesFiltersProvider>
+                            <TablesProvider >
+                                <FixturesFiltersProvider>
+                                    <PredictionProvider>
+                                        <LeaderboardProvider>
+                                            <FixtureScoreboardProvider>
+                                                <GameDataReadyGate>
+                                                    {children}
+                                                </GameDataReadyGate>
+                                            </FixtureScoreboardProvider>
+                                        </LeaderboardProvider>
+                                    </PredictionProvider>
+                                </FixturesFiltersProvider>
+                            </TablesProvider>
                         </FixturesProvider>
                     </TeamsProvider>
                 </ProfileTickerProvider>

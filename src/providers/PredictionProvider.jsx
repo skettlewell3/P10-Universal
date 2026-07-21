@@ -149,10 +149,6 @@ export function PredictionProvider({ children }) {
     };
   }, [supabase, refreshPredictions]);
 
-  console.log(predictions)
-
-
-
   return (
     <PredictionsContext.Provider
       value={{
