@@ -4,10 +4,12 @@ import ContentBanner from "../components/app/ContentBanner";
 import SendClubInviteForm from "../components/clubs/SendClubInviteForm";
 import ClubMembersList from "../components/clubs/ClubMembersList";
 import LeagueTableCard from "../components/tables/leagueTables/LeagueTableCard";
+import { useFlavour } from "../hooks/useFlavour";
 
 export default function ClubhousePage() {
 
     const { clubId } = useParams();
+    const { isGameweekFormat } = useFlavour();
 
     const {
         myMemberships,
@@ -50,11 +52,12 @@ export default function ClubhousePage() {
                     />
                 )}
 
-                <LeagueTableCard
-                    profileId={clubId}
-                    defaultView="predicted"
-                />
-
+                {isGameweekFormat && (
+                    <LeagueTableCard
+                        profileId={clubId}
+                        defaultView="predicted"
+                    />
+                )}
 
             </div>
         </div>

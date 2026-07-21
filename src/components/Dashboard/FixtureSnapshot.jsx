@@ -1,9 +1,11 @@
 import { format } from "date-fns";
 import { useFixtures } from "../../hooks/useFixtures"
-import { COUNTRY_FLAG_MAP } from "../../config";
+import { useTeams } from "../../hooks/useTeams";
+
 
 export default function FixtureSnapshot() {
     const { fixtures } = useFixtures();
+    const { teamsMap } = useTeams();
 
     const snapshotFixture =
       fixtures
@@ -14,24 +16,41 @@ export default function FixtureSnapshot() {
         )
         .sort((a, b) => {
           if (a.fixture_status === "live_90" && b.fixture_status !== "live_90") return -1;
-          if (b.fixture_status === "live_90" && a.fixture_status !== "live_90") return 1  ;
+          if (b.fixture_status === "live_90" && a.fixture_status !== "live_90") return 1;
       
-          const koDiff =
-            new Date(a.kickoff_at) - new Date(b.kickoff_at) ;
-      
-          return koDiff || (a.fixture_id - b.fixture_id);
-        })[0];
+          return (
+            new Date(a.kickoff_at) - new Date(b.kickoff_at)
+          ) || (
+            a.fixture_id - b.fixture_id
+          );
+        })[0]
 
-      if (!snapshotFixture) {
-        return null;
-      }
+      ||
+
+      fixtures
+        .filter(f => f.fixture_status === "finished")
+        .sort(
+          (a, b) =>
+            new Date(b.kickoff_at) -
+            new Date(a.kickoff_at)
+        )[0]
     ;
 
+    if (!snapshotFixture) return null;
+
     const isLive =
-      snapshotFixture.fixture_status === "live_90";
+          snapshotFixture.fixture_status === "live_90";
+
+    const isFinished =
+      snapshotFixture.fixture_status === "finished";
 
     const snapLabel =
-      isLive ? "Live!" : "Next:";
+      isLive
+        ? "Live!"
+        : isFinished
+          ? "Final"
+          : "Next:"
+    ;
 
     const snapKO = format(
       new Date(snapshotFixture.kickoff_at),
@@ -43,8 +62,12 @@ export default function FixtureSnapshot() {
       "dd/MM"
     );
 
-    const homeFlag = COUNTRY_FLAG_MAP[snapshotFixture.home_short_code];
-    const awayFlag = COUNTRY_FLAG_MAP[snapshotFixture.away_short_code];
+    
+    const homeTeam = teamsMap[snapshotFixture.home_team_id];
+    const awayTeam = teamsMap[snapshotFixture.away_team_id];
+
+    const homeFlag = homeTeam?.flag_code;
+    const awayFlag = awayTeam?.flag_code;
 
     return (
         <div className="fixtureSnapshot">
@@ -65,19 +88,19 @@ export default function FixtureSnapshot() {
               <div className={`snapLabel ${isLive ? "blink" : ""}`}>
                   {snapLabel}
               </div>
-              {isLive && (
+              {isLive || isFinished && (
                 <div className="snapScore">
-                  {snapshotFixture.ft_home_goals}
-                  {" - "}
-                  {snapshotFixture.ft_away_goals}
+                  {snapshotFixture.final_home_goals}
+                  {"-"}
+                  {snapshotFixture.final_away_goals}
                 </div>
               )}
-              {!isLive && (
+              {!isLive || !isFinished && (
                 <div className="snapScore vs">
                   V
                 </div>
               )}
-              { !isLive && (
+              { !isLive || !isFinished && (
                 <div className="snapDetail">
                   <p>{snapKO}</p>
                   <p>{snapDate}</p>

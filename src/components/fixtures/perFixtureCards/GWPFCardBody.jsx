@@ -4,6 +4,7 @@ import ScorePanel from "./ScorePanel";
 import PFCardDeadline from "./PFCardDeadline";
 import FixtureLeaderboardToggle from "./FixtureLeaerboardToggle";
 import { isValidPrediction, getTeamStyle } from "../../../utils/helpers";
+import { useTeams } from "../../../hooks/useTeams";
 
 export default function GWPFCardBody({
     fixture, 
@@ -43,18 +44,23 @@ export default function GWPFCardBody({
       );
     })();
 
+    const { teamsMap } = useTeams();
+
+    const homeTeam = teamsMap[fixture.home_team_id];
+    const awayTeam = teamsMap[fixture.away_team_id];
+    
     const homeTeamStyle = getTeamStyle(
-        fixture.home_color_1,
-        fixture.home_color_2,
-        fixture.home_color_3
+        homeTeam?.color_1,
+        homeTeam?.color_2,
+        homeTeam?.color_3
     );
     
     const awayTeamStyle = getTeamStyle(
-        fixture.away_color_1,
-        fixture.away_color_2,
-        fixture.away_color_3
+        awayTeam?.color_1,
+        awayTeam?.color_2,
+        awayTeam?.color_3
     );
-    
+
     return (
         <div className="fixtureBody">
 
@@ -68,7 +74,7 @@ export default function GWPFCardBody({
                 />               
                 <PFCardDeadline 
                     fixture={fixture}                    
-                />                 
+                />            
                 
             </div>
 

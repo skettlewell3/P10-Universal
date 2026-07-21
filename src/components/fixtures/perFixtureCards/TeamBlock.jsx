@@ -1,13 +1,11 @@
-import { COUNTRY_FLAG_MAP } from "../../../config"
 
 export default function TeamBlock ({ 
     name, 
-    short,
+    flagCode,
     isWinner = false,
     isLoser = false,
     showProgressionMarker = false,
 }) {
-    const flagCode = COUNTRY_FLAG_MAP[short];
 
     const isLongName = name?.length > 15;
 

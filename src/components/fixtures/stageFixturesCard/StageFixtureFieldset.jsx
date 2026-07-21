@@ -1,48 +1,59 @@
+import { useState } from "react";
 import { getTeamStyle } from "../../../utils/helpers";
+import { useTeams } from "../../../hooks/useTeams";
+import FixtureExpandButton from "../FixtureExpandButton";
+import FixtureScoreBreakdown from "./FixtureScoreBreakdown";
 
 export default function StageFixtureFieldset({ 
     fixture,
     prediction,
     predictionDrafts,
     setPredictionDrafts,
-    predictionWindowOpen
+    predictionWindowOpen,
+    
 }) {
+    const [expanded, setExpanded] = useState(false);
+
+    const { teamsMap } = useTeams();
+
+    const homeTeam = teamsMap[fixture.home_team_id];
+    const awayTeam = teamsMap[fixture.away_team_id];
 
     const homeTeamStyle = getTeamStyle(
-    fixture.home_color_1,
-    fixture.home_color_2,
-    fixture.home_color_3
-);
+        homeTeam?.color_1,
+        homeTeam?.color_2,
+        homeTeam?.color_3
+    );
 
-const awayTeamStyle = getTeamStyle(
-    fixture.away_color_1,
-    fixture.away_color_2,
-    fixture.away_color_3
-);
+    const awayTeamStyle = getTeamStyle(
+        awayTeam?.color_1,
+        awayTeam?.color_2,
+        awayTeam?.color_3
+    );
 
     let mode = "blank";
 
-if (fixture.fixture_status === "live_90" || fixture.fixture_status === "live_90" ||fixture.fixture_status === "finished" ) {
-    mode = "result";
-}
-else if (predictionWindowOpen && fixture.fixture_status === "upcoming") {
-    mode = "input";
-}
-else if (prediction) {
-    mode = "prediction";
-}
+    if (fixture.fixture_status === "live_90" || fixture.fixture_status === "live_et" ||fixture.fixture_status === "finished" ) {
+        mode = "result";
+    }
+    else if (predictionWindowOpen && fixture.fixture_status === "upcoming") {
+        mode = "input";
+    }
+    else if (prediction) {
+        mode = "prediction";
+    }
 
     const draft = predictionDrafts[fixture.fixture_id];
 
     const homeValue =
         draft?.home ??
-        prediction?.pred_home_goals ??
-        "";
+        prediction?.pred_home_goals ?? ""
+    ;
     
     const awayValue =
         draft?.away ??
-        prediction?.pred_away_goals ??
-        "";
+        prediction?.pred_away_goals ?? ""
+    ;
 
     return (
         <div className="fixtureFieldsetWrapper">
@@ -141,11 +152,19 @@ else if (prediction) {
                     {fixture.away_short_code}
                 </div>
 
-                <div>
-                    exp
-                </div>
-
+                
+                <FixtureExpandButton
+                    isExpanded={expanded}
+                    onClick={() => setExpanded(prev => !prev)}
+                    // disabled={!prediction && mode === "blank"}
+                />
+                
             </fieldset>
+            {expanded && (
+                <FixtureScoreBreakdown
+                    fixtureId={fixture.fixture_id}
+                />
+            )}
         </div>
     )
 }

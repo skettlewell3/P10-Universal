@@ -1176,7 +1176,7 @@ input[type=number] {
 
 /* -- End of Fixtures List */
 
-/* PER FIXTURE CARD */
+/* FIXTURE CARDS */
 
 .fixtureCard {
   width: 100%;
@@ -1188,15 +1188,59 @@ input[type=number] {
   border-radius: 5px;
   margin-bottom: 1rem;
   padding: 0;
-
-  background-image: linear-gradient(to top, #1c2c5b, #203c6a, #264c78, #2f5d86, #3a6e93, #3a6e93, #3a6e93, #3a6e93, #2f5d86, #264c78, #203c6a, #1c2c5b);
-
+  /* background-image: linear-gradient(to top, #1c2c5b, #203c6a, #264c78, #2f5d86, #3a6e93, #3a6e93, #3a6e93, #3a6e93, #2f5d86, #264c78, #203c6a, #1c2c5b); */
 }
+
+/* .groupedFixturesCard {
+  background-image: linear-gradient(to top, #1c2c5b, #203c6a, #264c78, #2f5d86, #3a6e93, #3a6e93, #3a6e93, #3a6e93, #2f5d86, #264c78, #203c6a, #1c2c5b);
+} */
 
 .perFixtureCard {
-  /* background-image: linear-gradient(to top, #1c2c5b, #203c6a, #264c78, #2f5d86, #3a6e93, #3a6e93, #3a6e93, #3a6e93, #2f5d86, #264c78, #203c6a, #1c2c5b); */
+  background-image: linear-gradient(to top, #1c2c5b, #203c6a, #264c78, #2f5d86, #3a6e93, #3a6e93, #3a6e93, #3a6e93, #2f5d86, #264c78, #203c6a, #1c2c5b);
   /* min-height: 7em; */
 }
+
+.specialStage {
+  background-image: linear-gradient(
+    to top,
+    rgb(80,70,45),
+    rgb(130,110,55)
+  );
+}
+
+.gwStage-1 {
+  background-image: linear-gradient(
+    to top,
+    rgb(18,55,40),
+    rgb(45,115,75)
+  );
+}
+
+.gwStage-2 {
+  background-image: linear-gradient(
+    to top,
+    rgb(35,70,45),
+    rgb(70,140,80)
+  );
+}
+
+.gwStage-3 {
+  background-image: linear-gradient(
+    to top,
+    rgb(25,60,70),
+    rgb(50,120,120)
+  );
+}
+
+.gwStage-0 {
+  background-image: linear-gradient(
+    to top,
+    rgb(30,50,65),
+    rgb(65,100,120)
+  );
+}
+
+/* PER FIXTURE CARD */
 
 /* Fixture Card Header */
 
@@ -1648,10 +1692,6 @@ input[type=number] {
 
 /* STAGE FIXTURE CARD */
 
-.groupedFixturesCard {
-  /* background-image: linear-gradient(to top, #1c2c5b, #203c6a, #264c78, #2f5d86, #3a6e93, #3a6e93, #3a6e93, #3a6e93, #2f5d86, #264c78, #203c6a, #1c2c5b); */
-}
-
 .fixtureFieldsetWrapper {
   width: 100%;
 }
@@ -1683,11 +1723,50 @@ input[type=number] {
   font-size: 1.1rem;
 }
 
+.fixtureExpandButton {
+  width: 100%;
+  height: 100%;
+  border: none;
+  padding: 0;
+  background: transparent;
 
+  display: flex;
+  align-items: center;
+  justify-content: center;
 
+  cursor: pointer;
+}
 
-/* -- STAGE FIXTURE CARD */
+.fixtureExpandButton svg {
+  width: 14px;
+  height: 14px;
+  fill: none;
+  stroke: white;
+  stroke-width: 2.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  opacity: 0.75;
+}
 
+.fixtureExpandButton:hover svg {
+  opacity: 1;
+}
+
+.fixtureScoreBreakdown {
+  width: 100%;
+  min-height: 2rem;
+  padding: 0.25rem;
+  margin-top: 0.1rem;
+  border-radius: 5px;
+  background-color: rgba(255,255,255,0.2);
+
+  display: flex;
+  justify-content: center;
+}
+
+/* -- END OF STAGE FIXTURE CARD */
+
+/* -- END OF FIXTURE CARD */
 
 /* SUBMIT SLIDE UP */
 
