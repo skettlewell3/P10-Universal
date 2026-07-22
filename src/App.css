@@ -1472,7 +1472,7 @@ input[type=number] {
   hyphens: auto;
 }
 
-.teamName.longName {
+.teamName.longName, .displayName.longName {
   font-size: 0.8rem;
 }
 
@@ -1854,9 +1854,11 @@ input[type=number] {
 /* Leaderboard Filters */
 
 .leaderboardFilters {
-  display: grid;
+  /* display: grid;
+  grid-template-rows: repeat(2, 1fr);
   grid-template-columns: repeat(2, 1fr);
   column-gap: 1rem;
+  row-gap: 1rem; */
 }
 
 .scopeTypeFilter {
@@ -1991,17 +1993,39 @@ option.bold {
   margin-bottom: 0.2rem;
   border: 2px solid white;
   border-radius: 10px;
-  background-color: rgb(58, 110, 147, 0.6);
+  /* background-color: rgb(58, 110, 147, 0.6); */
 }
+
+/* .leaderboardRow:nth-child(even) {
+  opacity: 0.45;
+} */
+
+.leaderboardRow.user {
+  background-color: rgba(58, 110, 147, 0.6);
+}
+
+.leaderboardRow.club {
+  background-color: rgba(70, 150, 100, 0.6);
+}
+
+.leaderboardRow.p10 {
+  background-color: rgba(220, 170, 50, 0.6);
+}
+
+.leaderboardRow.bot {
+  background-color: rgba(120, 90, 160, 0.6);
+}
+
 
 .leaderboardRow div {
   padding: 0.2rem 0;
 }
 
-
-
 .displayName.leaderboard {
   margin-left: 0.2rem;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
 
 /* -- END OF LEADERBOARDS */

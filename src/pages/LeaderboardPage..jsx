@@ -10,7 +10,9 @@ export default function LeaderboardPage() {
         scopeType, 
         scopeId, 
         setScopeType, 
-        setScopeId 
+        setScopeId,
+        population,
+        setPopulation
     } = useLeaderboard();
 
     return (
@@ -22,6 +24,9 @@ export default function LeaderboardPage() {
                 setScopeType={setScopeType}
                 scopeId={scopeId}
                 setScopeId={setScopeId}
+                population={population}
+                setPopulation={setPopulation}
+
             />
 
             <LeaderboardHeader />
