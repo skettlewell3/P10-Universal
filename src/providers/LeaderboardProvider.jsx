@@ -16,15 +16,13 @@ export default function LeaderboardProvider({ children }) {
 
     const [scopeType, setScopeType] = useState("campaign");
     const [scopeId, setScopeId] = useState(1);
+    const [population, setPopulation] = useState("global");
 
     const { flavourId } = useFlavour();
 
     const cacheRef = useRef({});
     const requestRef = useRef(0);
-
-    const getCacheKey = useCallback(() => {
-        return `${flavourId}:${scopeType}:${scopeId}`;
-    }, [flavourId, scopeType, scopeId]);
+    const refreshLeaderboardRef = useRef();
 
     const refreshLeaderboard = useCallback(async () => {
         if (
@@ -34,7 +32,7 @@ export default function LeaderboardProvider({ children }) {
             return;
         }
 
-        const cacheKey = `${flavourId}:${scopeType}:${scopeId}`;
+        const cacheKey = `${flavourId}:${scopeType}:${scopeId}:${population}`;
 
         if (cacheRef.current[cacheKey]) {
             setLeaderboard(cacheRef.current[cacheKey]);
@@ -58,7 +56,8 @@ export default function LeaderboardProvider({ children }) {
                 {
                     p_flavour_id: flavourId,
                     p_scope_type: scopeType,
-                    p_scope_id: scopeId
+                    p_scope_id: scopeId,
+                    p_population: population
                 }
             );
 
@@ -80,7 +79,11 @@ export default function LeaderboardProvider({ children }) {
                 });
             }
         }
-    }, [supabase, flavourId, scopeType, scopeId]);
+    }, [supabase, flavourId, scopeType, scopeId, population]);
+
+    useEffect(() => {
+        refreshLeaderboardRef.current = refreshLeaderboard;
+    }, [refreshLeaderboard]);
 
     useEffect(() => {
         refreshLeaderboard();
@@ -104,13 +107,10 @@ export default function LeaderboardProvider({ children }) {
                     schema: "public",
                     table: "leaderboard"
                 },
-                (payload) => {
-                    console.log("leaderboard changed", payload);
-
-                    // IMPORTANT: invalidate cache so realtime actually updates UI
+                () => {
                     cacheRef.current = {};
 
-                    refreshLeaderboard();
+                    refreshLeaderboardRef.current?.();
                 }
             )
             .subscribe();
@@ -118,7 +118,7 @@ export default function LeaderboardProvider({ children }) {
         return () => {
             supabase.removeChannel(channel);
         };
-    }, [supabase, refreshLeaderboard]);
+    }, [supabase]);
 
     const value = {
         leaderboard,
@@ -128,10 +128,12 @@ export default function LeaderboardProvider({ children }) {
 
         scopeType,
         scopeId,
+        population,
 
         refreshLeaderboard,
         setScopeType,
-        setScopeId
+        setScopeId,
+        setPopulation
     };
 
     return (

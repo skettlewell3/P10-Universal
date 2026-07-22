@@ -82,7 +82,6 @@ export default function FixturesFilters() {
                             {opt.label}
                         </button>
                     ))}
-
                 </div>
             </div>
 

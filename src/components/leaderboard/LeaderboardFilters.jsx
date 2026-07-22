@@ -1,19 +1,22 @@
 import { useEffect, useMemo } from "react";
 import { useStage } from "../../hooks/useStage";
 
-export default function LeaderboardFilters({ scopeId, 
-    setScopeId, 
+export default function LeaderboardFilters({ 
     scopeType, 
-    setScopeType 
+    setScopeType, 
+    scopeId, 
+    setScopeId,
+    population,
+    setPopulation 
 }) {
-    const { stages, activeStageId } = useStage();
+    const { stages, tickerStageId } = useStage();
 
     const visibleStages = useMemo(
         () => stages.filter(s => s.is_live || s.is_finished),
         [stages]
     );
 
-    const defaultStageId = activeStageId
+    const defaultStageId = tickerStageId;
 
     useEffect(() => {
         if (scopeType !== "stage") return;
@@ -37,47 +40,83 @@ export default function LeaderboardFilters({ scopeId,
         setScopeId(Number(e.target.value))
     };    
 
+    const populationOpts = [
+        {
+            label:"Global",
+            value:"global"
+        },
+        {
+            label:"Users",
+            value:"users"
+        },
+        {
+            label:"Clubs",
+            value:"clubs"
+        },
+        {
+            label:"Bots",
+            value:"bots"
+        }
+    ];
+
     return (
         <div className="filters leaderboardFilters">
-            <div className="scopeTypeFilter">
-                <button 
-                    className={scopeType === "campaign" ? "active" : ""}
-                    onClick={handleCampaign}
-                >
-                    CAMPAIGN
-                </button>
-
-                <button 
-                    className={scopeType === "stage" ? "active" : ""}
-                    onClick={handleStage}
-                >
-                    ROUND
-                </button>
+            <div className="filterFixedRow">
+                <div className="fixStatusFilter">
+                    {populationOpts.map(opt => (
+                        <button
+                            key={opt.value}
+                            className={population === opt.value ? "active" : ""}
+                            onClick={() => setPopulation(opt.value)}
+                        >
+                            {opt.label}
+                        </button>
+                    ))}
+                </div>
             </div>
 
-            <div className={`scopeIdFilter ${scopeType === "stage" ? "active" : ""}`}>
-                {scopeType === "stage" && (
-                    <select 
-                        name="scopeIdFilter" 
-                        id="scopeIdFilter" 
-                        disabled={scopeType !== "stage"}  
-                        value={scopeType === "stage" ? scopeId ?? "" : ""}
-                        onChange={handleChange}               
+            <div className="filterRow">
+                <div className="scopeTypeFilter">
+                    <button 
+                        className={scopeType === "campaign" ? "active" : ""}
+                        onClick={handleCampaign}
                     >
-                        {visibleStages.map(stage => {
-                            return (
-                                <option 
-                                    key={stage.stage_id}
-                                    value={stage.stage_id}
-                                    className={stage.is_active ? "bold" : ""}
-                                >
-                                    {stage.stage_name}
-                                </option>
-                            )
-                        })}                    
-                    </select>
-                )}                
-            </div>         
+                        CAMPAIGN
+                    </button>
+
+                    <button 
+                        className={scopeType === "stage" ? "active" : ""}
+                        onClick={handleStage}
+                    >
+                        ROUND
+                    </button>
+                </div>
+
+                <div className={`scopeIdFilter ${scopeType === "stage" ? "active" : ""}`}>
+                    {scopeType === "stage" && (
+                        <select 
+                            name="scopeIdFilter" 
+                            id="scopeIdFilter" 
+                            disabled={scopeType !== "stage"}  
+                            value={scopeType === "stage" ? scopeId ?? "" : ""}
+                            onChange={handleChange}               
+                        >
+                            {visibleStages.map(stage => {
+                                return (
+                                    <option 
+                                        key={stage.stage_id}
+                                        value={stage.stage_id}
+                                        className={stage.is_active ? "bold" : ""}
+                                    >
+                                        {stage.stage_name}
+                                    </option>
+                                )
+                            })}                    
+                        </select>
+                    )}                
+                </div>         
+            </div>
+
         </div>
     );
 };
