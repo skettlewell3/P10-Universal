@@ -36,12 +36,6 @@ export default function ClubhousePage() {
             <ContentBanner title={club?.club_name ?? "Clubhouse"}/>
 
             <div className="scrollArea dashboardScroll">
-                
-                {canManageClub && (
-                    <>
-                        <SendClubInviteForm clubId={club.club_id} />
-                    </>
-                )}
 
                 {club && (
                     <ClubMembersList 

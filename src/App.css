@@ -61,6 +61,14 @@ input[type=number] {
   overflow: hidden;
 }
 
+.textButton {
+  border: none;
+  padding: none;
+  background: none;
+  text-decoration: 1px dotted underline;
+  color: var(--silver);
+}
+
 .iconButton {
   height: 24px !important;
   width: 24px;
@@ -2040,6 +2048,11 @@ option.bold {
   margin-bottom: 16px;
 }
 
+.cardHeader {
+  display: flex;
+  justify-content: space-between;
+}
+
 .accountCard h2 {
   display: flex;
   align-items: baseline;
@@ -2211,6 +2224,15 @@ option.bold {
   background: rgb(40, 40, 40);
   color: white;
 }
+
+.clubInviteForm {
+  margin-top: 0.2rem;
+}
+
+.clubInviteForm label {
+  margin-bottom: -0.5rem;
+}
+
 
 /* -- end of Clubhouse */
 

@@ -29,16 +29,13 @@ export default function SendClubInviteForm({ clubId }) {
     };
 
     return (
-        <section className="accountCard">
-
-            <h2>
-                Invite Player
-            </h2>
-
-            <form onSubmit={handleSubmit}>
-
+        <>
+            <form 
+                className="clubInviteForm"
+                onSubmit={handleSubmit}
+            >
                 <label>
-                    Username
+                    Invite Users
                 </label>
 
                 <input
@@ -47,6 +44,7 @@ export default function SendClubInviteForm({ clubId }) {
                     onChange={(e) =>
                         setUsername(e.target.value)
                     }
+                    placeholder="Insert Username e.g user_########"
                 />
 
                 <button type="submit">
@@ -60,7 +58,6 @@ export default function SendClubInviteForm({ clubId }) {
                     {message}
                 </p>
             )}
-
-        </section>
+        </>
     );
 }
