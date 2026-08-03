@@ -12,7 +12,6 @@ export default function ContentBanner({ title }) {
             .toUpperCase()
     ;
 
-
     return (
         <div className="contentBanner">
             <button
@@ -26,7 +25,6 @@ export default function ContentBanner({ title }) {
             <div className="pageTitle">
                 {pageTitle}
             </div>
-
         </div>
     )
 }
