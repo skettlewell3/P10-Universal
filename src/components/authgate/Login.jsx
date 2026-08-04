@@ -19,8 +19,9 @@ export default function Login() {
   ;
 
   const handleAuth = async () => {
+    const cleanEmail = email.trim().toLowerCase();
 
-    if (mode === "signup" && inviteCode !== REQUIRED_CODE) {
+    if (mode === "signup" && inviteCode.trim() !== REQUIRED_CODE) {
       setError("Invalid invite code");
       return;
     }
@@ -33,12 +34,12 @@ export default function Login() {
 
       if (mode === "login") {
         result = await supabase.auth.signInWithPassword({
-          email,
+          email: cleanEmail,
           password,
         });
       } else {
         result = await supabase.auth.signUp({
-          email,
+          email: cleanEmail,
           password,
         });
       }
@@ -56,7 +57,7 @@ export default function Login() {
   useEffect(() => {
     const img = new Image();
     img.src = LOGO_SRC;
-  })
+  }, []);
 
   return (
     <div className="logInContainer">
