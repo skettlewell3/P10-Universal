@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 import { useDatabase } from "../../hooks/useDatabase";
-const REQUIRED_CODE = import.meta.env.VITE_INVITE_CODE;
 const LOGO_SRC = "/assets/logos/FullLogo_Transparent_NoBuffer.png";
 
 
@@ -14,16 +13,26 @@ export default function Login() {
   const [loading, setLoading] = useState(false);
 
   const [inviteCode, setInviteCode] = useState('');
-  const isInviteValid =
-    mode !== "signup" || inviteCode.trim() === REQUIRED_CODE
-  ;
 
   const handleAuth = async () => {
     const cleanEmail = email.trim().toLowerCase();
 
-    if (mode === "signup" && inviteCode.trim() !== REQUIRED_CODE) {
-      setError("Invalid invite code");
-      return;
+    if (mode === "signup") {
+      const { data: validCode, error: codeError} = await supabase.rpc(
+        "validate_signup_code",
+        {
+          p_code: inviteCode.trim()
+        }
+      );
+
+      if (codeError) {
+        throw codeError;
+      }
+
+      if (!validCode) {
+        setError("Invalid invite code");
+        return;
+      }
     }
 
     setLoading(true);
@@ -46,6 +55,8 @@ export default function Login() {
 
       if (result.error) {
         setError(result.error.message);
+      } else {
+        setPassword("");
       }
     } catch (err) {
       setError(`Unexpected error: ${err.message}`);
@@ -68,6 +79,7 @@ export default function Login() {
 
       <input
         placeholder="Email"
+        autoComplete="email"
         value={email}
         onChange={(e) => setEmail(e.target.value)}
       />
@@ -75,6 +87,7 @@ export default function Login() {
       <input
         placeholder="Password"
         type="password"
+        autoComplete={mode === "login" ? "current-password" : "new-password"}
         value={password}
         onChange={(e) => setPassword(e.target.value)}
       />
@@ -90,7 +103,8 @@ export default function Login() {
       <button 
         onClick={handleAuth} 
         disabled={
-          loading || !isInviteValid
+          loading || 
+          (mode === "signup" && inviteCode.trim() === "")
         }
       >
         {loading
