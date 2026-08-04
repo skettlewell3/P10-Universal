@@ -2247,7 +2247,7 @@ option.bold {
   justify-content: end;
   gap: 16px;
   margin: 0.1rem;
-  background-color: ;
+  /* background-color: ; */
 }
 
 .leagueTableTabs button {
