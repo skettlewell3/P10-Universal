@@ -53,12 +53,6 @@ export default function ProfileDropdown({ profile }) {
           >
             Account
           </div>
-          <div className="profileDropdownItem disabled">
-            Create Club <span className="tag">Soon!</span>
-          </div>
-          <div className="profileDropdownItem disabled">
-            Join Club <span className="tag">Soon!</span>
-          </div>
           <div 
             className="profileDropdownItem disabled"
             // onClick={() => {

@@ -26,7 +26,6 @@ export default function LeaderboardPage() {
                 setScopeId={setScopeId}
                 population={population}
                 setPopulation={setPopulation}
-
             />
 
             <LeaderboardHeader />
