@@ -2128,6 +2128,13 @@ option.bold {
 /* -- END OF USER ACCOUNT PAGE */
 
 /* CLUBS */
+/* Club Leaderboards */
+
+.clubLeaderboardContainer {
+  margin-bottom: 1rem;
+  max-height: 15rem;
+  overflow-y: scroll;
+}
 
 /* Clubs Overview */
 
@@ -2239,7 +2246,6 @@ option.bold {
 }
 
 /* LEAGUE TABLES */
-
 /* League Table tabs */
 
 .leagueTableTabs {
@@ -2247,7 +2253,6 @@ option.bold {
   justify-content: end;
   gap: 16px;
   margin: 0.1rem;
-  /* background-color: ; */
 }
 
 .leagueTableTabs button {
