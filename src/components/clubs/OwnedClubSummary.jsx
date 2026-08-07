@@ -1,12 +1,14 @@
+import { Link } from "react-router-dom";
+
 export default function OwnedClubSummaryCard({ club }) {
 
     return (
-        <>
+        <div className="myClub">
             <p>
                 Club Name
             </p>
 
-            <strong>
+            <strong className="clubDetails">
                 {club.club_name}
             </strong>
 
@@ -16,7 +18,7 @@ export default function OwnedClubSummaryCard({ club }) {
                         Club Code
                     </p>
 
-                    <strong>
+                    <strong className="clubDetails">
                         {club.club_code}
                     </strong>
                 </>
@@ -25,8 +27,8 @@ export default function OwnedClubSummaryCard({ club }) {
             <p>
                 Status
             </p>
-
-            <strong>
+            
+            <strong className="clubDetails">
                 {club.is_active ? "Active" : "Inactive"}
             </strong>
 
@@ -36,9 +38,13 @@ export default function OwnedClubSummaryCard({ club }) {
                 </p>
             )}
 
-            <button>
+            <Link
+                className="manageClubLink"
+                to={`/clubhouse/${club.club_id}`}
+            >
                 Manage Club
-            </button>
-        </>
+            </Link>
+        
+        </div>
     );
 }

@@ -5,19 +5,7 @@ export default function LeagueTable({ data }) {
     return (
         <div className="leagueTableScroll">
             <table className="leagueTable">
-                <colgroup>
-                    <col className="posCol" />
-                    <col className="teamCol" />
-                    <col className="statCol" />
-                    <col className="statCol" />
-                    <col className="statCol" />
-                    <col className="statCol" />
-                    <col className="statCol" />
-                    <col className="statCol" />
-                    <col className="statCol" />
-                    <col className="statCol" />
-                </colgroup>
-                
+                                
                 <thead>
                     <tr>
                         <th>#</th>

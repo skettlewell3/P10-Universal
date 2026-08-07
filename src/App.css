@@ -2125,6 +2125,38 @@ option.bold {
   margin-top: 10px;
 }
 
+.myClub {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.myClub p {
+  margin: 0;
+}
+
+.clubDetails {
+  font-size: 1.5rem;
+  padding: 0;
+}
+
+.myClub .manageClubLink {
+  height: 40px;
+  border-radius: 8px;
+  padding: 0 2rem;
+  border: none;
+  background: var(--blue);
+  color: white;
+  font-weight: 600;
+  font-size: 1rem;
+  letter-spacing: 0.02rem;
+  cursor: pointer;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+}
+
 /* -- END OF USER ACCOUNT PAGE */
 
 /* CLUBS */
@@ -2272,37 +2304,48 @@ option.bold {
 /* -- end of League Table tabs */
 
 .leagueTable {
-  width: 100%;
-  table-layout: fixed;
-  border-collapse: collapse;
+  width:100%;
+  table-layout:fixed;
+  border-collapse:collapse;
 }
 
-.posCol {
-  width: 20px;
-}
-
-.teamCol {
-  width: 120px;
-}
-
-.statCol {
-  width: 8%;
-}
-
-.leagueTable th {
-  text-align: center;
+.leagueTable th,
+.leagueTable td {
+  text-align:center;
+  white-space:nowrap;
   font-size: 0.8rem;
 }
 
-.leagueTable td {
-  padding: 8px 4px;
+.leagueTable th:nth-child(1),
+.leagueTable td:nth-child(1) {
+  width:20px;
 }
 
-.teamCell {
+.leagueTable th:nth-child(2) {
+  width:auto;
+}
+
+.leagueTable td:nth-child(2) {
+  width:auto;
+  text-align:left;
+}
+
+.leagueTable th:nth-child(n+3),
+.leagueTable td:nth-child(n+3) {
+  width:30px;
+}
+
+.leagueTable th:nth-child(10),
+.leagueTable td:nth-child(10) {
+  width:35px;
+}
+
+/* .teamCell {
+  text-align: left;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-}
+} */
 
 .longTeamName {
   font-size: 0.9rem;
