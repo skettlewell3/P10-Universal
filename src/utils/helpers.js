@@ -108,3 +108,38 @@ export const formatClubRole = (role) => {
         .replace(/\b\w/g, char => char.toUpperCase())
     ;
 }
+
+export function getTeamFormFixtures({
+  fixtures,
+  teamName,
+  anchorDate,
+  pastCount = 5,
+  futureCount = 2
+}) {
+  // 1. filter fixtures involving team
+  const teamFixtures = fixtures.filter(f =>
+    f.home_team === teamName || f.away_team === teamName
+  );
+  // 2. sort by fixture_date
+  const sorted = [...teamFixtures].sort(
+    (a, b) => new Date(a.fixture_date) - new Date(b.fixture_date)
+  );
+  // 3. split past / future
+  const past = [];
+  const future = [];
+
+  for (const f of sorted) {
+    const date = new Date(f.fixture_date);
+    if (date < anchorDate) past.push(f);
+    else if (date > anchorDate) future.push(f);
+  }
+  // 4. slice as needed
+  const last = past.slice(-pastCount).reverse(); // most recent first
+  const next = future.slice(0, futureCount).reverse();
+
+  return {
+    past: last,
+    future: next,
+    all: [...last, ...next]
+  };
+}

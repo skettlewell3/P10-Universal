@@ -7,7 +7,8 @@ export default function StageFixturesCard({
     fixtures,
     predictionDrafts,
     setPredictionDrafts, 
-    predictionWindowOpen
+    predictionWindowOpen,
+    openMatchModal
 }) {
 
     const { predictionsMap } = usePredictions();
@@ -35,6 +36,7 @@ export default function StageFixturesCard({
                     predictionDrafts={predictionDrafts}
                     setPredictionDrafts={setPredictionDrafts}
                     predictionWindowOpen={predictionWindowOpen}
+                    openMatchModal={openMatchModal}
                 />                
             ))}
         </div>

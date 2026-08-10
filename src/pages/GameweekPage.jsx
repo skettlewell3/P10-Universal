@@ -6,12 +6,14 @@ import { isDirtyPrediction, isValidPrediction } from "../utils/helpers";
 import ContentBanner from "../components/app/ContentBanner";
 import StageFixturesCard from "../components/fixtures/stageFixturesCard/StageFixturesCard";
 import SubmitSlideUp from "../components/fixtures/SubmitSlideUp";
+import MatchModal from "../components/matchmodal/MatchModal";
 
 export default function GameweekPage() {
     const { activeGameweekId } = useGameweeks();
     const { fixtures, groupByKickoff } = useFixtures();
     const { submitPredictions, predictionsLoading, predictionsMap } = usePredictions();
     const [ predictionDrafts, setPredictionDrafts ] = useState({});
+    const [modalFixture, setModalFixture] = useState(null);
 
     const gameweekFixtures = useMemo(() => {
         if (!activeGameweekId) return [];
@@ -90,10 +92,20 @@ export default function GameweekPage() {
                                 predictionDrafts={predictionDrafts}
                                 setPredictionDrafts={setPredictionDrafts}
                                 predictionWindowOpen={predictionWindowOpen}
+                                openMatchModal={setModalFixture}
                             />
                         ))}
                     </form>   
                 </div>
+
+                {modalFixture && (
+                    <MatchModal
+                        fixture={modalFixture}
+                        fixtures={fixtures}
+                        navigationFixtures={gameweekFixtures}
+                        onClose={() => setModalFixture(null)}
+                    />
+                )}
                 
                 {canSubmit && (
                     <SubmitSlideUp
