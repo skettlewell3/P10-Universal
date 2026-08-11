@@ -46,7 +46,7 @@ export default function TeamComparison({ teamsFromFixture }) {
     return (
         <div className="teamComparisonContainer statsSection">
             <div className="statsSectionTitle text-right">
-                RESULTS COMPARISON
+                Results Comparison
             </div>
 
             {!teamsFromFixture && (

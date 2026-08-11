@@ -13,6 +13,12 @@ export default function MMTableSnapshot({ team1Id, team2Id }) {
     const sorted = [...dataSet].sort((a, b) => a.pos - b.pos);
 
     return (
-        <LeagueTable data={sorted} />
+        <div className="statsSection">
+            <div className="statsSectionTitle">
+                Form
+            </div>
+
+            <LeagueTable data={sorted} />
+        </div>
     )
 }
