@@ -10,7 +10,7 @@ export default function StageFixtureFieldset({
     predictionDrafts,
     setPredictionDrafts,
     predictionWindowOpen,
-    
+    openMatchModal
 }) {
     const [expanded, setExpanded] = useState(false);
 
@@ -61,10 +61,10 @@ export default function StageFixtureFieldset({
 
                 <div
                   className="matchModalButton"
-                //   onClick={(e) => {
-                //     e.stopPropagation();
-                //     openMatchModal(fixture);
-                //   }}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    openMatchModal?.(fixture);
+                  }}
                 >
                   ⓘ
                 </div>
