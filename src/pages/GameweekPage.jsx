@@ -87,7 +87,7 @@ export default function GameweekPage() {
                     <form id="predictionForm">
                         {Object.entries(groupedFixtures).map(([groupKey, fixtures]) => (
                             <StageFixturesCard
-                            key={groupKey}
+                                key={groupKey}
                                 fixtures={fixtures}
                                 predictionDrafts={predictionDrafts}
                                 setPredictionDrafts={setPredictionDrafts}
@@ -103,6 +103,8 @@ export default function GameweekPage() {
                         fixture={modalFixture}
                         fixtures={fixtures}
                         navigationFixtures={gameweekFixtures}
+                        predictionDrafts={predictionDrafts}
+                        setPredictionDrafts={setPredictionDrafts}
                         onClose={() => setModalFixture(null)}
                     />
                 )}

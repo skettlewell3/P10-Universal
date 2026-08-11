@@ -13,11 +13,6 @@ export default function LeagueTableRow({ row }) {
         points
     } = row;
 
-    // const teamClass =
-    //     team_name.length > 12
-    //  .       ? "longTeamName"
-    //         : "";
-
     return (
         <tr>
             <td>{pos}</td>

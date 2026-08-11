@@ -143,6 +143,10 @@ input[type=number] {
   text-align: left;
 }
 
+.text-right {
+  text-align: right !important;
+}
+
 /* End of Utilities */
 
 /* APP STRUCTURE */
@@ -1594,7 +1598,7 @@ input[type=number] {
   width: 2rem;
   background: white;
   color: black;
-  /* margin: auto auto; */
+  margin: auto auto;
   border-radius: 5px;
   font-size: 1.4rem;
   font-weight: bold;
@@ -2330,6 +2334,9 @@ option.bold {
 .leagueTable td:nth-child(2) {
   width:auto;
   text-align:left;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .leagueTable th:nth-child(n+3),
@@ -2341,13 +2348,6 @@ option.bold {
 .leagueTable td:nth-child(10) {
   width:35px;
 }
-
-/* .teamCell {
-  text-align: left;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-} */
 
 .longTeamName {
   font-size: 0.9rem;
@@ -2512,6 +2512,87 @@ option.bold {
 }
 
 /* End of Match Nav */
+
+/* Match Fixture Card */
+
+.mfCard {
+  width: 100%;
+  margin-bottom: 0.5em;
+  border: 2px solid white;
+  border-radius: 5px;
+  padding: 0;
+  padding-bottom: 0.1rem;
+  background-image: linear-gradient(to top, #1c2c5b, #203c6a, #264c78, #2f5d86, #3a6e93, #3a6e93, #3a6e93, #3a6e93, #2f5d86, #264c78, #203c6a, #1c2c5b);
+}
+
+.mfCardHeader {
+  position: relative;
+  padding: 0.1em 1em;
+  background-color: white;
+}
+
+.modalFieldset {
+  display: grid;
+  grid-template-columns: 2fr 1fr .3fr 1fr 2fr;
+  min-height: 2.5em;
+  padding: 0.2em;
+  border: none;
+  /* cursor: pointer; */
+}
+
+.match div {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.posTeam {
+  display: flex;
+  text-align: center;
+  border-radius: 5px;
+  font-weight: bold;
+  overflow: hidden;
+  margin-top: 2px;
+}
+
+.teamPos {
+  width: 30%;
+  height: 100%;
+  font-size: 1em;
+  font-weight: normal;
+  background-color: inherit;
+  color: inherit;
+  text-shadow: none;
+}
+
+.teamPos sup {
+  font-size: 0.7em;
+  vertical-align: super;
+}
+
+.posName {
+  width: 70%;
+  padding: 4px 0;
+}
+
+.pred {
+  border-radius: 5px;
+  font-size: 1.2rem;
+  text-align: center;
+  font-weight: bold;
+}
+
+.v {
+  height: 100%;
+  font-weight: bold;
+  color: white;  
+  margin: auto auto;
+  font-size: 1.2rem;  
+}
+
+
+
+/* END of Match Fixture Card */
 
 /* FORM GUIDE */
 
@@ -2810,14 +2891,14 @@ option.bold {
 .statsSection {
   width: 100%;
   padding: 0rem 0.25rem;
-  margin-bottom: 1rem;
+  /* margin-bottom: 1rem; */
 }
 
 .statsSectionTitle {
   font-size: 1.5rem;
   font-weight: 600;
   margin-bottom: 0.5rem;
-  padding-left: 1rem;
+  padding: 0.25rem 1rem 0.25rem 1rem;
   color: white;
   text-align: start;
 

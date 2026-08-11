@@ -9,6 +9,8 @@ export default function MatchModal({
     fixture,
     fixtures,
     navigationFixtures,
+    predictionDrafts,
+    setPredictionDrafts,
     onClose,
 }) {
     const [currentFixture, setCurrentFixture] = useState(fixture);
@@ -78,10 +80,14 @@ export default function MatchModal({
                     <div className="modalCardBody">
                         <MatchFixtureCard
                             fixture={currentFixture}
+                            predictionDrafts={predictionDrafts}
+                            setPredictionDrafts={setPredictionDrafts}
                         />
 
                         <MMTableSnapshot
                             fixture={currentFixture}
+                            team1Id={currentFixture?.home_team_id}
+                            team2Id={currentFixture?.away_team_id}
                         />
 
                         <FormContainer
