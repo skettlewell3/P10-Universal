@@ -9,6 +9,7 @@ import { PredictionProvider } from "./PredictionProvider";
 import ProfileTickerProvider from "./ProfileTickerProvider";
 import StageProvider from "./StageProvider";
 import { TablesProvider } from "./TablesProvider";
+import { TeamComparisonProvider } from "./TeamComparisonProvider";
 import TeamsProvider from "./TeamsProvider";
 
 export default function GameDataProvider ({children}) {
@@ -24,9 +25,11 @@ export default function GameDataProvider ({children}) {
                                         <LeaderboardProvider>
                                             <ClubLeaderboardProvider>
                                                 <FixtureScoreboardProvider>
-                                                    <GameDataReadyGate>
-                                                        {children}
-                                                    </GameDataReadyGate>
+                                                    <TeamComparisonProvider>
+                                                        <GameDataReadyGate>
+                                                            {children}
+                                                        </GameDataReadyGate>
+                                                    </TeamComparisonProvider>
                                                 </FixtureScoreboardProvider>
                                             </ClubLeaderboardProvider>
                                         </LeaderboardProvider>

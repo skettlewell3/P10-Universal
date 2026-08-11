@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import MatchNav from "./MatchNav";
 import MatchFixtureCard from "./MatchFixtureCard";
 import FormContainer from "./FormContainer";
+import MMTableSnapshot from "./MMTableSnapshot";
+import TeamComparison from "./TeamComparison";
 
 export default function MatchModal({
     fixture,
@@ -26,12 +28,14 @@ export default function MatchModal({
     const prevFixture =
         index > 0
             ? navigationFixtures[index - 1]
-            : null;
+            : null
+    ;
 
     const nextFixture =
         index < navigationFixtures.length - 1
             ? navigationFixtures[index + 1]
-            : null;
+            : null
+    ;
 
     const goPrev = () => {
         if (prevFixture) {
@@ -54,9 +58,7 @@ export default function MatchModal({
 
             <div id="teamModal">
                 <div id="teamModalCard">
-
                     <div className="modalHeader">
-
                         <MatchNav
                             currentFixture={currentFixture}
                             goPrev={goPrev}
@@ -71,34 +73,34 @@ export default function MatchModal({
                         >
                             ✕
                         </button>
-
                     </div>
 
                     <div className="modalCardBody">
-
                         <MatchFixtureCard
+                            fixture={currentFixture}
+                        />
+
+                        <MMTableSnapshot
                             fixture={currentFixture}
                         />
 
                         <FormContainer
                             fixtures={fixtures}
                             currentFixture={currentFixture}
-                        />
-
-                        {/* <LeagueSnapshot
-                            fixture={currentFixture}
-                        />
+                        />                        
 
                         <TeamComparison
-                            fixture={currentFixture}
-                        /> */}
+                            teamsFromFixture={{
+                                team1: currentFixture.home_team_id,
+                                team2: currentFixture.away_team_id
+                            }}
+                        />
 
                         {!isUpcoming && (
                             <MatchLeaderboard
                                 fixture={currentFixture}
                             />
                         )}
-
                     </div>
 
                 </div>
