@@ -10,6 +10,7 @@ import ForgotPassword from './pages/ForgotPassword'
 import ResetPasswordPage from './pages/ResetPasswordPage'
 import { FlavourProvider } from './providers/FlavourProvider'
 import { ClubsProvider } from './providers/ClubsProvider'
+import ConfirmEmail from './components/authgate/ConfirmEmail'
 
 function App() {
   
@@ -20,6 +21,7 @@ function App() {
           <Routes>
             <Route path='/forgot-password' element={<ForgotPassword/>}/>
             <Route path='/reset-password' element={<ResetPasswordPage/>}/>
+            <Route path='/confirm-email' element={<ConfirmEmail/>}/>
             <Route 
               path='/*' 
               element={

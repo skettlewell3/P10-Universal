@@ -8,7 +8,8 @@ import { APP_CONFIG } from "../../config";
 const PUBLIC_ROUTES = [
     "/login",
     "/forgot-password",
-    "/reset-password"
+    "/reset-password",
+    "/confirm-email"
 ];
 
 export default function AuthGate({ children }) {
