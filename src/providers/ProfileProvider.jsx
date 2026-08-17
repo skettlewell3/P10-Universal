@@ -56,12 +56,17 @@ export function ProfileProvider({ children }) {
   const updateDisplayName = useCallback(
     async (displayName) => {
 
-      const { error } = await supabase.rpc(
+      const { data, error } = await supabase.rpc(
         "update_user_display_name",
         {
           p_display_name: displayName
         }
       );
+
+      console.log("UPDATE USER PROFILE:", {
+          data,
+          error
+      });
 
       if (error) {
         console.error(error);
