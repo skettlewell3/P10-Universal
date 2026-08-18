@@ -12,6 +12,7 @@ export function ClubsProvider({ children }) {
 
     const [clubs, setClubs] = useState([]);
     const [invites, setInvites] = useState([]);
+    const [ownershipTransferRequests, setOwnershipTransferRequests] = useState([]);
 
     const [loadingState, setLoadingState] = useState({
         loading: true,
@@ -60,6 +61,22 @@ export function ClubsProvider({ children }) {
 
     }, [supabase, user?.id]);
 
+    const fetchOwnershipTransferRequests = useCallback(async () => {
+        if (!user?.id || !profile?.profile_id) {
+            setOwnershipTransferRequests([]);
+            return;
+        }
+        const { data, error } = await supabase.rpc(
+            "get_my_club_ownership_transfer_requests"
+        );
+        if (error) {
+            console.error(error);
+            setOwnershipTransferRequests([]);
+            return;
+        }
+        setOwnershipTransferRequests(data ?? []);
+    }, [supabase, user?.id, profile?.profile_id]);
+
     const refreshClubs = useCallback(async () => {
 
         setLoadingState({
@@ -69,7 +86,8 @@ export function ClubsProvider({ children }) {
 
         await Promise.all([
             fetchClubs(),
-            fetchInvites()
+            fetchInvites(),
+            fetchOwnershipTransferRequests()
         ]);
 
         setLoadingState({
@@ -77,7 +95,7 @@ export function ClubsProvider({ children }) {
             message: "Clubs loaded"
         });
 
-    }, [fetchClubs, fetchInvites]);
+    }, [fetchClubs, fetchInvites, fetchOwnershipTransferRequests]);
 
     useEffect(() => {
         refreshClubs();
@@ -182,6 +200,28 @@ export function ClubsProvider({ children }) {
                     fetchInvites();
                 }
             )
+
+            // ownership transfer requests involving the current user
+            .on(
+                "postgres_changes",
+                {
+                    event: "*",
+                    schema: "public",
+                    table: "club_ownership_transfer_requests"
+                },
+                payload => {
+                
+                    const request =
+                        payload.new ?? payload.old;
+                
+                    if (
+                        request?.target_profile_id === profile.profile_id ||
+                        request?.owner_profile_id === profile.profile_id
+                    ) {
+                        fetchOwnershipTransferRequests();
+                    }
+                }
+            )
             .subscribe();
 
         return () => {
@@ -194,7 +234,8 @@ export function ClubsProvider({ children }) {
         profile?.profile_id,
         myClubIds,
         refreshClubs,
-        fetchInvites
+        fetchInvites,
+        fetchOwnershipTransferRequests
     ]);
 
     const sendInvite = async (clubId, username) => {
@@ -332,22 +373,52 @@ export function ClubsProvider({ children }) {
         };
     };
 
-    const transferClubOwnership = async (
+    const requestClubOwnershipTransfer = async (
         clubId,
-        newOwnerProfileId
+        targetProfileId
     ) => {
         const { error } = await supabase.rpc(
-            "transfer_club_ownership",
+            "request_club_ownership_transfer",
             {
                 p_club_id: clubId,
-                p_new_owner_profile_id: newOwnerProfileId
+                p_target_profile_id: targetProfileId
             }
         );
-
         if (!error) {
-            await refreshClubs();
+            await fetchOwnershipTransferRequests();
         }
+        return {
+            success: !error,
+            error
+        };
+    };
 
+    const acceptClubOwnershipTransfer = async (requestId) => {
+        const { error } = await supabase.rpc(
+            "accept_club_ownership_transfer",
+            {
+                p_request_id: requestId
+            }
+        );
+        if (!error) {            
+            await refreshClubs()    
+        }
+        return {
+            success: !error,
+            error
+        };
+    };
+
+    const declineClubOwnershipTransfer = async (requestId) => {
+        const { error } = await supabase.rpc(
+            "decline_club_ownership_transfer",
+            {
+                p_request_id: requestId
+            }
+        );
+        if (!error) {
+            await fetchOwnershipTransferRequests();
+        }
         return {
             success: !error,
             error
@@ -371,10 +442,15 @@ export function ClubsProvider({ children }) {
                 declineInvite,
 
                 changeMemberRole,
-                transferClubOwnership,
                 leaveClub,
                 deleteClub,
-                removeClubMember
+                removeClubMember,
+
+                ownershipTransferRequests,
+                fetchOwnershipTransferRequests,
+                requestClubOwnershipTransfer,
+                acceptClubOwnershipTransfer,
+                declineClubOwnershipTransfer
             }}
         >
             {children}

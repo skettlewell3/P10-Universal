@@ -36,7 +36,8 @@
   ;
   --headerbg: rgba(255, 255, 255);
   --menubg: rgba(255, 255, 255, 0.8);
-  --bggreen: rgb(32, 100, 60, 0.8)
+  --bggreen: rgb(32, 100, 60, 0.8);
+  --greenButton: linear-gradient(180deg, rgb(35, 110, 52), rgb(32, 100, 60));
 }
 
 /* Chrome, Safari, Edge, Opera- no spinner*/
@@ -2165,31 +2166,56 @@ option.bold {
 
 /* -- END OF USER ACCOUNT PAGE */
 
+.clubInviteList {
+  display: flex;
+  flex-direction: column;
+}
+
+.clubInviteRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 0.75rem 0.5rem;
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+
+.clubInviteRow:last-child {
+  border-bottom: none;
+}
+
+.clubInviteMain {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  min-width: 0;
+}
+
 .clubInviteActions {
   display: flex;
   gap: 8px;
-  margin-top: 12px;
+  flex-shrink: 0;
 }
 
 .clubInviteActions button {
-  flex: 1;
-  height: 38px;
-  border: none;
+  height: 36px;
+  padding: 0 12px;
   border-radius: 8px;
-  font-size: 0.9rem;
+  font-size: 0.85rem;
   font-weight: 600;
   cursor: pointer;
 }
 
 .clubInviteAccept {
-  background: var(--green);
   color: white;
+  background: var(--greenButton);
+  border: 1px solid rgba(255, 255, 255, 0.445);
 }
 
 .clubInviteDecline {
-  background: rgba(255,255,255,0.1);
   color: inherit;
-  border: 1px solid rgba(255,255,255,0.15) !important;
+  background: rgba(255,255,255,0.1);
+  border: 1px solid rgba(255,255,255,0.15);
 }
 
 .clubInviteActions button:hover {
@@ -2268,13 +2294,69 @@ option.bold {
   flex-shrink: 0;
   margin-right: 0.5rem;
 }
+
+/* Club Ownership Transfer */
+
+.ownershipTransferList {
+  display: flex;
+  flex-direction: column;
+}
+
+.ownershipTransferRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 0.75rem 0.5rem;
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+
+.ownershipTransferRow:last-child {
+  border-bottom: none;
+}
+
+.ownershipTransferMain {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  min-width: 0;
+}
+
+.ownershipTransferActions {
+  display: flex;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.ownershipTransferActions button {
+  height: 36px;
+  padding: 0 12px;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.ownershipTransferAccept {
+  color: white;
+  background: var(--greenButton);
+  border: 1px solid rgba(255, 255, 255, 0.445);
+}
+
+.ownershipTransferDecline {
+  color: inherit;
+  background: rgba(255,255,255,0.1);
+  border: 1px solid rgba(255,255,255,0.15);
+}
+
+.ownershipTransferActions button:hover {
+  opacity: 0.9;
+}
 /* -- End of Clubs Overview */
 
 /* Clubhouse */
-
 .clubMemberRow {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) 110px 28px;
+  display: flex;
   align-items: center;
   gap: 0.5rem;
   padding: 0.5rem 0;
@@ -2285,11 +2367,20 @@ option.bold {
   border-bottom: none;
 }
 
+.clubMemberRow .displayName {
+  flex: 1;
+  min-width: 0;
+}
+
 .clubMemberRole {
+  flex-shrink: 0;
+  width: 110px;
   text-align: center;
 }
 
 .clubRoleSelect {
+  flex-shrink: 0;
+  width: 110px;
   background: transparent;
   border: none;
   color: inherit;
@@ -2305,14 +2396,25 @@ option.bold {
   color: white;
 }
 
-.clubInviteForm {
-  margin-top: 0.2rem;
+.clubTransferButton {
+  flex-shrink: 0;
+  border: none;
+  background: none;
+  color: var(--blue);
+  padding: 0;
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
 }
 
-.clubInviteForm label {
-  margin-bottom: -0.5rem;
+.clubTransferButton:hover {
+  opacity: 0.8;
 }
 
+.clubMemberRow > .iconButton {
+  flex-shrink: 0;
+}
 
 /* -- end of Clubhouse */
 
