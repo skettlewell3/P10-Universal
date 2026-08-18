@@ -2165,6 +2165,37 @@ option.bold {
 
 /* -- END OF USER ACCOUNT PAGE */
 
+.clubInviteActions {
+  display: flex;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.clubInviteActions button {
+  flex: 1;
+  height: 38px;
+  border: none;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.clubInviteAccept {
+  background: var(--green);
+  color: white;
+}
+
+.clubInviteDecline {
+  background: rgba(255,255,255,0.1);
+  color: inherit;
+  border: 1px solid rgba(255,255,255,0.15) !important;
+}
+
+.clubInviteActions button:hover {
+  opacity: 0.9;
+}
+
 /* CLUBS */
 /* Club Leaderboards */
 

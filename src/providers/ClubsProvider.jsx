@@ -175,21 +175,11 @@ export function ClubsProvider({ children }) {
                 {
                     event: "*",
                     schema: "public",
-                    table: "club_invites"
+                    table: "club_invites",
+                    filter: `recipient_profile_id=eq.${profile.profile_id}`
                 },
-                payload => {
-
-                    const recipient =
-                        payload.new?.recipient_profile_id ??
-                        payload.old?.recipient_profile_id;
-
-
-                    if (
-                        recipient === profile.profile_id
-                    ) {
-                        fetchInvites();
-                    }
-
+                () => {
+                    fetchInvites();
                 }
             )
             .subscribe();
