@@ -4,7 +4,7 @@ import FixturesPage from "../../pages/FixturesPage";
 import LeaderboardPage from "../../pages/LeaderboardPage.";
 import GameweekPage from "../../pages/GameweekPage";
 import UserProfilePage from "../../pages/UserProfilePage";
-import ClubsOverviewPage from "../../pages/ClubsOverview";
+import ClubsOverviewPage from "../../pages/ClubsOverviewPage";
 import ClubhousePage from "../../pages/ClubhousePage";
 import FlavourStatsPage from "../../pages/FlavourStatsPage";
 
