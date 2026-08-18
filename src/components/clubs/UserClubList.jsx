@@ -1,12 +1,19 @@
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import { useClubs } from "../../hooks/useClubs";
 import { useLeaderboard } from "../../hooks/useLeaderboard";
 import { Link } from "react-router-dom";
+import RemoveIcon from "../app/RemoveIcon";
 
 export default function UserClubList() {
 
-    const { myMemberships } = useClubs();
+    const {
+        myMemberships,
+        leaveClub
+    } = useClubs();
+
     const { leaderboard } = useLeaderboard();
+
+    const [editing, setEditing] = useState(false);
 
     const leaderboardByClub = useMemo(() => {
         return new Map(
@@ -16,40 +23,86 @@ export default function UserClubList() {
         );
     }, [leaderboard]);
 
+    const handleLeaveClub = async (clubId) => {
+
+        const confirmed = window.confirm(
+            "Are you sure you want to leave this club?"
+        );
+
+        if (!confirmed) return;
+
+        const { error } = await leaveClub(clubId);
+
+        if (error) {
+            console.error(error);
+        }
+    };
+
     return (
         <section className="accountCard">
-            <h2>My Clubs</h2>
+            <div className="cardHeader">
+                <h2>My Clubs</h2>
+
+                {myMemberships.length > 0 && (
+                    <button
+                        className="textButton"
+                        onClick={() => setEditing(!editing)}
+                    >
+                        {editing ? "Done" : "Manage Clubs"}
+                    </button>
+                )}
+            </div>
 
             <div className="clubList">
+
                 {myMemberships.map(club => {
-                    const ranking = leaderboardByClub.get(club.club_id);
+
+                    const ranking =
+                        leaderboardByClub.get(club.club_id);
+
+                    const isOwner =
+                        club.club_role === "owner";
 
                     return (
-                        <Link
+                        <div
                             key={club.club_id}
-                            to={`/clubhouse/${club.club_id}`}
                             className="clubListRow"
                         >
-                            <div className="clubListMain">
-                                <span className="clubName">
-                                    {club.club_name}
-                                </span>
+                            <Link
+                                to={`/clubhouse/${club.club_id}`}
+                                className="clubListLink"
+                            >
+                                <div className="clubListMain">
+                                    <span className="clubName">
+                                        {club.club_name}
+                                    </span>
 
-                                <span className="clubRole">
-                                    {club.club_role}
-                                </span>
-                            </div>
+                                    <span className="clubRole">
+                                        {club.club_role}
+                                    </span>
+                                </div>
 
-                            <div className="clubStats">
-                                <span>
-                                    Rank {ranking?.rank ?? "-"}
-                                </span>
+                                <div className="clubStats">
+                                    <span>
+                                        Rank {ranking?.rank ?? "-"}
+                                    </span>
 
-                                <span>
-                                    Points {ranking?.points_total ?? "-"}
-                                </span>
-                            </div>
-                        </Link>
+                                    <span>
+                                        Points {ranking?.points_total ?? "-"}
+                                    </span>
+                                </div>
+                            </Link>
+
+                            {editing && !isOwner && (
+                                <button
+                                    className="iconButton redBG"
+                                    onClick={() => handleLeaveClub(club.club_id)}
+                                    title="Leave club"
+                                >
+                                    <RemoveIcon />
+                                </button>
+                            )}
+                        </div>
                     );
                 })}
             </div>

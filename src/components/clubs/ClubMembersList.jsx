@@ -10,9 +10,30 @@ export default function ClubMembersList({
     canManageClub,
     canManageRoles
 }) {
-    const { changeMemberRole } = useClubs();
+    const { changeMemberRole, removeClubMember } = useClubs();
 
     const [editing, setEditing] = useState(false);
+
+    const handleRemoveMember = async (
+        clubId,
+        memberProfileId,
+        displayName
+    ) => {
+        const confirmed = window.confirm(
+            `Are you sure you want to remove ${displayName} from this club?`
+        );
+
+        if (!confirmed) return;
+
+        const { error } = await removeClubMember(
+            clubId,
+            memberProfileId
+        );
+
+        if (error) {
+            console.error(error);
+        }
+    };
 
     return (
         <section className="accountCard">
@@ -66,9 +87,18 @@ export default function ClubMembersList({
                     )}
 
                     {editing &&
-                    canManageClub &&
+                    canManageRoles &&
                     member.club_role !== "owner" && (
-                        <button className="iconButton redBG">
+                        <button 
+                            className="iconButton redBG"
+                            onClick={() => 
+                                handleRemoveMember(
+                                    clubId, 
+                                    member.member_profile_id,
+                                    member.display_name
+                                )}
+                            title="Remove member"
+                        >
                             <RemoveIcon />
                         </button>
                     )}
