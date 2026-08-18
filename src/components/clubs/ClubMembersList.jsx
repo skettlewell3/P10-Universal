@@ -10,7 +10,11 @@ export default function ClubMembersList({
     canManageClub,
     canManageRoles
 }) {
-    const { changeMemberRole, removeClubMember } = useClubs();
+    const {
+        changeMemberRole,
+        removeClubMember,
+        requestClubOwnershipTransfer
+    } = useClubs();
 
     const [editing, setEditing] = useState(false);
 
@@ -35,6 +39,27 @@ export default function ClubMembersList({
         }
     };
 
+    const handleTransferOwnership = async (
+        clubId,
+        memberProfileId,
+        displayName
+    ) => {
+        const confirmed = window.confirm(
+            `Send an ownership transfer request to ${displayName}?`
+        );
+
+        if (!confirmed) return;
+
+        const result = await requestClubOwnershipTransfer(
+            clubId,
+            memberProfileId
+        );
+
+        if (!result.success) {
+            console.error(result.error);
+        }
+    };
+
     return (
         <section className="accountCard">
             <div className="cardHeader">
@@ -49,6 +74,10 @@ export default function ClubMembersList({
                     </button>
                 )}
             </div>
+
+            {editing && canManageClub && (
+                <SendClubInviteForm clubId={clubId} />
+            )}
 
             {clubMates.map(member => (
                 <div
@@ -73,7 +102,7 @@ export default function ClubMembersList({
                                 )
                             }
                         >
-                            <option value="squad_member">
+                            <option value="member">
                                 Member
                             </option>
                             <option value="captain">
@@ -87,28 +116,39 @@ export default function ClubMembersList({
                     )}
 
                     {editing &&
-                    canManageRoles &&
+                    canManageClub &&
                     member.club_role !== "owner" && (
-                        <button 
-                            className="iconButton redBG"
-                            onClick={() => 
-                                handleRemoveMember(
-                                    clubId, 
-                                    member.member_profile_id,
-                                    member.display_name
-                                )}
-                            title="Remove member"
-                        >
-                            <RemoveIcon />
-                        </button>
+                        <>
+                            <button
+                                className="clubTransferButton"
+                                onClick={() =>
+                                    handleTransferOwnership(
+                                        clubId,
+                                        member.member_profile_id,
+                                        member.display_name
+                                    )
+                                }
+                            >
+                                Transfer
+                            </button>
+
+                            <button 
+                                className="iconButton redBG"
+                                onClick={() => 
+                                    handleRemoveMember(
+                                        clubId, 
+                                        member.member_profile_id,
+                                        member.display_name
+                                    )
+                                }
+                                title="Remove member"
+                            >
+                                <RemoveIcon />
+                            </button>
+                        </>
                     )}
                 </div>
             ))}
-
-            {editing && canManageClub && (
-                <SendClubInviteForm clubId={clubId} />
-            )}
-
         </section>
     );
 }

@@ -9,11 +9,11 @@ export default function ClubInvitesCard() {
     } = useClubs();
 
     const handleAccept = async (inviteId) => {
-    const result = await acceptInvite(inviteId);
 
-    if (!result.success) {
+        const result = await acceptInvite(inviteId);
+
+        if (!result.success) {
             console.error(result.error);
-            return;
         }
     };
 
@@ -28,39 +28,55 @@ export default function ClubInvitesCard() {
                 Club Invites
             </h2>
 
-            {invites.map(invite => (
-                <div 
-                    key={invite.invite_id}
-                    className="clubInvite"
-                
-                >
-                    <strong>
-                        {invite.club_name}
-                    </strong>
+            <div className="clubInviteList">
 
-                    <p>
-                        Invited by {invite.sender_name}
-                    </p>
+                {invites.map(invite => (
 
-                    <div className="clubInviteActions">
-                        <button
-                            onClick={() =>
-                                handleAccept(invite.invite_id)
-                            }
-                        >
-                            Accept
-                        </button>
+                    <div
+                        key={invite.invite_id}
+                        className="clubInviteRow"
+                    >
 
-                        <button
-                            onClick={() =>
-                                declineInvite(invite.invite_id)
-                            }
-                        >
-                            Decline
-                        </button>
+                        <div className="clubInviteMain">
+
+                            <span className="clubName">
+                                {invite.club_name}
+                            </span>
+
+                            <span className="clubRole">
+                                Invited by {invite.sender_name}
+                            </span>
+
+                        </div>
+
+                        <div className="clubInviteActions">
+
+                            <button
+                                className="clubInviteAccept"
+                                onClick={() =>
+                                    handleAccept(invite.invite_id)
+                                }
+                            >
+                                Accept
+                            </button>
+
+                            <button
+                                className="clubInviteDecline"
+                                onClick={() =>
+                                    declineInvite(invite.invite_id)
+                                }
+                            >
+                                Decline
+                            </button>
+
+                        </div>
+
                     </div>
-                </div>
-            ))}
+
+                ))}
+
+            </div>
+
         </section>
     );
 }
