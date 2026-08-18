@@ -2214,12 +2214,8 @@ option.bold {
 
 .clubListRow {
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  padding: 0.75rem 0.5rem;
   border-bottom: 1px solid rgba(255,255,255,0.1);
-  color: inherit;
-  text-decoration: none;
 }
 
 .clubListRow:last-child {
@@ -2230,11 +2226,21 @@ option.bold {
   background: rgba(255,255,255,0.04);
 }
 
+.clubListLink {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex: 1;
+  min-width: 0;
+  padding: 0.75rem 0.5rem;
+  color: inherit;
+  text-decoration: none;
+}
+
 .clubListMain {
   display: flex;
   flex-direction: column;
   gap: 3px;
-  /* width: 40%; */
 }
 
 .clubName {
@@ -2258,6 +2264,10 @@ option.bold {
   opacity: 0.65;
 }
 
+.clubListRow > .iconButton {
+  flex-shrink: 0;
+  margin-right: 0.5rem;
+}
 /* -- End of Clubs Overview */
 
 /* Clubhouse */
