@@ -19,7 +19,7 @@ export default function CreateClubForm() {
         }
 
         const result = await createClub({
-            cleanName
+            clubName: cleanName
         });
 
         if (result.success) {
