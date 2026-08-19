@@ -114,16 +114,18 @@ export default function StageProvider({ children }) {
     );
 
     const tickerStage = useMemo(
-    () =>
-        stages.find(stage => stage.is_live)
-        ??
-        [...stages]
-            .filter(stage => stage.is_finished)
-            .sort((a,b) => b.order_index - a.order_index)[0]
-        ??
-        null,
-    [stages]
-);
+        () =>
+            stages.find(stage => stage.is_live)
+            ??
+            [...stages]
+                .filter(stage => stage.is_finished)
+                .sort((a, b) => b.order_index - a.order_index)[0]
+            ??
+            stages.find(stage => stage.is_active)
+            ??
+            null,
+        [stages]
+    );
 
     useEffect(() => {
         const channel = supabase
@@ -148,8 +150,6 @@ export default function StageProvider({ children }) {
         };
     }, [supabase, flavourId, refreshStages]);
 
-
-
     const value = {
         stages,
         stagesLoading: loadingState.loading,
@@ -163,9 +163,7 @@ export default function StageProvider({ children }) {
 
         refreshStages
     };
-
-    
-
+  
     return (
         <StageContext.Provider value={value}>
             {children}
