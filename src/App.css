@@ -1554,6 +1554,7 @@ input[type=number] {
   font-weight: bold;
   padding: 0;
   background-color: white;
+  color:#000;
   height: 2.5rem;
   width: 2.5rem;
 }
