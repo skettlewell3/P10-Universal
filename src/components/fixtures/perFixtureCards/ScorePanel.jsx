@@ -8,7 +8,8 @@ export default function ScorePanel({
     prediction,
     predictionDrafts,
     setPredictionDrafts,
-    postKickoff
+    postKickoff,
+    singleSubmitAllowed
 }) {
 
     const predictionAvailable =
@@ -58,6 +59,7 @@ export default function ScorePanel({
             prediction={prediction}
             predictionDrafts={predictionDrafts}
             setPredictionDrafts={setPredictionDrafts}
+            singleSubmitAllowed={singleSubmitAllowed}
         />,
         <ResolutionRow fixture={fixture}/>
     ]    
