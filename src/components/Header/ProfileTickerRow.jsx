@@ -22,7 +22,6 @@ export default function ProfileTickerRow() {
     } = useProfileTicker();
 
     const { flavourCode, activeCampaignLabel } = useFlavour();
-
     const { tickerStageLabel } = useStage();
 
     const tickerItems = useMemo(
@@ -74,7 +73,6 @@ export default function ProfileTickerRow() {
             </div>
         );
     }
-
 
     return (
         <div className="profileTickerRow">
