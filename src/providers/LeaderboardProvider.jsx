@@ -15,31 +15,42 @@ export default function LeaderboardProvider({ children }) {
     });
 
     const [scopeType, setScopeType] = useState("campaign");
-    const [scopeId, setScopeId] = useState(1);
+    const [scopeId, setScopeId] = useState(null);
     const [population, setPopulation] = useState("global");
 
-    const { flavourId } = useFlavour();
+    const {
+        flavourId,
+        activeCampaignId
+    } = useFlavour();
 
     const cacheRef = useRef({});
     const requestRef = useRef(0);
     const refreshLeaderboardRef = useRef();
+    
+    const effectiveScopeId =
+        scopeType === "campaign"
+            ? activeCampaignId
+            : scopeId;
 
     const refreshLeaderboard = useCallback(async () => {
         if (
             (scopeType === "campaign" || scopeType === "stage") &&
-            scopeId == null
+            effectiveScopeId == null
         ) {
             return;
         }
 
-        const cacheKey = `${flavourId}:${scopeType}:${scopeId}:${population}`;
+        const cacheKey =
+            `${flavourId}:${scopeType}:${effectiveScopeId}:${population}`;
 
         if (cacheRef.current[cacheKey]) {
             setLeaderboard(cacheRef.current[cacheKey]);
+
             setLoadingState({
                 loading: false,
                 message: ""
             });
+
             return;
         }
 
@@ -56,7 +67,7 @@ export default function LeaderboardProvider({ children }) {
                 {
                     p_flavour_id: flavourId,
                     p_scope_type: scopeType,
-                    p_scope_id: scopeId,
+                    p_scope_id: effectiveScopeId,
                     p_population: population
                 }
             );
@@ -68,6 +79,7 @@ export default function LeaderboardProvider({ children }) {
             const result = data ?? [];
 
             cacheRef.current[cacheKey] = result;
+
             setLeaderboard(result);
         } catch (error) {
             console.error(error);
@@ -79,7 +91,13 @@ export default function LeaderboardProvider({ children }) {
                 });
             }
         }
-    }, [supabase, flavourId, scopeType, scopeId, population]);
+    }, [
+        supabase,
+        flavourId,
+        scopeType,
+        effectiveScopeId,
+        population
+    ]);
 
     useEffect(() => {
         refreshLeaderboardRef.current = refreshLeaderboard;
@@ -95,7 +113,7 @@ export default function LeaderboardProvider({ children }) {
         cacheRef.current = {};
 
         refreshLeaderboard();
-    }, [refreshSignal, refreshLeaderboard])
+    }, [refreshSignal, refreshLeaderboard]);
 
     useEffect(() => {
         const channel = supabase
@@ -127,7 +145,8 @@ export default function LeaderboardProvider({ children }) {
         leaderboardLoadingMessage: loadingState.message,
 
         scopeType,
-        scopeId,
+        scopeId: effectiveScopeId,
+
         population,
 
         refreshLeaderboard,

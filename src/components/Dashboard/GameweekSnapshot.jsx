@@ -10,7 +10,6 @@ export default function GameweekSnapshot() {
     const { predictionsMap } = usePredictions();
 
     const [now, setNow] = useState(new Date());
-    const [showCountdown, setShowCountdown] = useState(false);
     const [showCountdownScreen, setShowCountdownScreen] = useState(false);
 
     useEffect(() => {
@@ -21,29 +20,23 @@ export default function GameweekSnapshot() {
         return () => clearInterval(timer);
     }, []);
 
-    useEffect(() => {
-        if (!activeGameweek) return;
+    const closeAt = activeGameweek
+        ? new Date(activeGameweek.prediction_close_at)
+        : null;
 
-        const closeAt = new Date(
-            activeGameweek.prediction_close_at
-        );
+    const secondsRemaining = closeAt
+        ? Math.max(
+            0,
+            differenceInSeconds(closeAt, now)
+        )
+        : 0;
 
-        const secondsRemaining = differenceInSeconds(
-            closeAt,
-            now
-        );
-
-        setShowCountdown(
-            secondsRemaining > 0 &&
-            secondsRemaining < 86400
-        );
-    }, [activeGameweek, now]);
+    const showCountdown =
+        secondsRemaining > 0 &&
+        secondsRemaining < 86400;
 
     useEffect(() => {
-        if (!showCountdown) {
-            setShowCountdownScreen(false);
-            return;
-        }
+        if (!showCountdown) return;
 
         const timer = setInterval(() => {
             setShowCountdownScreen(current => !current);
@@ -66,14 +59,7 @@ export default function GameweekSnapshot() {
                 Boolean(predictionsMap[fixture.fixture_id])
         );
 
-    const closeAt = new Date(
-        activeGameweek.prediction_close_at
-    );
-
-    const secondsRemaining = Math.max(
-        0,
-        differenceInSeconds(closeAt, now)
-    );
+    const deadlinePassed = secondsRemaining <= 0;
 
     const hours = Math.floor(
         secondsRemaining / 3600
@@ -123,34 +109,32 @@ export default function GameweekSnapshot() {
                 )}
             </div>
 
-            <div className="gameweekDeadline">
+            {!deadlinePassed && (
+                <div className="gameweekDeadline">
 
-                {showCountdown && showCountdownScreen ? (
-                    <>
-                        <div className="gameweekDeadlineLabel">
-                            Closes in:
-                        </div>
+                    {showCountdown && showCountdownScreen ? (
+                        <>
+                            <div className="gameweekDeadlineLabel">
+                                Closes in:
+                            </div>
 
-                        <div className="gameweekDeadlineValue">
-                            {countdown}
-                        </div>
-                    </>
-                ) : (
-                    <>
-                        <div className="gameweekDeadlineLabel">
-                            Closes at:
-                        </div>
+                            <div className="gameweekDeadlineValue">
+                                {countdown}
+                            </div>
+                        </>
+                    ) : (
+                        <>
+                            <div className="gameweekDeadlineLabel">
+                                Closes at:
+                            </div>
 
-                        <div className="gameweekDeadlineValue small">
-                            {deadline}
-                        </div>
-
-                        
-                    </>
-                )}
-
-            </div>
-
+                            <div className="gameweekDeadlineValue small">
+                                {deadline}
+                            </div>
+                        </>
+                    )}
+                </div>
+            )}
         </div>
     );
 }
