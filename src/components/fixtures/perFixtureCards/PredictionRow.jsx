@@ -6,7 +6,8 @@ export default function PredictionRow({
     fixture, 
     prediction, 
     predictionDrafts,
-    setPredictionDrafts
+    setPredictionDrafts,
+    singleSubmitAllowed
 }) {  
     
     const draft = predictionDrafts[fixture.fixture_id];
@@ -46,7 +47,7 @@ export default function PredictionRow({
                     style={{color: inputColor}}
                     min="0"
                     max="10"
-                    // disabled={loading}
+                    disabled={!singleSubmitAllowed}
                     value={homeValue}
                     onChange={(e) => {
                       const val = e.target.value;
@@ -90,7 +91,7 @@ export default function PredictionRow({
                     style={{color: inputColor}}
                     min="0"
                     max="10"
-                    // disabled={loading}
+                    disabled={!singleSubmitAllowed}
                     value={awayValue}
                     onChange={(e) => {
                       const val = e.target.value;

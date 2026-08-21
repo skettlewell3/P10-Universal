@@ -90,6 +90,7 @@ export default function GWPFCardBody({
                     prediction={predictionsMap[fixture.fixture_id]}
                     predictionDrafts={predictionDrafts}
                     setPredictionDrafts={setPredictionDrafts}
+                    singleSubmitAllowed={singleSubmitAllowed}
                 />
             </div>
             
