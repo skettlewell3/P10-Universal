@@ -74,6 +74,8 @@ export default function ProfileTickerRow() {
         );
     }
 
+    console.log("ticker:", tickerItems)
+
     return (
         <div className="profileTickerRow">
             <div className="tickerTrack">

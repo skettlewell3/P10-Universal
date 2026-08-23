@@ -41,7 +41,6 @@ export default function FixtureLeaderboardContainer({ fixtureId }) {
                     <div>{row.points_total}</div>
                 </div>
             ))}
-
         </div>
     );
 }
