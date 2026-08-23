@@ -18,10 +18,10 @@ export default function ProfileTickerProvider({ children }) {
 
     const profileId = profile?.profile_id;
 
-    console.log("profile:", profileId)
-    console.log("flavourId:", flavourId)
-    console.log("activeCampaignId:", activeCampaignId)
-    console.log("stage:", tickerStageId)
+    // console.log("profile:", profileId)
+    // console.log("flavourId:", flavourId)
+    // console.log("activeCampaignId:", activeCampaignId)
+    // console.log("stage:", tickerStageId)
 
     const [ticker, setTicker] = useState({
         global: null,

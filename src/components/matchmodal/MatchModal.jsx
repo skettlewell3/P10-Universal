@@ -4,6 +4,8 @@ import MatchFixtureCard from "./MatchFixtureCard";
 import FormContainer from "./FormContainer";
 import MMTableSnapshot from "./MMTableSnapshot";
 import TeamComparison from "./TeamComparison";
+import FixtureLeaderboardContainer from "../fixtures/perFixtureCards/FixtureLeaderboardContainer";
+
 
 export default function MatchModal({
     fixture,
@@ -103,8 +105,8 @@ export default function MatchModal({
                         />
 
                         {!isUpcoming && (
-                            <MatchLeaderboard
-                                fixture={currentFixture}
+                            <FixtureLeaderboardContainer
+                                fixtureId={currentFixture.fixture_id}
                             />
                         )}
                     </div>
