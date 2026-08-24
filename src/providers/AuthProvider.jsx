@@ -19,8 +19,6 @@ export function AuthProvider({ children }) {
   const [refreshSignal, setRefreshSignal] = useState(0);
 
   useEffect(() => {
-    console.log("INIT AUTH START");
-
     supabase.auth.getSession().then(({ data }) => {
       setLoadingState({
         loading: true,
@@ -32,21 +30,29 @@ export function AuthProvider({ children }) {
       setSession(sessionData);
       setUser(sessionData?.user ?? null);
 
+      if (sessionData) {
+        const now = Date.now();
+        lastActivityRef.current = now;
+        lastRefreshRef.current = now;
+      };
+
       setLoadingState({
         loading: false,
         message: "Session fetched"
-      });
-
-      console.log("INIT AUTH FINISHED");
+      })
     });
 
     const { data: { subscription } } =
       supabase.auth.onAuthStateChange((_event, session) => {
-
-        console.log("AUTH EVENT:", _event);
-
         setSession(session);
         setUser(session?.user ?? null);
+
+        if (_event === "SIGNED_IN") {
+          const now = Date.now();
+
+          lastActivityRef.current = now;
+          lastRefreshRef.current = now;
+        }
       });
 
     return () => subscription.unsubscribe();

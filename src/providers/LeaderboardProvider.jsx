@@ -30,9 +30,16 @@ export default function LeaderboardProvider({ children }) {
     const effectiveScopeId =
         scopeType === "campaign"
             ? activeCampaignId
-            : scopeId;
+            : scopeId
+    ;
 
     const refreshLeaderboard = useCallback(async () => {
+        console.log("LEADERBOARD REFRESH", {
+            flavourId,
+            scopeType,
+            effectiveScopeId,
+            population
+        });
         if (
             (scopeType === "campaign" || scopeType === "stage") &&
             effectiveScopeId == null
@@ -41,7 +48,8 @@ export default function LeaderboardProvider({ children }) {
         }
 
         const cacheKey =
-            `${flavourId}:${scopeType}:${effectiveScopeId}:${population}`;
+            `${flavourId}:${scopeType}:${effectiveScopeId}:${population}`
+        ;
 
         if (cacheRef.current[cacheKey]) {
             setLeaderboard(cacheRef.current[cacheKey]);
@@ -62,6 +70,8 @@ export default function LeaderboardProvider({ children }) {
         });
 
         try {
+            console.log("LEADERBOARD RPC START");
+
             const { data, error } = await supabase.rpc(
                 "get_from_leaderboard",
                 {
@@ -71,6 +81,11 @@ export default function LeaderboardProvider({ children }) {
                     p_population: population
                 }
             );
+
+            console.log("LEADERBOARD RPC RESULT", {
+                data,
+                error
+            });
 
             if (error) throw error;
 
@@ -91,6 +106,11 @@ export default function LeaderboardProvider({ children }) {
                 });
             }
         }
+
+        console.log("LEADERBOARD FINALLY", {
+            requestId,
+            currentRequestId: requestRef.current
+        });
     }, [
         supabase,
         flavourId,
