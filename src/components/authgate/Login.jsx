@@ -143,7 +143,6 @@ export default function Login() {
         disabled={
           loading ||
           flavourLoading ||
-          !selectedFlavourId ||
           (mode === "signup" && inviteCode.trim() === "")
         }
       >

@@ -36,7 +36,6 @@ export default function AuthGate({ children }) {
         if (authLoading) return;
         if (flavourLoading) return;
         if (!user) return;
-        if (selectedFlavourId != null) return;
 
         const storedId = localStorage.getItem(
             "selectedFlavourId"
