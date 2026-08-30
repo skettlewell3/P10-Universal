@@ -22,10 +22,43 @@ export default function Login() {
 
   const [inviteCode, setInviteCode] = useState("");
 
+  useEffect(() => {
+    if (flavourLoading) return;
+    if (selectedFlavourId != null) return;
+    if (!flavours.length) return;
+
+    const storedId = localStorage.getItem(
+      "selectedFlavourId"
+    );
+
+    const storedFlavour = storedId
+      ? flavours.find(
+          flavour => flavour.flavour_id === Number(storedId)
+        )
+      : null;
+
+    const defaultFlavour =
+      flavours.find(flavour => flavour.is_default);
+
+    const resolvedFlavour =
+      storedFlavour ?? defaultFlavour;
+
+    if (resolvedFlavour) {
+      setSelectedFlavour(
+        resolvedFlavour.flavour_id
+      );
+    }
+  }, [
+    flavourLoading,
+    flavours,
+    selectedFlavourId,
+    setSelectedFlavour
+  ]);
+
   const handleAuth = async () => {
     const cleanEmail = email.trim().toLowerCase();
 
-    if (!selectedFlavourId) {
+    if (selectedFlavourId == null) {
       setError("Please select a flavour");
       return;
     }
@@ -143,6 +176,7 @@ export default function Login() {
         disabled={
           loading ||
           flavourLoading ||
+          selectedFlavourId == null ||
           (mode === "signup" && inviteCode.trim() === "")
         }
       >
