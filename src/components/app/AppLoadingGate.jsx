@@ -1,21 +1,26 @@
 import { useAuth } from "../../hooks/useAuth";
 import { useProfile } from "../../hooks/useProfile";
+import { useFlavour } from "../../hooks/useFlavour";
 
 import SplashScreen from "./SplashScreen";
 
 export default function AppLoadingGate({ children }) {
   const { loading: authLoading } = useAuth();
   const { loading: profileLoading } = useProfile();
+  const { loading: flavourLoading } = useFlavour();
 
   const states = [
     authLoading && {
       message: "Checking session..."
     },
 
+    flavourLoading && {
+      message: "Loading flavours..."
+    },
+
     profileLoading && {
       message: "Loading profile..."
     },
-   
   ].filter(Boolean);
 
   if (states.length > 0) {

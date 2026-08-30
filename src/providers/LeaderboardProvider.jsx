@@ -20,36 +20,54 @@ export default function LeaderboardProvider({ children }) {
 
     const {
         flavourId,
-        activeCampaignId
+        activeCampaignId,
+        loading: flavourLoading
     } = useFlavour();
 
     const cacheRef = useRef({});
     const requestRef = useRef(0);
     const refreshLeaderboardRef = useRef();
-    
+
     const effectiveScopeId =
         scopeType === "campaign"
             ? activeCampaignId
-            : scopeId
-    ;
+            : scopeId;
 
     const refreshLeaderboard = useCallback(async () => {
         console.log("LEADERBOARD REFRESH", {
             flavourId,
+            activeCampaignId,
             scopeType,
             effectiveScopeId,
-            population
+            population,
+            flavourLoading
         });
+
+        // Flavour has not finished resolving yet.
+        if (flavourLoading) {
+            return;
+        }
+
+        // No flavour means there is nothing to load.
+        if (!flavourId) {
+            return;
+        }
+
+        // Campaign/stage leaderboards require a resolved scope.
         if (
             (scopeType === "campaign" || scopeType === "stage") &&
             effectiveScopeId == null
         ) {
+            setLoadingState({
+                loading: true,
+                message: "Waiting for scope..."
+            });
+
             return;
         }
 
         const cacheKey =
-            `${flavourId}:${scopeType}:${effectiveScopeId}:${population}`
-        ;
+            `${flavourId}:${scopeType}:${effectiveScopeId}:${population}`;
 
         if (cacheRef.current[cacheKey]) {
             setLeaderboard(cacheRef.current[cacheKey]);
@@ -114,19 +132,35 @@ export default function LeaderboardProvider({ children }) {
     }, [
         supabase,
         flavourId,
+        activeCampaignId,
+        flavourLoading,
         scopeType,
         effectiveScopeId,
         population
     ]);
 
     useEffect(() => {
+        console.log("LEADERBOARD SCOPE CHANGED", {
+            flavourId,
+            activeCampaignId,
+            effectiveScopeId
+        });
+    }, [
+        flavourId,
+        activeCampaignId,
+        effectiveScopeId
+    ]);
+
+    useEffect(() => {
         refreshLeaderboardRef.current = refreshLeaderboard;
     }, [refreshLeaderboard]);
 
+    // Initial load and reload when leaderboard dependencies change.
     useEffect(() => {
         refreshLeaderboard();
     }, [refreshLeaderboard]);
 
+    // Explicit refresh requested by AuthProvider.
     useEffect(() => {
         if (!refreshSignal) return;
 

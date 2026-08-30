@@ -1,32 +1,47 @@
 import { useState, useEffect } from "react";
 import { useDatabase } from "../../hooks/useDatabase";
-const LOGO_SRC = "/assets/logos/FullLogo_Transparent_NoBuffer.png";
+import { useFlavour } from "../../hooks/useFlavour";
 
+const LOGO_SRC = "/assets/logos/FullLogo_Transparent_NoBuffer.png";
 
 export default function Login() {
   const { supabase } = useDatabase();
 
+  const {
+    flavours,
+    selectedFlavourId,
+    setSelectedFlavour,
+    loading: flavourLoading
+  } = useFlavour();
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [mode, setMode] = useState("login"); // login | signup
+  const [mode, setMode] = useState("login");
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
 
-  const [inviteCode, setInviteCode] = useState('');
+  const [inviteCode, setInviteCode] = useState("");
 
   const handleAuth = async () => {
     const cleanEmail = email.trim().toLowerCase();
 
+    if (!selectedFlavourId) {
+      setError("Please select a flavour");
+      return;
+    }
+
     if (mode === "signup") {
-      const { data: validCode, error: codeError} = await supabase.rpc(
-        "validate_signup_code",
-        {
-          p_code: inviteCode.trim()
-        }
-      );
+      const { data: validCode, error: codeError } =
+        await supabase.rpc(
+          "validate_signup_code",
+          {
+            p_code: inviteCode.trim()
+          }
+        );
 
       if (codeError) {
-        throw codeError;
+        setError(codeError.message);
+        return;
       }
 
       if (!validCode) {
@@ -55,9 +70,11 @@ export default function Login() {
 
       if (result.error) {
         setError(result.error.message);
-      } else {
-        setPassword("");
+        return;
       }
+
+      setPassword("");
+
     } catch (err) {
       setError(`Unexpected error: ${err.message}`);
     } finally {
@@ -77,6 +94,23 @@ export default function Login() {
         alt="logo"
       />
 
+      <select
+        value={selectedFlavourId ?? ""}
+        onChange={(e) =>
+          setSelectedFlavour(Number(e.target.value))
+        }
+        disabled={flavourLoading || loading}
+      >
+        {flavours.map(flavour => (
+          <option
+            key={flavour.flavour_id}
+            value={flavour.flavour_id}
+          >
+            {flavour.flavour_name}
+          </option>
+        ))}
+      </select>
+
       <input
         placeholder="Email"
         autoComplete="email"
@@ -87,23 +121,29 @@ export default function Login() {
       <input
         placeholder="Password"
         type="password"
-        autoComplete={mode === "login" ? "current-password" : "new-password"}
+        autoComplete={
+          mode === "login"
+            ? "current-password"
+            : "new-password"
+        }
         value={password}
         onChange={(e) => setPassword(e.target.value)}
       />
 
       {mode === "signup" && (
-      <input
-        placeholder="Invite code"
-        value={inviteCode}
-        onChange={(e) => setInviteCode(e.target.value)}
-      />
-    )}
+        <input
+          placeholder="Invite code"
+          value={inviteCode}
+          onChange={(e) => setInviteCode(e.target.value)}
+        />
+      )}
 
-      <button 
-        onClick={handleAuth} 
+      <button
+        onClick={handleAuth}
         disabled={
-          loading || 
+          loading ||
+          flavourLoading ||
+          !selectedFlavourId ||
           (mode === "signup" && inviteCode.trim() === "")
         }
       >
@@ -125,11 +165,15 @@ export default function Login() {
       </button>
 
       {error && (
-        <p style={{ color: "red" }}>{error}</p>
+        <p style={{ color: "red" }}>
+          {error}
+        </p>
       )}
 
       <p style={{ marginTop: "12px", fontSize: "0.9rem" }}>
-        <a href="/forgot-password">Forgot password?</a>
+        <a href="/forgot-password">
+          Forgot password?
+        </a>
       </p>
     </div>
   );

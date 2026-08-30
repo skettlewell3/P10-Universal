@@ -2,7 +2,6 @@ import SplashScreen from "./SplashScreen";
 import { useFixtures } from "../../hooks/useFixtures";
 import { usePredictions } from "../../hooks/usePredictions";
 import { useLeaderboard }from "../../hooks/useLeaderboard";
-// import usePredictions from "../../hooks/usePredictions";
 
 export default function GameDataReadyGate({ children }) {
     const {

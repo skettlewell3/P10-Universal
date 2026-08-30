@@ -15,72 +15,59 @@ export function FlavourProvider({ children }) {
 
     const [error, setError] = useState(null);
 
-    async function loadFlavours() {
-        try {
-            setLoadingState({
-                loading: true,
-                message: "Fetching flavours..."
-            });
-
-            const { data, error } = await supabase.rpc(
-                "get_flavours"
-            );
-
-            if (error) throw error;
-
-            const result = data ?? [];
-            setFlavours(result);
-
-            const stored = localStorage.getItem("selectedFlavourId");
-
-            const defaultFlavour = result.find(
-                f => f.is_default
-            );
-
-            const resolvedId =
-                stored
-                    ? Number(stored)
-                    : defaultFlavour?.flavour_id;
-
-            setSelectedFlavourId(resolvedId);
-
-            if (resolvedId) {
-                localStorage.setItem(
-                    "selectedFlavourId",
-                    resolvedId
-                );
-            }
-
-            setLoadingState({
-                loading: false,
-                message: "Flavour loaded"
-            });
-
-        } catch (err) {
-            console.error(err);
-            setError(err);
-
-            setLoadingState({
-                loading: false,
-                message: "Failed to load flavours"
-            });
-        }
-    }
-
     useEffect(() => {
+        let cancelled = false;
+
+        async function loadFlavours() {
+            try {
+                const { data, error } = await supabase.rpc(
+                    "get_flavours"
+                );
+
+                if (error) throw error;
+
+                if (cancelled) return;
+
+                setFlavours(data ?? []);
+
+                setLoadingState({
+                    loading: false,
+                    message: "Flavours loaded"
+                });
+
+            } catch (err) {
+                if (cancelled) return;
+
+                console.error(err);
+                setError(err);
+
+                setLoadingState({
+                    loading: false,
+                    message: "Failed to load flavours"
+                });
+            }
+        }
+
         loadFlavours();
-    }, []);
+
+        return () => {
+            cancelled = true;
+        };
+    }, [supabase]);
 
     const setSelectedFlavour = (id) => {
-        if (id === selectedFlavourId) return ;
-
         setSelectedFlavourId(id);
-        localStorage.setItem("selectedFlavourId", id);
+
+        if (id != null) {
+            localStorage.setItem(
+                "selectedFlavourId",
+                String(id)
+            );
+        } else {
+            localStorage.removeItem("selectedFlavourId");
+        }
     };
 
-    /**
-     * THIS is the only truth the rest of the app should use
-     */
     const resolvedFlavour = useMemo(() => {
         return flavours.find(
             f => f.flavour_id === selectedFlavourId
@@ -95,21 +82,30 @@ export function FlavourProvider({ children }) {
 
         resolvedFlavour,
 
-        loadingState,
+        loading: loadingState.loading,
+        loadingMessage: loadingState.message,
         error,
 
-        // convenience access (no duplication of logic elsewhere)
         flavourId: resolvedFlavour?.flavour_id ?? null,
         flavourCode: resolvedFlavour?.flavour_code ?? null,
+
         competitionId: resolvedFlavour?.competition_id ?? null,
         competitionCode: resolvedFlavour?.competition_code ?? null,
+
         formatId: resolvedFlavour?.format_id ?? null,
         formatCode: resolvedFlavour?.format_code ?? null,
-        activeCampaignId: resolvedFlavour?.active_campaign_id ?? null,
-        activeCampaignLabel: resolvedFlavour?.active_campaign_label ?? null,
 
-        isGameweekFormat: resolvedFlavour?.format_code === "GWK",
-        isPerFixtureFormat: resolvedFlavour?.format_code === "PFX",
+        activeCampaignId:
+            resolvedFlavour?.active_campaign_id ?? null,
+
+        activeCampaignLabel:
+            resolvedFlavour?.active_campaign_label ?? null,
+
+        isGameweekFormat:
+            resolvedFlavour?.format_code === "GWK",
+
+        isPerFixtureFormat:
+            resolvedFlavour?.format_code === "PFX",
     };
 
     return (
