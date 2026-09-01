@@ -1,4 +1,4 @@
-import { useEffect, useMemo } from "react";
+import { useMemo } from "react";
 import { useStage } from "../../hooks/useStage";
 
 export default function LeaderboardFilters({
@@ -9,31 +9,17 @@ export default function LeaderboardFilters({
     population,
     setPopulation
 }) {
-    const { stages, tickerStageId } = useStage();
+    const { stages } = useStage();
 
     const visibleStages = useMemo(
-        () => stages.filter(
-            stage =>
-                stage.is_live ||
-                stage.is_finished
-        ),
+        () =>
+            stages.filter(
+                stage =>
+                    stage.is_live ||
+                    stage.is_finished
+            ),
         [stages]
     );
-
-    const defaultStageId = tickerStageId;
-
-    useEffect(() => {
-        if (scopeType !== "stage") return;
-        if (scopeId != null) return;
-        if (!defaultStageId) return;
-
-        setScopeId(defaultStageId);
-    }, [
-        scopeType,
-        scopeId,
-        defaultStageId,
-        setScopeId
-    ]);
 
     const handleCampaign = () => {
         setScopeType("campaign");
@@ -129,12 +115,7 @@ export default function LeaderboardFilters({
                         <select
                             name="scopeIdFilter"
                             id="scopeIdFilter"
-                            disabled={scopeType !== "stage"}
-                            value={
-                                scopeType === "stage"
-                                    ? scopeId ?? ""
-                                    : ""
-                            }
+                            value={scopeId ?? ""}
                             onChange={handleChange}
                         >
                             {visibleStages.map(stage => (

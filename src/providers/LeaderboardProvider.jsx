@@ -1,12 +1,21 @@
-import { useCallback, useEffect, useState, useRef } from "react";
+import { useCallback, useEffect, useState, useRef, useMemo } from "react";
 import { LeaderboardContext } from "../context/LeaderboardContext";
 import { useDatabase } from "../hooks/useDatabase";
 import { useAuth } from "../hooks/useAuth";
 import { useFlavour } from "../hooks/useFlavour";
+import { useStage } from "../hooks/useStage";
+import { useProfile } from "../hooks/useProfile";
 
 export default function LeaderboardProvider({ children }) {
     const { supabase } = useDatabase();
     const { refreshSignal } = useAuth();
+    const { profile } = useProfile();
+    const { tickerStageId} = useStage();
+    const {
+        flavourId,
+        activeCampaignId,
+        loading: flavourLoading
+    } = useFlavour();
 
     const [leaderboard, setLeaderboard] = useState([]);
     const [loadingState, setLoadingState] = useState({
@@ -14,35 +23,21 @@ export default function LeaderboardProvider({ children }) {
         message: "Loading Leaderboards..."
     });
 
-    const [scopeType, setScopeType] = useState("campaign");
+    const [scopeType, setScopeType] = useState("stage");
     const [scopeId, setScopeId] = useState(null);
     const [population, setPopulation] = useState("global");
-
-    const {
-        flavourId,
-        activeCampaignId,
-        loading: flavourLoading
-    } = useFlavour();
-
-    const cacheRef = useRef({});
-    const requestRef = useRef(0);
-    const refreshLeaderboardRef = useRef();
 
     const effectiveScopeId =
         scopeType === "campaign"
             ? activeCampaignId
-            : scopeId;
+            : scopeId ?? tickerStageId
+    ;    
+
+    const cacheRef = useRef({});
+    const requestRef = useRef(0);
+    const refreshLeaderboardRef = useRef();    
 
     const refreshLeaderboard = useCallback(async () => {
-        console.log("LEADERBOARD REFRESH", {
-            flavourId,
-            activeCampaignId,
-            scopeType,
-            effectiveScopeId,
-            population,
-            flavourLoading
-        });
-
         // Flavour has not finished resolving yet.
         if (flavourLoading) {
             return;
@@ -88,8 +83,6 @@ export default function LeaderboardProvider({ children }) {
         });
 
         try {
-            console.log("LEADERBOARD RPC START");
-
             const { data, error } = await supabase.rpc(
                 "get_from_leaderboard",
                 {
@@ -99,11 +92,6 @@ export default function LeaderboardProvider({ children }) {
                     p_population: population
                 }
             );
-
-            console.log("LEADERBOARD RPC RESULT", {
-                data,
-                error
-            });
 
             if (error) throw error;
 
@@ -124,31 +112,13 @@ export default function LeaderboardProvider({ children }) {
                 });
             }
         }
-
-        console.log("LEADERBOARD FINALLY", {
-            requestId,
-            currentRequestId: requestRef.current
-        });
     }, [
         supabase,
         flavourId,
-        activeCampaignId,
         flavourLoading,
         scopeType,
         effectiveScopeId,
         population
-    ]);
-
-    useEffect(() => {
-        console.log("LEADERBOARD SCOPE CHANGED", {
-            flavourId,
-            activeCampaignId,
-            effectiveScopeId
-        });
-    }, [
-        flavourId,
-        activeCampaignId,
-        effectiveScopeId
     ]);
 
     useEffect(() => {
@@ -192,6 +162,14 @@ export default function LeaderboardProvider({ children }) {
         };
     }, [supabase]);
 
+    const leaderboardSnapshot = useMemo(
+        () =>
+            leaderboard.find(
+                row => row.profile_id === profile?.profile_id
+            ) ?? null,
+        [leaderboard, profile]
+    );
+
     const value = {
         leaderboard,
         leaderboardCount: leaderboard.length,
@@ -202,6 +180,7 @@ export default function LeaderboardProvider({ children }) {
         scopeId: effectiveScopeId,
 
         population,
+        leaderboardSnapshot,
 
         refreshLeaderboard,
         setScopeType,

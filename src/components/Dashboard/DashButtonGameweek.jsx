@@ -1,5 +1,7 @@
 import { useNavigate } from "react-router-dom";
+import DashboardSnapshot from "./DashboardSnapshot";
 import GameweekSnapshot from "./GameweekSnapshot";
+import GameweekReviewSnapshot from "./GameweekReviewSnapshot";
 
 export default function DashButtonGameweek({ label, to }) {
     const navigate = useNavigate();
@@ -19,7 +21,14 @@ export default function DashButtonGameweek({ label, to }) {
                     <span>{label}</span>
                 </div>
 
-                <GameweekSnapshot />
+                <DashboardSnapshot
+                    screens={[
+                        <GameweekSnapshot key="current" />,
+                        <GameweekReviewSnapshot key="review" />
+                    ]}
+                    interval={5000}
+                    loopFrom={0}
+                />
 
             </div>
         </button>

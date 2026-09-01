@@ -163,6 +163,8 @@ export function AuthProvider({ children }) {
       supabase.auth.signOut();
   }, [supabase]);
 
+  console.log("user:", user);
+
   return (
     <AuthContext.Provider value={{
       session,
