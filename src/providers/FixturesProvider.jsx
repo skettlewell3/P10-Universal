@@ -1,4 +1,5 @@
 import { useEffect, useState, useCallback, useMemo } from 'react';
+import { formatInTimeZone } from "date-fns-tz";
 import { FixturesContext } from '../context/FixturesContext';
 import { useDatabase } from '../hooks/useDatabase';
 import { useAuth } from '../hooks/useAuth';
@@ -124,49 +125,49 @@ export function FixturesProvider({ children }) {
     }, [fixtures]);
 
     const snapshotFixtures = useMemo(() => {
-        const groups = Object.values(groupedByKickoff);
+        if (!fixtures.length) return [];
 
-        if (!groups.length) return [];
+        const userTimeZone =
+            Intl.DateTimeFormat().resolvedOptions().timeZone;
 
-        const liveGroups = groups
-            .filter(group =>
-                group.some(f => f.fixture_status === "live_90" || f.fixture_status === "live_et" )
-            )
+        const today = formatInTimeZone(
+            new Date(),
+            userTimeZone,
+            "yyyy-MM-dd"
+        );
+
+        const todaysFixtures = fixtures
+            .filter(fixture => {
+                const fixtureDate = formatInTimeZone(
+                    new Date(fixture.kickoff_at),
+                    userTimeZone,
+                    "yyyy-MM-dd"
+                );
+
+                return fixtureDate === today;
+            })
             .sort((a, b) =>
-                new Date(a[0].kickoff_at) -
-                new Date(b[0].kickoff_at)
+                new Date(a.kickoff_at) -
+                new Date(b.kickoff_at)
             );
 
-        if (liveGroups.length) {
-            return liveGroups[0];
+        if (!todaysFixtures.length) {
+            return [];
         }
 
-        const finishedGroups = groups
-            .filter(group =>
-                group.every(f => f.fixture_status === "finished")
-            )
-            .sort((a, b) =>
-                new Date(b[0].kickoff_at) -
-                new Date(a[0].kickoff_at)
-            );
+        const liveFixtures = todaysFixtures.filter(fixture =>
+            fixture.fixture_status === "live_90" ||
+            fixture.fixture_status === "live_et"
+        );
 
-        if (finishedGroups.length) {
-            return finishedGroups[0];
+        if (liveFixtures.length) {
+            return liveFixtures;
         }
 
-        const upcomingGroups = groups
-            .filter(group =>
-                group.every(f => f.fixture_status === "upcoming")
-            )
-            .sort((a, b) =>
-                new Date(a[0].kickoff_at) -
-                new Date(b[0].kickoff_at)
-            );
+        return todaysFixtures;
 
-        return upcomingGroups[0] || [];
-    }, [groupedByKickoff]);
+    }, [fixtures]);
 
-    // console.log("RAW FIXTURES:", fixtures);
     return (
         <FixturesContext.Provider
             value={{

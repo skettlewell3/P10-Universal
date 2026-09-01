@@ -14,24 +14,34 @@ export default function FixtureSnapshot({ fixture }) {
 
     const snapLabel =
         fixtureStatus === "live_90"
-            ? "Live!"
+            ? "LIVE"
             : fixtureStatus === "live_et"
-                ? "Extra Time"
+                ? "EXTRA TIME"
                 : fixtureStatus === "finished"
-                    ? "Final"
+                    ? "RESULT"
                     : fixtureStatus === "upcoming"
-                        ? ""
+                        ? "FIXTURE"
                         : fixtureStatus;
+
+    const snapDate = format(
+        new Date(fixture.kickoff_at),
+        "EEE dd MMM"
+    );
 
     const snapKO = format(
         new Date(fixture.kickoff_at),
         "HH:mm"
     );
 
-    const snapDate = format(
-        new Date(fixture.kickoff_at),
-        "dd/MM"
-    );
+    const homeScore =
+        isLive || isFinished
+            ? fixture.final_home_goals
+            : "-";
+
+    const awayScore =
+        isLive || isFinished
+            ? fixture.final_away_goals
+            : "-";
 
     return (
         <div className="fixtureSnapshot">
@@ -45,35 +55,37 @@ export default function FixtureSnapshot({ fixture }) {
             </div>
 
             <div className="snapFixture">
-                <div className="snapTeam home">
-                    {fixture.home_short_code}
+
+                <div className="snapTeamRow">
+                    <div className="snapTeamName">
+                        {fixture.home_team_name}
+                    </div>
+
+                    <div className="snapScore">
+                        {homeScore}
+                    </div>
                 </div>
 
-                <div className="snapCentre">
-                    {isLive || isFinished ? (
-                        <div className="snapScore">
-                            {fixture.final_home_goals}
-                            {" - "}
-                            {fixture.final_away_goals}
-                        </div>
-                    ) : (
-                        <div className="snapVs">
-                            V
-                        </div>
-                    )}
+                <div className="snapTeamRow">
+                    <div className="snapTeamName">
+                        {fixture.away_team_name}
+                    </div>
+
+                    <div className="snapScore">
+                        {awayScore}
+                    </div>
                 </div>
 
-                <div className="snapTeam away">
-                    {fixture.away_short_code}
-                </div>
             </div>
 
-            {!isLive && !isFinished && (
-                <div className="snapDetail">
-                    <p>{snapDate}</p>
-                    <p>{snapKO}</p>
-                </div>
-            )}
+            <div className="snapDetail">
+                <p>{fixture.venue_name}</p>
+                <p>
+                    {snapDate}
+                    {" · "}
+                    {snapKO}
+                </p>
+            </div>
 
         </div>
     );
