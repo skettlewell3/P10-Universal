@@ -34,6 +34,8 @@ export default function GameweekPage() {
         return groupByKickoff(gameweekFixtures);
     }, [gameweekFixtures, groupByKickoff]);
 
+    const predictionOpenAt = earliestFixture?.prediction_open_at;
+    const predictionCloseAt = earliestFixture?.prediction_close_at;
     const predictionWindowOpen = earliestFixture?.predictions_open;
 
     const hasExistingSet = useMemo(() => {
@@ -91,8 +93,10 @@ export default function GameweekPage() {
                                 fixtures={fixtures}
                                 predictionDrafts={predictionDrafts}
                                 setPredictionDrafts={setPredictionDrafts}
-                                predictionWindowOpen={predictionWindowOpen}
                                 openMatchModal={setModalFixture}
+                                predictionOpenAt={predictionOpenAt}
+                                predictionCloseAt={predictionCloseAt}
+                                predictionWindowOpen={predictionWindowOpen}
                             />
                         ))}
                     </form>   

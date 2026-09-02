@@ -1,12 +1,10 @@
 import { useState, useEffect } from "react";
 import { format } from "date-fns";
 import { useStagePredictionStatus } from "../../../hooks/useStagePredictionStatus";
+import { useGameweeks } from "../../../hooks/useGameweeks";
 
-export default function StageCardHeader({ fixtures, predictionOpenAt, predictionCloseAt }) {
+export default function GWPFCardHeader({ fixture }) {
 
-  const fixture = fixtures[0];
-
-  // rotates label ↔ countdown display
   const [flip, setFlip] = useState(false);
 
   useEffect(() => {
@@ -16,6 +14,8 @@ export default function StageCardHeader({ fixtures, predictionOpenAt, prediction
 
     return () => clearInterval(id);
   }, []);
+
+  const { activeGameweek } = useGameweeks();
 
   const localKO = format(
     new Date(fixture.kickoff_at),
@@ -30,12 +30,22 @@ export default function StageCardHeader({ fixtures, predictionOpenAt, prediction
 
   const statusMeta = statusMap[fixture.fixture_status];
 
-  // all prediction window logic now lives in hook
-  const prediction = useStagePredictionStatus(predictionOpenAt, predictionCloseAt);
+  const prediction = useStagePredictionStatus(
+    fixture.prediction_open_at,
+    fixture.prediction_close_at
+  );
+
+  /*
+   * Only the currently active gameweek may display
+   * prediction status.
+   */
+  const gameweekIsActive =
+    activeGameweek &&
+    fixture.gameweek_number === activeGameweek.gameweek_number;
 
   const showPrediction =
-    prediction.mode !== "blank"
-  ;
+    prediction.mode !== "blank" &&
+    gameweekIsActive;
 
   return (
     <div className="fixtureCardHeader perFixtureCardHeader">

@@ -7,8 +7,10 @@ export default function StageFixturesCard({
     fixtures,
     predictionDrafts,
     setPredictionDrafts, 
-    predictionWindowOpen,
-    openMatchModal
+    openMatchModal,
+    predictionOpenAt,
+    predictionCloseAt,
+    predictionWindowOpen
 }) {
 
     const { predictionsMap } = usePredictions();
@@ -25,7 +27,8 @@ export default function StageFixturesCard({
             
             <StageFixtureCardHeader 
                 fixtures={fixtures} 
-                predictionWindowOpen={predictionWindowOpen}
+                predictionOpenAt={predictionOpenAt}
+                predictionCloseAt={predictionCloseAt}
             />
 
             {fixtures.map((fixture) => (            

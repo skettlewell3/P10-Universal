@@ -1,8 +1,8 @@
 import { useState } from "react";
-import PerFixtureCardHeader from "./PerFixtureCardHeader";
 import { usePredictions } from "../../../hooks/usePredictions";
-import GWPFCardBody from "./GWPFCardBody";
 import { isValidPrediction } from "../../../utils/helpers";
+import GWPFCardHeader from "./GWPFCardHeader";
+import GWPFCardBody from "./GWPFCardBody";
 import FixtureLeaderboardContainer from "./FixtureLeaderboardContainer";
 
 
@@ -52,7 +52,7 @@ export default function GWPFCard({
 
     return (
         <form className={`fixtureCard ${stageClass}`} onSubmit={handleSubmit}>
-            <PerFixtureCardHeader 
+            <GWPFCardHeader 
                 fixture={fixture}
             />
 
