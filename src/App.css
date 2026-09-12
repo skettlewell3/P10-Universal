@@ -1986,17 +1986,114 @@ input[type=number] {
   opacity: 1;
 }
 
+/* Fixture Score Breakdown */
+
 .fixtureScoreBreakdown {
   width: 100%;
-  min-height: 2rem;
-  padding: 0.25rem;
-  margin-top: 0.1rem;
-  border-radius: 5px;
-  background-color: rgba(255,255,255,0.2);
-
-  display: flex;
-  justify-content: center;
+  box-sizing: border-box;
+  padding: 0.25rem 0.4rem 0.4rem;
 }
+
+.fixtureBreakdownLayout {
+  display: grid;
+  grid-template-columns:
+    minmax(2.5rem, 1.25fr)
+    repeat(5, minmax(1.5rem, 1fr))
+    minmax(2.25rem, 1.1fr);
+  column-gap: 0.12rem;
+  align-items: center;
+  width: 100%;
+  text-align: center;
+}
+
+
+/* All cells use identical geometry */
+
+.fixtureBreakdownCell,
+.fixtureBreakdownValue {
+  box-sizing: border-box;
+  width: 100%;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  padding: 0.2rem 0.15rem;
+}
+
+
+/* Header */
+
+.fixtureBreakdownHeader {
+  font-size: 0.65rem;
+  font-weight: 600;
+  line-height: 1;
+  color: var(--blue);
+}
+
+.fixtureBreakdownHeader .fixtureBreakdownCell {
+  background: rgba(255, 255, 255, 0.9);
+}
+
+
+/* Value row */
+
+.fixtureBreakdownRow {
+  margin-top: 0.12rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  line-height: 1;
+}
+
+
+/* Scored criteria */
+
+.fixtureBreakdownValue.scored,
+.fixtureBreakdownTotal.scored {
+  color: var(--blue);
+  background: rgba(255, 255, 255, 0.9);
+}
+
+
+/* Prediction */
+
+.fixtureBreakdownPrediction {
+  font-weight: 700;
+  letter-spacing: 0.03rem;
+  color: var(--blue);
+  background: rgba(255, 255, 255, 0.9);
+}
+
+
+/* Total */
+
+.fixtureBreakdownTotal {
+  font-size: 0.85rem;
+  font-weight: 700;
+}
+
+
+/* Section dividers */
+
+.predColumn {
+  border-right-color: rgba(255, 255, 255, 0.35);
+}
+
+.pointsColumn {
+  border-left-color: rgba(255, 255, 255, 0.35);
+}
+
+/* Perfect10 */
+
+.fixtureBreakdownRow.perfect10 {
+  background: transparent;
+}
+
+.fixtureBreakdownRow.perfect10 .fixtureBreakdownCell,
+.fixtureBreakdownRow.perfect10 .fixtureBreakdownValue {
+  color: white;
+  background: var(--green);
+  border-color: transparent;
+}
+
+/* -- END OF FIXTURE SCORE BREAKDOWN */
 
 /* -- END OF STAGE FIXTURE CARD */
 
