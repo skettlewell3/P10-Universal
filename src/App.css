@@ -844,6 +844,158 @@ input[type=number] {
     height: 120px !important;
 }
 
+/* Fixture Snapshot */
+
+.fixtureSnapshot {
+    width: 100%;
+    height: 100%;
+    min-height: 0;
+
+    display: flex;
+    flex-direction: column;
+
+    padding: 0.5rem 0.75rem;
+    box-sizing: border-box;
+}
+
+
+/* Status / title */
+
+.snapLabel {
+    flex-shrink: 0;
+    text-align: center;
+
+    font-size: 1.2rem;
+    font-weight: 700;
+    line-height: 1.1;
+
+    letter-spacing: 0.05rem;
+}
+
+
+/* Snapshot status colours */
+
+.snapStatus-live_90,
+.snapStatus-live_et {
+    color: rgb(84, 178, 209);
+}
+
+.snapStatus-finished {
+    color: var(--blue);
+}
+
+.snapStatus-upcoming {
+    color: white;
+}
+
+
+/* Live flashing effect */
+
+.blink {
+    animation: snapBlink 2.4s ease-in-out infinite;
+}
+
+@keyframes snapBlink {
+    0%,
+    100% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0.4;
+    }
+}
+
+
+/* Fixture / teams */
+
+.snapFixture {
+    flex: 1;
+    min-height: 0;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+    gap: 0.5rem;
+    width: 100%;
+}
+
+
+.snapTeamRow {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 2rem;
+    align-items: center;
+
+    column-gap: 0.75rem;
+    width: 100%;
+}
+
+.snapTeamRow.H {
+  color: white;
+}
+
+.snapTeamRow.A {
+  color: var(--blue);
+}
+
+
+.snapTeamName {
+    min-width: 0;
+
+    font-size: 0.875rem;
+    font-weight: 600;
+    line-height: 1.15;
+    text-align: left;
+
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+
+.snapScore {
+    font-size: 0.95rem;
+    font-weight: 700;
+    line-height: 1;
+
+    text-align: center;
+    font-variant-numeric: tabular-nums;
+}
+
+
+/* Venue / kickoff detail */
+
+.snapDetail {
+    flex-shrink: 0;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    gap: 0.1rem;
+    width: 100%;
+    text-align: center;
+
+    font-size: 0.7rem;
+    line-height: 1.15;
+
+    opacity: 0.8;
+    color:#111
+}
+
+
+.snapDetail p {
+    margin: 0;
+
+    max-width: 100%;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+/* -- End of Fixture Snapshot  */
+
 /* Gameweek Snapshot */
 
 .gameweekSnapshot {
@@ -1834,17 +1986,114 @@ input[type=number] {
   opacity: 1;
 }
 
+/* Fixture Score Breakdown */
+
 .fixtureScoreBreakdown {
   width: 100%;
-  min-height: 2rem;
-  padding: 0.25rem;
-  margin-top: 0.1rem;
-  border-radius: 5px;
-  background-color: rgba(255,255,255,0.2);
-
-  display: flex;
-  justify-content: center;
+  box-sizing: border-box;
+  padding: 0.25rem 0.4rem 0.4rem;
 }
+
+.fixtureBreakdownLayout {
+  display: grid;
+  grid-template-columns:
+    minmax(2.5rem, 1.25fr)
+    repeat(5, minmax(1.5rem, 1fr))
+    minmax(2.25rem, 1.1fr);
+  column-gap: 0.12rem;
+  align-items: center;
+  width: 100%;
+  text-align: center;
+}
+
+
+/* All cells use identical geometry */
+
+.fixtureBreakdownCell,
+.fixtureBreakdownValue {
+  box-sizing: border-box;
+  width: 100%;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  padding: 0.2rem 0.15rem;
+}
+
+
+/* Header */
+
+.fixtureBreakdownHeader {
+  font-size: 0.65rem;
+  font-weight: 600;
+  line-height: 1;
+  color: var(--blue);
+}
+
+.fixtureBreakdownHeader .fixtureBreakdownCell {
+  background: rgba(255, 255, 255, 0.9);
+}
+
+
+/* Value row */
+
+.fixtureBreakdownRow {
+  margin-top: 0.12rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  line-height: 1;
+}
+
+
+/* Scored criteria */
+
+.fixtureBreakdownValue.scored,
+.fixtureBreakdownTotal.scored {
+  color: var(--blue);
+  background: rgba(255, 255, 255, 0.9);
+}
+
+
+/* Prediction */
+
+.fixtureBreakdownPrediction {
+  font-weight: 700;
+  letter-spacing: 0.03rem;
+  color: var(--blue);
+  background: rgba(255, 255, 255, 0.9);
+}
+
+
+/* Total */
+
+.fixtureBreakdownTotal {
+  font-size: 0.85rem;
+  font-weight: 700;
+}
+
+
+/* Section dividers */
+
+.predColumn {
+  border-right-color: rgba(255, 255, 255, 0.35);
+}
+
+.pointsColumn {
+  border-left-color: rgba(255, 255, 255, 0.35);
+}
+
+/* Perfect10 */
+
+.fixtureBreakdownRow.perfect10 {
+  background: transparent;
+}
+
+.fixtureBreakdownRow.perfect10 .fixtureBreakdownCell,
+.fixtureBreakdownRow.perfect10 .fixtureBreakdownValue {
+  color: white;
+  background: var(--green);
+  border-color: transparent;
+}
+
+/* -- END OF FIXTURE SCORE BREAKDOWN */
 
 /* -- END OF STAGE FIXTURE CARD */
 

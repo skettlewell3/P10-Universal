@@ -1,26 +1,14 @@
 import { useEffect, useState } from "react";
 import { differenceInSeconds, format } from "date-fns";
-import { useGameweeks } from "../../hooks/useGameweeks";
-import { useFixtures } from "../../hooks/useFixtures";
-import { usePredictions } from "../../hooks/usePredictions";
 
-export default function GameweekSnapshot() {
-    const { activeGameweek } = useGameweeks();
-    const { fixtures } = useFixtures();
-    const { predictionsMap } = usePredictions();
-
-    const [now, setNow] = useState(new Date());
+export default function GameweekSnapshot({
+    activeGameweek,
+    hasSubmitted,
+    now,
+}) {
     const [showCountdownScreen, setShowCountdownScreen] = useState(false);
 
-    useEffect(() => {
-        const timer = setInterval(() => {
-            setNow(new Date());
-        }, 1000);
-
-        return () => clearInterval(timer);
-    }, []);
-
-    const closeAt = activeGameweek
+    const closeAt = activeGameweek?.prediction_close_at
         ? new Date(activeGameweek.prediction_close_at)
         : null;
 
@@ -45,21 +33,12 @@ export default function GameweekSnapshot() {
         return () => clearInterval(timer);
     }, [showCountdown]);
 
-    if (!activeGameweek) return null;
+    if (!activeGameweek || !closeAt) {
+        return null;
+    }
 
-    const activeGameweekFixtures = fixtures.filter(
-        fixture =>
-            fixture.gameweek_id === activeGameweek.gameweek_id
-    );
-
-    const hasSubmitted =
-        activeGameweekFixtures.length > 0 &&
-        activeGameweekFixtures.every(
-            fixture =>
-                Boolean(predictionsMap[fixture.fixture_id])
-        );
-
-    const deadlinePassed = secondsRemaining <= 0;
+    const deadlinePassed =
+        secondsRemaining <= 0;
 
     const hours = Math.floor(
         secondsRemaining / 3600
@@ -69,20 +48,27 @@ export default function GameweekSnapshot() {
         (secondsRemaining % 3600) / 60
     );
 
-    const seconds = secondsRemaining % 60;
+    const seconds =
+        secondsRemaining % 60;
 
     const countdown = [
         hours,
         minutes,
-        seconds
+        seconds,
     ]
-        .map(value => String(value).padStart(2, "0"))
+        .map(value =>
+            String(value).padStart(2, "0")
+        )
         .join(":");
 
     const deadline = format(
         closeAt,
         "HH:mm dd/MM"
     );
+
+    const displayCountdown =
+        showCountdown &&
+        showCountdownScreen;
 
     return (
         <div className="gameweekSnapshot">
@@ -95,6 +81,7 @@ export default function GameweekSnapshot() {
                 {hasSubmitted ? (
                     <>
                         <span>Submitted</span>
+
                         <span className="predictionStatusIcon success">
                             ✓
                         </span>
@@ -102,6 +89,7 @@ export default function GameweekSnapshot() {
                 ) : (
                     <>
                         <span>Not submitted</span>
+
                         <span className="predictionStatusIcon failure">
                             ✗
                         </span>
@@ -112,7 +100,7 @@ export default function GameweekSnapshot() {
             {!deadlinePassed && (
                 <div className="gameweekDeadline">
 
-                    {showCountdown && showCountdownScreen ? (
+                    {displayCountdown ? (
                         <>
                             <div className="gameweekDeadlineLabel">
                                 Closes in:
@@ -133,8 +121,10 @@ export default function GameweekSnapshot() {
                             </div>
                         </>
                     )}
+
                 </div>
             )}
+
         </div>
     );
 }

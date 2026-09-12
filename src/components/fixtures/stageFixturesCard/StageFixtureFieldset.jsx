@@ -4,7 +4,7 @@ import { useTeams } from "../../../hooks/useTeams";
 import FixtureExpandButton from "../FixtureExpandButton";
 import FixtureScoreBreakdown from "./FixtureScoreBreakdown";
 
-export default function StageFixtureFieldset({ 
+export default function StageFixtureFieldset({
     fixture,
     prediction,
     predictionDrafts,
@@ -12,7 +12,7 @@ export default function StageFixtureFieldset({
     predictionWindowOpen,
     openMatchModal
 }) {
-    const [expanded, setExpanded] = useState(false);
+    const [expanded, setExpanded] = useState(true);
 
     const { teamsMap } = useTeams();
 
@@ -31,45 +31,59 @@ export default function StageFixtureFieldset({
         awayTeam?.color_3
     );
 
+    const resultAvailable =
+        fixture.fixture_status === "live_90" ||
+        fixture.fixture_status === "live_et" ||
+        fixture.fixture_status === "finished";
+
+    const showScoreBreakdown =
+        resultAvailable &&
+        Boolean(prediction);
+
     let mode = "blank";
 
-    if (fixture.fixture_status === "live_90" || fixture.fixture_status === "live_et" ||fixture.fixture_status === "finished" ) {
+    if (resultAvailable) {
         mode = "result";
     }
-    else if (predictionWindowOpen && fixture.fixture_status === "upcoming") {
+    else if (
+        predictionWindowOpen &&
+        fixture.fixture_status === "upcoming"
+    ) {
         mode = "input";
     }
     else if (prediction) {
         mode = "prediction";
     }
 
-    const draft = predictionDrafts[fixture.fixture_id];
+    const draft =
+        predictionDrafts[fixture.fixture_id];
 
     const homeValue =
         draft?.home ??
-        prediction?.pred_home_goals ?? ""
-    ;
-    
+        prediction?.pred_home_goals ??
+        "";
+
     const awayValue =
         draft?.away ??
-        prediction?.pred_away_goals ?? ""
-    ;
+        prediction?.pred_away_goals ??
+        "";
 
     return (
         <div className="fixtureFieldsetWrapper">
+
             <fieldset className="stageFixtureRow">
 
                 <div
-                  className="matchModalButton"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    openMatchModal?.(fixture);
-                  }}
+                    className="matchModalButton"
+                    onClick={(e) => {
+                        e.stopPropagation();
+                        openMatchModal?.(fixture);
+                    }}
                 >
-                  ⓘ
+                    ⓘ
                 </div>
 
-                <div 
+                <div
                     className="team home"
                     style={homeTeamStyle}
                 >
@@ -88,7 +102,7 @@ export default function StageFixtureFieldset({
                                 max="10"
                                 onChange={(e) => {
                                     const val = e.target.value;
-                                
+
                                     setPredictionDrafts(prev => ({
                                         ...prev,
                                         [fixture.fixture_id]: {
@@ -100,16 +114,22 @@ export default function StageFixtureFieldset({
                             />
                         </div>
                     ) : mode === "result" ? (
-                        <div className="homeScore">{fixture.final_home_goals}</div>
+                        <div className="homeScore">
+                            {fixture.final_home_goals}
+                        </div>
                     ) : mode === "prediction" ? (
-                        <div className="homePred">{prediction.pred_home_goals}</div>
+                        <div className="homePred">
+                            {prediction.pred_home_goals}
+                        </div>
                     ) : (
                         <div />
                     )}
 
                 </div>
 
-                <div className="vs">v</div>
+                <div className="vs">
+                    v
+                </div>
 
                 <div className="scoreCell">
 
@@ -123,7 +143,7 @@ export default function StageFixtureFieldset({
                                 max="10"
                                 onChange={(e) => {
                                     const val = e.target.value;
-                                
+
                                     setPredictionDrafts(prev => ({
                                         ...prev,
                                         [fixture.fixture_id]: {
@@ -135,36 +155,43 @@ export default function StageFixtureFieldset({
                             />
                         </div>
                     ) : mode === "result" ? (
-                        <div className="awayScore">{fixture.final_away_goals}</div>
+                        <div className="awayScore">
+                            {fixture.final_away_goals}
+                        </div>
                     ) : mode === "prediction" ? (
-                        <div className="awayPredLoc">{prediction.pred_away_goals}</div>
+                        <div className="awayPredLoc">
+                            {prediction.pred_away_goals}
+                        </div>
                     ) : (
                         <div />
                     )}
 
                 </div>
 
-                <div                
+                <div
                     className="team away"
                     style={awayTeamStyle}
-                
                 >
                     {fixture.away_short_code}
                 </div>
 
-                
-                <FixtureExpandButton
-                    isExpanded={expanded}
-                    onClick={() => setExpanded(prev => !prev)}
-                    // disabled={!prediction && mode === "blank"}
-                />
-                
+                {showScoreBreakdown && (
+                    <FixtureExpandButton
+                        isExpanded={expanded}
+                        onClick={() =>
+                            setExpanded(prev => !prev)
+                        }
+                    />
+                )}
+
             </fieldset>
-            {expanded && (
+
+            {expanded && showScoreBreakdown && (
                 <FixtureScoreBreakdown
-                    fixtureId={fixture.fixture_id}
+                    prediction={prediction}
                 />
             )}
+
         </div>
-    )
+    );
 }

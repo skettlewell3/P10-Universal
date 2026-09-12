@@ -56,7 +56,7 @@ export default function FixtureSnapshot({ fixture }) {
 
             <div className="snapFixture">
 
-                <div className="snapTeamRow">
+                <div className="snapTeamRow H">
                     <div className="snapTeamName">
                         {fixture.home_team_name}
                     </div>
@@ -66,7 +66,7 @@ export default function FixtureSnapshot({ fixture }) {
                     </div>
                 </div>
 
-                <div className="snapTeamRow">
+                <div className="snapTeamRow A">
                     <div className="snapTeamName">
                         {fixture.away_team_name}
                     </div>
