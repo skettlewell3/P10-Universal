@@ -10,7 +10,7 @@ export default function ProfileIdentity() {
         <div className="profileIdentity">
             
             <div className="profileName">
-                {profile.display_name}
+                {profile.display_name ?? ""}
             </div>
 
             <div className="profilePoints">

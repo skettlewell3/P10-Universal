@@ -1,9 +1,9 @@
-import { useEffect, useState, useCallback, useMemo } from 'react';
+import { useEffect, useState, useCallback, useMemo } from "react";
 import { formatInTimeZone } from "date-fns-tz";
-import { FixturesContext } from '../context/FixturesContext';
-import { useDatabase } from '../hooks/useDatabase';
-import { useAuth } from '../hooks/useAuth';
-import { useFlavour } from '../hooks/useFlavour'; 
+import { FixturesContext } from "../context/FixturesContext";
+import { useDatabase } from "../hooks/useDatabase";
+import { useAuth } from "../hooks/useAuth";
+import { useFlavour } from "../hooks/useFlavour";
 
 export function FixturesProvider({ children }) {
     const { supabase } = useDatabase();
@@ -18,17 +18,21 @@ export function FixturesProvider({ children }) {
         message: "Loading fixtures..."
     });
 
-    const refreshFixtures = useCallback(async () => {
+    const fetchFixtures = useCallback(async ({
+        showLoading = false
+    } = {}) => {
         if (!flavourId) return;
 
-        setLoadingState({
-            loading: true,
-            message: "Fetching fixtures..."
-        });
+        if (showLoading) {
+            setLoadingState({
+                loading: true,
+                message: "Fetching fixtures..."
+            });
+        }
 
         try {
             const { data, error } = await supabase.rpc(
-                'get_fixture_provider',
+                "get_fixture_provider",
                 {
                     p_flavour_id: flavourId
                 }
@@ -38,84 +42,157 @@ export function FixturesProvider({ children }) {
 
             setFixtures(data || []);
 
-            setLoadingState({
-                loading: false,
-                message: ""
-            });
+            if (showLoading) {
+                setLoadingState({
+                    loading: false,
+                    message: ""
+                });
+            }
 
         } catch (error) {
-            console.error('Failed to load fixtures:', error);
+            console.error(
+                "Failed to load fixtures:",
+                error
+            );
 
-            setLoadingState({
-                loading: false,
-                message: "Failed to load fixtures"
-            });
+            if (showLoading) {
+                setLoadingState({
+                    loading: false,
+                    message: "Failed to load fixtures"
+                });
+            }
         }
     }, [supabase, flavourId]);
 
-    // initial load (safe, no dependency chain issues)
+    // Initial load only.
+    // This is the only fixture fetch that should block the UI.
     useEffect(() => {
-        refreshFixtures();
-        // console.log("Fixtures initial load fired");
-    }, [refreshFixtures]);
+        fetchFixtures({
+            showLoading: true
+        });
+    }, [fetchFixtures]);
 
+    // App/session resume refresh.
+    // Existing fixtures remain visible while this happens.
     useEffect(() => {
-      if (!refreshSignal) return;
+        if (!refreshSignal) return;
 
-      console.log(
-        "SESSION REFRESH REQUEST -> FIXTURES"
-      );
+        console.log(
+            "SESSION REFRESH REQUEST -> FIXTURES"
+        );
 
-      refreshFixtures();
-    }, [refreshSignal, refreshFixtures]);
+        fetchFixtures();
+    }, [refreshSignal, fetchFixtures]);
 
-    // realtime updates
+    // Realtime updates.
+    // These refresh fixture data silently without showing
+    // the global loading screen.
     useEffect(() => {
         const channel = supabase
-            .channel('fixtures-provider')
+            .channel("fixtures-provider")
 
-            .on('postgres_changes', {
-                event: '*',
-                schema: 'public',
-                table: 'fixtures'
-            }, refreshFixtures)
+            .on(
+                "postgres_changes",
+                {
+                    event: "*",
+                    schema: "public",
+                    table: "fixtures"
+                },
+                (payload) => {
+                    console.log(
+                        "REALTIME FIXTURES CHANGE -> FIXTURES",
+                        payload
+                    );
 
-            .on('postgres_changes', {
-                event: '*',
-                schema: 'public',
-                table: 'results'
-            }, refreshFixtures)
+                    fetchFixtures();
+                }
+            )
 
-            .on('postgres_changes', {
-                event: '*',
-                schema: 'public',
-                table: 'ties'
-            }, refreshFixtures)
+            .on(
+                "postgres_changes",
+                {
+                    event: "*",
+                    schema: "public",
+                    table: "results"
+                },
+                (payload) => {
+                    console.log(
+                        "REALTIME RESULTS CHANGE -> FIXTURES",
+                        payload
+                    );
 
-            .on('postgres_changes', {
-                event: '*',
-                schema: 'public',
-                table: 'gameweeks'
-            }, refreshFixtures)
+                    fetchFixtures();
+                }
+            )
 
-            .on('postgres_changes', {
-                event: '*',
-                schema: 'public',
-                table: 'stages'
-            }, refreshFixtures)
+            .on(
+                "postgres_changes",
+                {
+                    event: "*",
+                    schema: "public",
+                    table: "ties"
+                },
+                (payload) => {
+                    console.log(
+                        "REALTIME TIES CHANGE -> FIXTURES",
+                        payload
+                    );
+
+                    fetchFixtures();
+                }
+            )
+
+            .on(
+                "postgres_changes",
+                {
+                    event: "*",
+                    schema: "public",
+                    table: "gameweeks"
+                },
+                (payload) => {
+                    console.log(
+                        "REALTIME GAMEWEEKS CHANGE -> FIXTURES",
+                        payload
+                    );
+
+                    fetchFixtures();
+                }
+            )
+
+            .on(
+                "postgres_changes",
+                {
+                    event: "*",
+                    schema: "public",
+                    table: "stages"
+                },
+                (payload) => {
+                    console.log(
+                        "REALTIME STAGES CHANGE -> FIXTURES",
+                        payload
+                    );
+
+                    fetchFixtures();
+                }
+            )
 
             .subscribe();
 
         return () => {
             supabase.removeChannel(channel);
         };
-    }, [supabase, refreshFixtures]);
+    }, [supabase, fetchFixtures]);
 
     const groupByKickoff = (fixtures) => {
         return fixtures.reduce((acc, f) => {
-            const key = f.kickoff_at; 
-            if (!acc[key]) acc[key] = [];
+            const key = f.kickoff_at;
+
+            if (!acc[key]) {
+                acc[key] = [];
+            }
+
             acc[key].push(f);
+
             return acc;
         }, {});
     };
@@ -128,7 +205,9 @@ export function FixturesProvider({ children }) {
         if (!fixtures.length) return [];
 
         const userTimeZone =
-            Intl.DateTimeFormat().resolvedOptions().timeZone;
+            Intl.DateTimeFormat()
+                .resolvedOptions()
+                .timeZone;
 
         const today = formatInTimeZone(
             new Date(),
@@ -146,26 +225,27 @@ export function FixturesProvider({ children }) {
 
                 return fixtureDate === today;
             })
-            .sort((a, b) =>
-                new Date(a.kickoff_at) -
-                new Date(b.kickoff_at)
+            .sort(
+                (a, b) =>
+                    new Date(a.kickoff_at) -
+                    new Date(b.kickoff_at)
             );
 
         if (!todaysFixtures.length) {
             return [];
         }
 
-        const liveFixtures = todaysFixtures.filter(fixture =>
-            fixture.fixture_status === "live_90" ||
-            fixture.fixture_status === "live_et"
-        );
+        const liveFixtures =
+            todaysFixtures.filter(fixture =>
+                fixture.fixture_status === "live_90" ||
+                fixture.fixture_status === "live_et"
+            );
 
         if (liveFixtures.length) {
             return liveFixtures;
         }
 
         return todaysFixtures;
-
     }, [fixtures]);
 
     return (
@@ -175,9 +255,10 @@ export function FixturesProvider({ children }) {
                 groupByKickoff,
                 groupedByKickoff,
                 snapshotFixtures,
+
                 fixturesLoading: loadingState.loading,
-                fixturesLoadingMessage: loadingState.message,
-                refreshFixtures
+                fixturesLoadingMessage: loadingState.message,                
+                refreshFixtures: fetchFixtures
             }}
         >
             {children}
