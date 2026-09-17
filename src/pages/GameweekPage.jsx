@@ -1,8 +1,11 @@
-import { useMemo, useState } from "react";
+import { useMemo, useState, useRef, useEffect } from "react";
+import { useProfile } from "../hooks/useProfile";
+import { useFlavour } from "../hooks/useFlavour";
 import { useFixtures } from "../hooks/useFixtures";
 import { useGameweeks } from "../hooks/useGameweeks";
 import { usePredictions } from "../hooks/usePredictions";
 import { isDirtyPrediction, isValidPrediction } from "../utils/helpers";
+import { loadPredictionDrafts, savePredictionDrafts, clearPredictionDrafts } from "../utils/predictionDraftStorage";
 import ContentBanner from "../components/app/ContentBanner";
 import StageFixturesCard from "../components/fixtures/stageFixturesCard/StageFixturesCard";
 import SubmitSlideUp from "../components/fixtures/SubmitSlideUp";
@@ -11,9 +14,44 @@ import MatchModal from "../components/matchmodal/MatchModal";
 export default function GameweekPage() {
     const { activeGameweekId } = useGameweeks();
     const { fixtures, groupByKickoff } = useFixtures();
-    const { submitPredictions, predictionsLoading, predictionsMap } = usePredictions();
-    const [ predictionDrafts, setPredictionDrafts ] = useState({});
+
+    const {
+        submitPredictions,
+        predictionsLoading,
+        predictionsMap
+    } = usePredictions();
+
+    const { profile } = useProfile();
+    const { flavourId } = useFlavour();
+
+    const [predictionDrafts, setPredictionDrafts] = useState({});
     const [modalFixture, setModalFixture] = useState(null);
+
+    const skipNextDraftSave = useRef(false);
+
+    const profileId = profile?.profile_id;
+
+    const draftStorageKey = useMemo(() => {
+        if (
+            !profileId ||
+            !flavourId ||
+            !activeGameweekId
+        ) {
+            return null;
+        }
+
+        return [
+            "p10",
+            "prediction-drafts",
+            profileId,
+            flavourId,
+            activeGameweekId
+        ].join(":");
+    }, [
+        profileId,
+        flavourId,
+        activeGameweekId
+    ]);
 
     const gameweekFixtures = useMemo(() => {
         if (!activeGameweekId) return [];
@@ -37,6 +75,38 @@ export default function GameweekPage() {
     const predictionOpenAt = earliestFixture?.prediction_open_at;
     const predictionCloseAt = earliestFixture?.prediction_close_at;
     const predictionWindowOpen = earliestFixture?.predictions_open;
+
+    useEffect(() => {
+        if (!draftStorageKey) {
+            setPredictionDrafts({});
+            return;
+        }
+
+        skipNextDraftSave.current = true;
+
+        setPredictionDrafts(
+            loadPredictionDrafts(draftStorageKey)
+        );
+    }, [draftStorageKey]);
+
+    useEffect(() => {
+        if (!draftStorageKey) return;
+
+        if (skipNextDraftSave.current) {
+            skipNextDraftSave.current = false;
+            return;
+        }
+
+        savePredictionDrafts(
+            draftStorageKey,
+            predictionDrafts,
+            predictionCloseAt
+        );
+    }, [
+        draftStorageKey,
+        predictionDrafts,
+        predictionCloseAt
+    ]);
 
     const hasExistingSet = useMemo(() => {
         if (!gameweekFixtures.length) return false;
@@ -74,6 +144,7 @@ export default function GameweekPage() {
 
         try {
             await submitPredictions(payloads);
+            clearPredictionDrafts(draftStorageKey);
             setPredictionDrafts({});
         } catch (error) {
             console.error(error);
