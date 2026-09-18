@@ -1,4 +1,4 @@
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState, useCallback, useRef } from "react";
 import { PredictionsContext } from "../context/PredictionsContext";
 import { useDatabase } from "../hooks/useDatabase";
 import { useProfile } from "../hooks/useProfile";
@@ -13,6 +13,7 @@ export function PredictionProvider({ children }) {
   const { flavourId } = useFlavour();
 
   const profileId = profile?.profile_id;
+  const submittingRef = useRef(false);
 
   const [predictions, setPredictions] = useState([]);
   const [predictionsMap, setPredictionsMap] = useState({});
@@ -89,10 +90,11 @@ export function PredictionProvider({ children }) {
     refreshPredictions();
   }, [refreshSignal, refreshPredictions])
 
-  // submit function 
   const submitPredictions = useCallback(
     async (payloads) => {
       if (!payloads?.length) return;
+
+      submittingRef.current = true;
 
       try {
         setLoadingState({
@@ -100,17 +102,28 @@ export function PredictionProvider({ children }) {
           message: "Saving Predictions"
         });
 
-        const { error } = await supabase.rpc("upsert_predictions", {
-          predictions: payloads,
-        });
+        const { error } = await supabase.rpc(
+          "upsert_predictions",
+          {
+            predictions: payloads,
+          }
+        );
 
         if (error) throw error;
 
         await refreshPredictions();
+
       } catch (error) {
-        console.error("Failed to submit predictions:", error);
+        console.error(
+          "Failed to submit predictions:",
+          error
+        );
+
         throw error;
+
       } finally {
+        submittingRef.current = false;
+
         setLoadingState({
           loading: false,
           message: ""
@@ -131,7 +144,11 @@ export function PredictionProvider({ children }) {
           schema: "public",
           table: "predictions",
         },
-        () => refreshPredictions()
+        () => {
+          if (submittingRef.current) return;
+
+          refreshPredictions();
+        }
       )
       .on(
         "postgres_changes",
@@ -140,7 +157,11 @@ export function PredictionProvider({ children }) {
           schema: "public",
           table: "prediction_scores",
         },
-        () => refreshPredictions()
+        () => {
+          if (submittingRef.current) return;
+
+          refreshPredictions();
+        }
       )
       .subscribe();
 
